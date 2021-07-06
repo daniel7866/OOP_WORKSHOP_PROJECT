@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,9 +19,6 @@ namespace OOP_WORKSHOP_PROJECT.Models
         [Required]
         public string Password { get; set; }
 
-
-        //To be added later:
-
-        //Image ProfilePicture{get;set;}
+        public string ImagePath { get; set; }
     }
 }
