@@ -21,17 +21,13 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Compile Remove="wwwroot\uploads\**" />
     <Content Remove="$(SpaRoot)**" />
-    <Content Remove="wwwroot\uploads\**" />
-    <EmbeddedResource Remove="wwwroot\uploads\**" />
     <None Remove="$(SpaRoot)**" />
-    <None Remove="wwwroot\uploads\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

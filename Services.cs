@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OOP_WORKSHOP_PROJECT
 {
-    public class Services
+    public abstract class Services
     {
         public static string SaveImage(IFormFile file, string path)
         {

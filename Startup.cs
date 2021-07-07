@@ -32,6 +32,7 @@ namespace OOP_WORKSHOP_PROJECT
 
             //add the data
             services.AddSingleton<IUserRepo, MockUserRepo>();
+            services.AddSingleton<IPostRepo, MockPostRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -32,29 +32,23 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         }
 
         [HttpGet("id/{id}")]
-        public ActionResult<IEnumerable<User>> GetUserById(int id)
+        public ActionResult<User> GetUserById(int id)
         {
             var user = _repo.GetUserById(id);
             if (user is null)
                 return NotFound();
-            ReadUserDto dto = new ReadUserDto()
-            {
-                Name = user.Name,
-                Email = user.Email,
-                Followers = (List<int>)_repo.GetFollowers(id),
-                Following = (List<int>)_repo.GetFollowing(id)
-            };
-
+            ReadUserDto dto = MapToReadUserDto(user);
             return Ok(dto);
         }
 
         [HttpGet("email/{email}")]
-        public ActionResult<IEnumerable<User>> GetUserByEmail(string email)
+        public ActionResult<User> GetUserByEmail(string email)
         {
             var user = _repo.GetUserByEmail(email);
+            ReadUserDto dto = MapToReadUserDto(user);
             if (user is null)
                 return NotFound();
-            return Ok(user);
+            return Ok(dto);
         }
 
         [HttpPost]
@@ -75,17 +69,6 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 {
                     string path = _webHostEnvironment.WebRootPath + "\\uploads\\";
 
-                    //if (!Directory.Exists(path))
-                    //{
-                    //    Directory.CreateDirectory(path);
-                    //}
-                    //string newFilePath = path + DateTime.Now.GetHashCode() + dto.file.FileName;
-                    //using (FileStream fileStream = System.IO.File.Create(newFilePath))
-                    //{
-                    //    dto.file.CopyTo(fileStream);
-                    //    fileStream.Flush();
-                    //}
-
                     user.ImagePath = Services.SaveImage(dto.file, path);
                     result = _repo.AddUser(user);
                 }
@@ -98,6 +81,19 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return Ok(user);
             else
                 return BadRequest();
+        }
+
+        private ReadUserDto MapToReadUserDto(User user)
+        {
+            return new ReadUserDto()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                ImagePath = user.ImagePath,
+                Followers = (List<int>)_repo.GetFollowers(user.Id),
+                Following = (List<int>)_repo.GetFollowing(user.Id)
+            };
         }
     }
 }
