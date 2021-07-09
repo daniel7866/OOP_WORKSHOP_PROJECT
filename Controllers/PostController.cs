@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using OOP_WORKSHOP_PROJECT.Data;
+using OOP_WORKSHOP_PROJECT.Dtos;
 using OOP_WORKSHOP_PROJECT.Models;
 using System;
 using System.Collections.Generic;
@@ -29,21 +30,53 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         }
 
         [HttpGet("id/{postId}")]
-        public ActionResult<Post> GetPostById(int postId)
+        public ActionResult<ReadPostDto> GetPostById(int postId)
         {
             var post = _repo.GetPostById(postId);
             if (post is null)
                 return NotFound();
-            return Ok(post);
+
+            var dto = MapToReadPostDto(post);
+            return Ok(dto);
         }
 
         [HttpGet("user/id/{userId}")]
-        public ActionResult<IEnumerable<Post>> GetUserPosts(int userId)
+        public ActionResult<IEnumerable<ReadPostDto>> GetUserPosts(int userId)
         {
             var posts = _repo.GetUserPosts(userId);
             if (posts is null)
                 return NotFound();
-            return Ok(posts);
+
+            var dtos = new List<ReadPostDto>();
+            foreach (var item in posts)
+            {
+                dtos.Add(MapToReadPostDto(item));
+            }
+            return Ok(dtos);
+        }
+
+        [HttpPost("like/post{postId}/user{userId}")]
+        public ActionResult LikePost(int postId, int userId)
+        {
+            try
+            {
+                _repo.LikePost(postId, userId);
+            }
+            catch (Exception err) { return NotFound("Post is not found"); }
+
+            return Ok();
+        }
+
+        private ReadPostDto MapToReadPostDto(Post post)
+        {
+            return new ReadPostDto()
+            {
+                Id = post.Id,
+                UserId = post.UserId,
+                Description = post.Description,
+                ImagePath = post.ImagePath,
+                likes = _repo.GetLikes(post.Id)
+            };
         }
     }
 }

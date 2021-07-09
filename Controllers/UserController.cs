@@ -54,12 +54,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         [HttpPost]
         public ActionResult<User> AddUser([FromForm] WriteUserDto dto)
         {
-            User user = new User()
-            {
-                Email = dto.Email,
-                Password = dto.Password,
-                Name = dto.Name
-            };
+            User user = MapToUser(dto);
             bool result;
             if(dto.file is null)//if there is no profile picture
                 result = _repo.AddUser(user);
@@ -93,6 +88,16 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 ImagePath = user.ImagePath,
                 Followers = (List<int>)_repo.GetFollowers(user.Id),
                 Following = (List<int>)_repo.GetFollowing(user.Id)
+            };
+        }
+
+        private User MapToUser(WriteUserDto dto)
+        {
+            return new User()
+            {
+                Email = dto.Email,
+                Password = dto.Password,
+                Name = dto.Name
             };
         }
     }

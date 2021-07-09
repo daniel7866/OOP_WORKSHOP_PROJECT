@@ -23,5 +23,9 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         //get all users' ids that likes this postId
         IEnumerable<int> GetLikes(int postId);
+
+        void LikePost(int postId, int userId);
+
+        IEnumerable<int> GetPostLikes(int postId);
     }
 }

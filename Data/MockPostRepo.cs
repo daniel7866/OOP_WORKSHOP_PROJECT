@@ -55,12 +55,32 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return (Post)post;
         }
 
+        public IEnumerable<int> GetPostLikes(int postId)
+        {
+            var post = GetPostById(postId);
+            if (post is null)
+                throw new Exception("Post does not exist");
+
+            var liked_user_id = (from row in _likes
+                         where row.PostId == postId
+                         select row.UserId).ToList();
+            return liked_user_id;
+        }
+
         public IEnumerable<Post> GetUserPosts(int userId)
         {
             var posts = from row in _posts
                        where row.UserId == userId
                        select row;
             return posts;
+        }
+
+        public void LikePost(int postId, int userId)
+        {
+            var post = GetPostById(postId);
+            if (post is null)
+                throw new Exception("Post does not exist");
+            _likes.Add(new Likes() { PostId = postId, UserId = userId });
         }
     }
 }
