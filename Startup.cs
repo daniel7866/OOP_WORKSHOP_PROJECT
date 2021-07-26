@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +22,13 @@ namespace OOP_WORKSHOP_PROJECT
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<PostContext>
+                (opt => opt.UseSqlServer
+                (Configuration.GetConnectionString("PostConnection")));
+
+            services.AddDbContext<UserContext>
+                (opt => opt.UseSqlServer
+                (Configuration.GetConnectionString("UserConnection")));
 
             services.AddControllersWithViews();
 
@@ -31,8 +39,10 @@ namespace OOP_WORKSHOP_PROJECT
             });
 
             //add the data
-            services.AddSingleton<IUserRepo, MockUserRepo>();
-            services.AddSingleton<IPostRepo, MockPostRepo>();
+            // services.AddSingleton<IUserRepo, MockUserRepo>();
+            // services.AddSingleton<IPostRepo, MockPostRepo>();
+            services.AddScoped<IUserRepo,SqlUserRepo>();
+            services.AddScoped<IPostRepo, SqlPostRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

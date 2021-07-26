@@ -70,6 +70,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 catch(Exception e) { 
                     result = false;
                     Console.WriteLine(e);
+                    return BadRequest(e);
                 }
             }
             if (result)

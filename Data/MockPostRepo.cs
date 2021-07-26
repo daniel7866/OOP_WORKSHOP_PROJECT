@@ -75,12 +75,33 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return posts;
         }
 
-        public void LikePost(int postId, int userId)
+        public bool LikePost(int postId, int userId)
         {
             var post = GetPostById(postId);
             if (post is null)
                 throw new Exception("Post does not exist");
+            var like = (from row in _likes
+                       where row.PostId == postId && row.UserId == userId
+                       select row).FirstOrDefault();
+            if (like is not null)
+                return false;
             _likes.Add(new Likes() { PostId = postId, UserId = userId });
+            return true;
+        }
+
+        public bool UnLikePost(int postId, int userId)
+        {
+            var post = GetPostById(postId);
+            if (post is null)
+                throw new Exception("Post does not exist");
+            var like = (from row in _likes
+                       where row.PostId == postId && row.UserId == userId
+                       select row).FirstOrDefault();
+            if (like is null)
+                return false;
+
+            _likes.Remove(like);
+            return true;
         }
     }
 }
