@@ -52,19 +52,22 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         }
 
         [HttpPost]
-        public ActionResult<User> AddUser([FromForm] WriteUserDto dto)
+        public async Task<ActionResult<User>> AddUserAsync(/*[FromForm]*/ WriteUserDto dto)
         {
             User user = MapToUser(dto);
             bool result;
-            if(dto.file is null)//if there is no profile picture
+            WriteUserDto cpy = dto;
+            if (dto.file is null && dto.ImagePath is null)//if there is no profile picture
                 result = _repo.AddUser(user);
             else // there is a profile picture to save
             {
                 try
                 {
-                    string path = _webHostEnvironment.WebRootPath + "\\uploads\\";
+                    //string path = _webHostEnvironment.WebRootPath + "\\uploads\\";
 
-                    user.ImagePath = Services.SaveImage(dto.file, path);
+                    //user.ImagePath = Services.SaveImage(dto.file, path);
+                    //string dummyfile = @"C:\Users\danie\Downloads\h.jpg";
+                    user.ImagePath = await Services.SaveImageAWSAsync(dto.ImagePath);
                     result = _repo.AddUser(user);
                 }
                 catch(Exception e) { 
@@ -98,7 +101,8 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             {
                 Email = dto.Email,
                 Password = dto.Password,
-                Name = dto.Name
+                Name = dto.Name,
+                ImagePath = dto.ImagePath
             };
         }
     }

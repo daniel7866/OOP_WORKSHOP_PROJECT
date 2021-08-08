@@ -12,5 +12,6 @@ namespace OOP_WORKSHOP_PROJECT.Dtos
         public string Email { get; set; }
         public string Password { get; set; }
         public IFormFile file { get; set; }
+        public string ImagePath { get; set; }
     }
 }
