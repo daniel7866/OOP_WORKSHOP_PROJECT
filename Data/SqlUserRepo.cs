@@ -45,10 +45,10 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         public User GetUserByEmail(string email)
         {
-            var following = (from row in _context.Users
+            var user = (from row in _context.Users
                              where row.Email == email
                              select row).FirstOrDefault();
-            return following;
+            return user;
         }
 
         public User GetUserById(int userId)

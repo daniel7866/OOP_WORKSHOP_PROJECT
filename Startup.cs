@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OOP_WORKSHOP_PROJECT.Data;
+using OOP_WORKSHOP_PROJECT.Helpers;
 
 namespace OOP_WORKSHOP_PROJECT
 {
@@ -50,6 +51,7 @@ namespace OOP_WORKSHOP_PROJECT
             // services.AddSingleton<IPostRepo, MockPostRepo>();
             services.AddScoped<IUserRepo,SqlUserRepo>();
             services.AddScoped<IPostRepo, SqlPostRepo>();
+            services.AddScoped<JwtService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
