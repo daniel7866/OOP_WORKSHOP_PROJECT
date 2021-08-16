@@ -162,7 +162,23 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
             return Ok(new
             { messege = "Succesefuly logged out" });
-            }
+        }
+
+        [HttpPost("message")]
+        public IActionResult SendMessage(Message message)
+        {
+            message.DateSent = DateTime.Now;
+            if (_repo.AddMessage(message))
+                return Ok();
+            else
+                return BadRequest();
+        }
+
+        [HttpGet("message/{userId}")]
+        public ActionResult<IEnumerable<Message>> GetMessages(int userId)
+        {
+            return Ok(_repo.GetMessages(userId));
+        }
 
 
         private ReadUserDto MapToReadUserDto(User user)

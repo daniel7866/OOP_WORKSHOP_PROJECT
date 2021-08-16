@@ -25,5 +25,9 @@ namespace OOP_WORKSHOP_PROJECT.Data
         IEnumerable<int> GetFollowing(int userId);
         //get all users' ids that follow this user
         IEnumerable<int> GetFollowers(int userId);
+
+        bool AddMessage(Message message);
+
+        IEnumerable<Message> GetMessages(int userId);
     }
 }

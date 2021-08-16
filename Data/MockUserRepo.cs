@@ -35,6 +35,11 @@ namespace OOP_WORKSHOP_PROJECT.Data
             };
         }
 
+        public bool AddMessage(Message message)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool AddUser(User user)
         {
             foreach (var usr in _users)
@@ -66,6 +71,11 @@ namespace OOP_WORKSHOP_PROJECT.Data
                                    where row.FollowingId == id
                                    select row.FollowedId).ToList();
             return following;
+        }
+
+        public IEnumerable<Message> GetMessages(int userId)
+        {
+            throw new NotImplementedException();
         }
 
         public User GetUserByEmail(string email)

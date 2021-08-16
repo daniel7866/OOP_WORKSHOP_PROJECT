@@ -43,6 +43,14 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return following;
         }
 
+        public IEnumerable<Message> GetMessages(int userId)
+        {
+            var messages = (from row in _context.Messages
+                            where row.ReceiverId == userId || row.SenderId == userId
+                            select row).ToList();
+            return messages;
+        }
+
         public User GetUserByEmail(string email)
         {
             var user = (from row in _context.Users
@@ -57,6 +65,12 @@ namespace OOP_WORKSHOP_PROJECT.Data
                         where row.Id == userId
                         select row).FirstOrDefault();
             return user;
+        }
+
+        public bool AddMessage(Message message)
+        {
+            _context.Messages.Add(message);
+            return _context.SaveChanges() > 0;
         }
     }
 }
