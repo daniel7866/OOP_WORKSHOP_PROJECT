@@ -20,7 +20,7 @@ const App = () => {
 return (
     <Layout>
         {/*Here is the login popup, if jwt is not null no login form will be shown*/}
-        <Popup trigger={user.jwt == null}>
+        <Popup trigger={user.jwt == null && window.location.pathname + window.location.search!= "/register"}>
             <Login />
         </Popup>
         <Route exact path='/' component={Home} />
