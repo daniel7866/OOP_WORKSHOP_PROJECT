@@ -5,20 +5,30 @@ import Home from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Dashboard } from './components/Dashboard';
+import Popup from "./components/Popup";
+import Login from "./components/Login";
 
 import './custom.css'
 
-export default class App extends Component {
-  static displayName = App.name;
 
-  render () {
-    return (
-      <Layout>
+//used to import redux state
+import { useSelector } from 'react-redux';
+
+const App = () => {
+    const user = useSelector(state => state.user);//import redux global state
+
+return (
+    <Layout>
+        {/*Here is the login popup, if jwt is not null no login form will be shown*/}
+        <Popup trigger={user.jwt == null}>
+            <Login />
+        </Popup>
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/dashboard' component={Dashboard} />
-      </Layout>
-    );
-  }
-}
+    </Layout>
+)
+};
+
+export default App;
