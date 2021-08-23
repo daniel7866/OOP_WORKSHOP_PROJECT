@@ -35,10 +35,17 @@ const Register = () => {
             redirect: 'follow'
         };
 
-        fetch(SERVER+"/api/user/register", requestOptions)
-            .then(response => response.text())
-            .then(setLabel('Registered successfully!'))
-            .catch(error => setLabel(error));
+        const ADDRESS = window.location.hostname == "localhost" ? "https://localhost:44306/" : `http://${SERVER}/`
+        fetch(`${ADDRESS}api/user/register`, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    setLabel("Registered successfully");
+                }
+                else {
+                    response.text().then(text => setLabel(text));
+                }
+            })
+            .catch(error => console.log(error));
     }
 
     return (
