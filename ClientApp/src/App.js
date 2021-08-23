@@ -7,6 +7,7 @@ import { Counter } from './components/Counter';
 import { Dashboard } from './components/Dashboard';
 import Popup from "./components/Popup";
 import Login from "./components/Login";
+import Register from "./components/Register";
 
 import './custom.css'
 
@@ -27,6 +28,7 @@ return (
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/dashboard' component={Dashboard} />
+        <Route path='/register' component={Register} />
     </Layout>
 )
 };
