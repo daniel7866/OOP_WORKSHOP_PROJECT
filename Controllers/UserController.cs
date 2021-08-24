@@ -92,7 +92,12 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             bool result;
             WriteUserDto cpy = dto;
             if (dto.file is null && dto.ImagePath is null)//if there is no profile picture
-                result = _repo.AddUser(user);
+                try {
+                    result = _repo.AddUser(user);
+                }catch(Exception e)
+                {
+                    return BadRequest(e.InnerException.Message.ToString());
+                }
             else // there is a profile picture to save
             {
                 try
@@ -136,7 +141,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
         }
 
-        [HttpGet("getUser")] //receives the JWT token and returns the user
+        [HttpPost("getUser")] //receives the JWT token and returns the user
         public IActionResult GetUserByToken()
         {
             try

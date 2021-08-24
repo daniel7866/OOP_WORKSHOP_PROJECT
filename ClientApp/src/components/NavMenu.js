@@ -42,6 +42,22 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/dashboard">Dashboard</NavLink>
                 </NavItem>
+                <NavItem>
+                    <button className="btn btn-primary mb3"
+                        onClick={() => {
+                            var requestOptions = {
+                                method: 'POST',
+                                redirect: 'follow'
+                            };
+
+                            fetch("https://localhost:44306/api/user/logout", requestOptions)
+                                .then(response => response.text())
+                                .then(result => { console.log(result); window.location.reload(); })
+                                .catch(error => console.log('error', error));
+                        }
+                    }
+                    >Log Out</button>
+                </NavItem>
               </ul>
             </Collapse>
           </Container>

@@ -35,8 +35,8 @@ const Register = () => {
             redirect: 'follow'
         };
 
-        const ADDRESS = window.location.hostname == "localhost" ? "https://localhost:44306/" : `http://${SERVER}/`
-        fetch(`${ADDRESS}api/user/register`, requestOptions)
+        const ADDRESS = window.location.hostname == "localhost" ? "https://localhost:44306" : `http://${SERVER}`
+        fetch(`${ADDRESS}/api/user/register`, requestOptions)
             .then(response => {
                 if (response.ok) {
                     setLabel("Registered successfully");

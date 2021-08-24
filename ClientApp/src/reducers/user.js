@@ -4,12 +4,12 @@
  * The default state sets all the fields to null
  * */
 
-const userReducer = (state = { jwt: null, uid: null, email: null }, action) => {
+const userReducer = (state = { uid: null, email: null, name: null }, action) => {
     switch (action.type) {
         case 'LOGIN':
-            return { jwt: 'JWT', uid: 'UID', email: 'EMAIL' };
+            return { uid: action.payload.id, email: action.payload.email, name: action.payload.name };
         case 'LOGOUT':
-            return { jwt: null, uid: null, email: null };
+            return { uid: null, email: null, name: null };
         default:
             return state;
     }
