@@ -1,8 +1,7 @@
 ﻿import React from "react";
 import { useState } from "react";
-import AWS from 'aws-sdk';
+import { getAddress } from "../Services";
 
-const SERVER = "18.219.92.190";
 
 const Register = () => {
 
@@ -35,8 +34,7 @@ const Register = () => {
             redirect: 'follow'
         };
 
-        const ADDRESS = window.location.hostname == "localhost" ? "https://localhost:44306" : `http://${SERVER}`
-        fetch(`${ADDRESS}/api/user/register`, requestOptions)
+        fetch(`${getAddress()}/api/user/register`, requestOptions)
             .then(response => {
                 if (response.ok) {
                     setLabel("Registered successfully");

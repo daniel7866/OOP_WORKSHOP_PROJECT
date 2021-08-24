@@ -2,8 +2,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { login, logout } from "../actions";
 import { useState } from "react";
-
-const SERVER = "18.219.92.190";
+import { getAddress } from "../Services";
 
 const Login = () => {
     const user = useSelector(state => state.user);
@@ -14,7 +13,6 @@ const Login = () => {
 
     const [label, setLabel] = useState('');
 
-    const ADDRESS = window.location.hostname == "localhost" ? "https://localhost:44306" : `http://${SERVER}`
 
     /**
      * This code will try to get the user from a token saved on cookie, if succeded - user can surf the site, else - needs to login with the form below
@@ -29,7 +27,7 @@ const Login = () => {
             redirect: 'follow'
         };
 
-        fetch(`${ADDRESS}/api/user/getUser`, requestOptions)
+        fetch(`${getAddress()}/api/user/getUser`, requestOptions)
             .then(response => response.json())
             .then(result => { console.log(result); dispatch(login(result)); })
             .catch(error => console.log('error', error));
@@ -57,9 +55,9 @@ const Login = () => {
             redirect: 'follow'
         };
 
-        fetch(`${ADDRESS}/api/user/login`, requestOptions)
+        fetch(`${getAddress()}/api/user/login`, requestOptions)
             .then(response => response.json())
-            .then(result => { console.log(result); dispatch(login(result)); setLabel(result.message); })
+            .then(result => { console.log(result); setLabel(result.message);dispatch(login(result)); })
             .catch(error => null);
         
     }

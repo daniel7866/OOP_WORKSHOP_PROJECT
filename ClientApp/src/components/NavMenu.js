@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import { getAddress } from "../Services";
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -43,16 +44,16 @@ export class NavMenu extends Component {
                   <NavLink tag={Link} className="text-dark" to="/dashboard">Dashboard</NavLink>
                 </NavItem>
                 <NavItem>
-                    <button className="btn btn-primary mb3"
+                        <button className="btn btn-outline-dark"
                         onClick={() => {
                             var requestOptions = {
                                 method: 'POST',
                                 redirect: 'follow'
                             };
 
-                            fetch("https://localhost:44306/api/user/logout", requestOptions)
+                            fetch(`${getAddress()}/api/user/logout`, requestOptions)
                                 .then(response => response.text())
-                                .then(result => { console.log(result); window.location.reload(); })
+                                .then(result => { console.log(result); window.location.replace(window.location.origin); })
                                 .catch(error => console.log('error', error));
                         }
                     }
