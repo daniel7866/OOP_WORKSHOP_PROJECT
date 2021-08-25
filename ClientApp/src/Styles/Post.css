@@ -1,0 +1,29 @@
+﻿.post-container {
+    background-color: #ececec;
+    max-width: 20vw;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 15px;
+    border-radius: 1rem;
+    box-shadow: #282c34 0 0 4px 0;
+    padding: 1px;
+}
+
+.post-image {
+    max-width: 20vw;
+    max-height: 20vh;
+    width: auto;
+    height: auto;
+    border-radius: 1rem;
+}
+
+@media only screen and (max-width: 1000px) {
+    .post-container {
+        max-width: 80vw;
+    }
+
+    .post-image {
+        max-width: 50vw;
+        max-height: 50vh;
+    }
+}
