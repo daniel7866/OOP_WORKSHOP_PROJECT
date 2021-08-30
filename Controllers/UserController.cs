@@ -90,7 +90,6 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         {
             User user = MapToUser(dto);
             bool result;
-            WriteUserDto cpy = dto;
             if (dto.file is null && dto.ImagePath is null)//if there is no profile picture
                 try {
                     result = _repo.AddUser(user);
@@ -147,8 +146,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             try
             {
                 var jwt = Request.Cookies["jwt"];
-                var token = _jwtService.Verify(jwt);
-                int userId = int.Parse(token.Issuer);
+                int userId = _jwtService.GetUserId(jwt);
                 var user = _repo.GetUserById(userId);
 
                 return Ok(user);
@@ -173,6 +171,16 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         public IActionResult SendMessage(Message message)
         {
             message.DateSent = DateTime.Now;
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                var token = _jwtService.Verify(jwt);
+            }
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
+
             if (_repo.AddMessage(message))
                 return Ok();
             else
@@ -182,6 +190,15 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         [HttpGet("message/{userId}")]
         public ActionResult<IEnumerable<Message>> GetMessages(int userId)
         {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                var token = _jwtService.Verify(jwt);
+            }
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
             return Ok(_repo.GetMessages(userId));
         }
 

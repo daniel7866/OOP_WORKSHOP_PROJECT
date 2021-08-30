@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OOP_WORKSHOP_PROJECT.Helpers;
 
 namespace OOP_WORKSHOP_PROJECT.Controllers
 {
@@ -16,11 +17,13 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
     {
         private readonly IPostRepo _repo;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly JwtService _jwtService;
 
-        public PostController(IPostRepo repo, IWebHostEnvironment webHostEnvironment)
+        public PostController(IPostRepo repo, IWebHostEnvironment webHostEnvironment, JwtService jwtService)
         {
             _repo = repo;
             _webHostEnvironment = webHostEnvironment;
+            _jwtService = jwtService;
         }
 
         [HttpGet]
@@ -55,9 +58,38 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(dtos);
         }
 
-        [HttpPost("like/post{postId}/user{userId}")]
-        public ActionResult LikePost(int postId, int userId)
+        [HttpPost("CreatePost")]
+        public ActionResult CreatePost(/*[FromForm]*/ WritePostDto dto)
         {
+
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                dto.UserId = _jwtService.GetUserId(jwt);
+            }
+            catch (Exception e) { return Unauthorized(); }
+            Post post = MapToPost(dto);
+            _repo.AddPost(post);
+            return Created("success", post);
+
+        }
+
+        [HttpPost("like/post{postId}")]
+        public ActionResult LikePost(int postId)//add verifi , remove userId param
+        {
+            int userId;
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                userId = _jwtService.GetUserId(jwt);
+
+            }
+
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
+
             try
             {
                 _repo.LikePost(postId, userId);
@@ -76,6 +108,17 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 Description = post.Description,
                 ImagePath = post.ImagePath,
                 likes = _repo.GetLikes(post.Id)
+            };
+        }
+
+        private Post MapToPost(WritePostDto dto)
+        {
+
+            return new Post()
+            {
+                UserId = dto.UserId,
+                ImagePath = dto.ImagePath,
+                Description = dto.Description,
             };
         }
     }
