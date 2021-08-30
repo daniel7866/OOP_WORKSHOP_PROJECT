@@ -38,6 +38,12 @@ namespace OOP_WORKSHOP_PROJECT.Helpers
 
             return (JwtSecurityToken)validatedToken;
         }
+        public int GetUserId(String jwtCookie)
+        {
+            var token = Verify(jwtCookie);
+            int UserId = int.Parse(token.Issuer);
+            return UserId;
+        }
     }
 
    
