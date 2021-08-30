@@ -1,66 +1,10 @@
 ﻿import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { login, logout } from "../actions";
-import { useState } from "react";
-import { getAddress } from "../Services";
+import { useFirstLogin, useLogin } from "../hooks/useLogin";
 
 const Login = () => {
-    const user = useSelector(state => state.user);
-    const dispatch = useDispatch();
+    useFirstLogin();//first try to login automatically if possible
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const [label, setLabel] = useState('');
-
-
-    /**
-     * This code will try to get the user from a token saved on cookie, if succeded - user can surf the site, else - needs to login with the form below
-     * */
-    const [flag, setFlag] = useState(true);
-    if (flag) {
-        var myHeaders = new Headers();
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            redirect: 'follow'
-        };
-
-        fetch(`${getAddress()}/api/user/getUser`, requestOptions)
-            .then(response => response.json())
-            .then(result => { console.log(result); dispatch(login(result)); })
-            .catch(error => console.log('error', error));
-        setFlag(false);
-    }
-
-    /**
-     * END OF CODE BLOCK
-     * */
-
-    const loginHandler = (e) => {
-        e.preventDefault();
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        var raw = JSON.stringify({
-            "Email": email,
-            "Password": password
-        });
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
-
-        fetch(`${getAddress()}/api/user/login`, requestOptions)
-            .then(response => response.json())
-            .then(result => { console.log(result); setLabel(result.message);dispatch(login(result)); })
-            .catch(error => null);
-        
-    }
+    const [email, setEmail, password, setPassword, label, loginHandler] = useLogin();
 
     return (
         <form className="login-form">
