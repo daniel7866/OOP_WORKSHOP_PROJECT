@@ -44,6 +44,9 @@ export class NavMenu extends Component {
                   <NavLink tag={Link} className="text-dark" to="/dashboard">Dashboard</NavLink>
                 </NavItem>
                 <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
+                </NavItem>
+                <NavItem>
                         <button className="btn btn-outline-dark"
                         onClick={() => {
                             var requestOptions = {

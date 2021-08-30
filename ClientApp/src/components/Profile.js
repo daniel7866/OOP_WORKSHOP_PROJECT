@@ -1,6 +1,9 @@
 ﻿import React from "react";
 import Post from "./Post";
+import { useProfile } from "../hooks/useProfile";
 import "../Styles/Profile.css";
+
+import { useEffect } from 'react';
 
 const ProfileListItem = (props) => {
     return (
@@ -13,31 +16,32 @@ const ProfileListItem = (props) => {
     )
 }
 
-const Profile = (props) => {
+const Profile = () => {
 
+    const [following, followers, posts, name, imagePath] = useProfile();
 
     return (
         <div className="profile-container">
             <div className="profile-container-top">
                 <div className="image-cropper small">
-                    <img className="profile-image" src={props.imagePath} />
+                    <img className="profile-image" src={imagePath} />
                 </div>
-                <h3>{props.name}</h3>
+                <h3>{name}</h3>
             </div>
             <div className="profile-people-container">
                 <div className="profile-follow-list">
-                    <h3>Following:</h3>
-                    {props.followers.map(f =>
+                    <h5>Following:</h5>
+                    {following.map(f =>
                         (<ProfileListItem key={f.id} id={f.id} name={f.name} imagePath={f.imagePath} />))}
                 </div>
                 <div className="profile-follow-list">
-                    <h3>Followers:</h3>
-                    {props.followers.map(f =>
+                    <h5>Followers:</h5>
+                    {followers.map(f =>
                         (<ProfileListItem key={f.id} id={f.id} name={f.name} imagePath={f.imagePath} />))}
                 </div>
             </div>
             <div className="profile-post-container">
-                {props.posts.map(p => (<Post key={p.id} id={p.id} userId={p.userId} description={p.description}
+                {posts.map(p => (<Post key={p.id} id={p.id} userId={p.userId} description={p.description}
                     imagePath={p.imagePath} />))}
             </div>
         </div>

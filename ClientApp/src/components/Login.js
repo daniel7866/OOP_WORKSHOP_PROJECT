@@ -10,11 +10,11 @@ const Login = () => {
         <form className="login-form">
             <h2>You need to log in:</h2>
             <div className="mb-3">
-                <label for="inputmail1" className="form-label">Email address</label>
+                <label htmlFor="inputmail1" className="form-label">Email address</label>
                 <input type="email" className="form-control" id="inputmail1" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="mb-3">
-                <label for="inputpassword1" className="form-label">Password</label>
+                <label htmlFor="inputpassword1" className="form-label">Password</label>
                 <input type="password" className="form-control" id="inputpassword1" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <div id="emailHelp" className="form-text">Don't have an account? Create one <a href="/register">here</a></div>

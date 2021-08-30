@@ -8,7 +8,7 @@ import { Dashboard } from './components/Dashboard';
 import Popup from "./components/Popup";
 import Login from "./components/Login";
 import Register from "./components/Register";
-
+import Profile from './components/Profile';
 import './custom.css'
 
 
@@ -29,6 +29,7 @@ return (
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/dashboard' component={Dashboard} />
         <Route path='/register' component={Register} />
+        <Route path='/profile' component={Profile} />
     </Layout>
 )
 };

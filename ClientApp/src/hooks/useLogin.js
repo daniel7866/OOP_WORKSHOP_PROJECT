@@ -22,7 +22,7 @@ export const useFirstLogin = () => {
 
         fetch(`${getAddress()}/api/user/getUser`, requestOptions)
             .then(response => response.json())
-            .then(result => { console.log(result); dispatch(login(result)); })
+            .then(result => { dispatch(login(result)); })
             .catch(error => console.log('error', error));
         setFlag(false);
     }
