@@ -17,7 +17,7 @@ const ProfileListItem = (props) => {
 
 const Profile = () => {
 
-    const [following, followers, posts, name, imagePath] = useProfile();
+    const [following, followers, posts, name, imagePath, isLoggedProfile] = useProfile();
 
     return (
         <div className="profile-container">
@@ -26,6 +26,7 @@ const Profile = () => {
                     <img className="profile-image" src={imagePath} />
                 </div>
                 <h3>{name}</h3>
+                {isLoggedProfile?null:<button className="btn btn-outline-info">Follow</button>}
             </div>
             <div className="profile-people-container">
                 <div className="profile-follow-list">
@@ -41,7 +42,7 @@ const Profile = () => {
             </div>
             <div className="profile-post-container">
                 {posts.map(p => (<Post key={p.id} id={p.id} userId={p.userId} description={p.description}
-                    imagePath={p.imagePath} />))}
+                    imagePath={p.imagePath} ownedByLoggedUser={isLoggedProfile} />))}
             </div>
         </div>
     )

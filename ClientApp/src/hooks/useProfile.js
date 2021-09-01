@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { getAddress } from "../Services";
+import { getAddress, takeLastUrlItem } from "../Services";
 import { useSelector, useDispatch } from "react-redux";
 
 
@@ -37,9 +37,11 @@ export const useProfile = () => {
         { id: 4, userId: 50, description: "This is a post", imagePath: "https://www.birdlife.org/sites/default/files/styles/full_1140x550/public/news/shutterstock_1451653292_1_1.jpg?itok=BWagqmnZ" }
     ];
 
+    const uid = parseInt(takeLastUrlItem(window.location.pathname));
+
     useEffect(() => {
         if (flag) {
-            fetch(`${getAddress()}/api/user/id/${user.uid}`)
+            fetch(`${getAddress()}/api/user/id/${uid}`)
                 .then(response => response.json())
                 .then(result => {
                     //setFollowing(result.following);
@@ -54,5 +56,7 @@ export const useProfile = () => {
         }
     }, [user.uid]);
 
-    return [following, followers, posts, name, imagePath];
+    const isLoggedUser = uid == user.uid; // this flag tells us if the profile component is the profile we are logged into or a different one
+
+    return [following, followers, posts, name, imagePath, isLoggedUser];
 }

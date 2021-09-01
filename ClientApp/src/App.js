@@ -19,7 +19,7 @@ const App = () => {
     const user = useSelector(state => state.user);//import redux global state
 
 return (
-    <Layout>
+    <Layout user={ user }>
         {/*Here is the login popup, if jwt is not null no login form will be shown*/}
         <Popup trigger={user.email == null && window.location.pathname + window.location.search!= "/register"}>
             <Login />

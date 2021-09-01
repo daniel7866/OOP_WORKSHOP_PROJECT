@@ -22,7 +22,7 @@ export class NavMenu extends Component {
     });
   }
 
-  render () {
+    render() {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
@@ -43,8 +43,8 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/dashboard">Dashboard</NavLink>
                 </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/profile">Profile</NavLink>
+                            <NavItem>
+                                <NavLink tag={Link} className="text-dark" to={`/profile/${this.props.user?this.props.user.uid:""}`}>Profile</NavLink>
                 </NavItem>
                 <NavItem>
                         <button className="btn btn-outline-dark"
