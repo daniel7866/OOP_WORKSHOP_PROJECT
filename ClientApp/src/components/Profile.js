@@ -2,8 +2,7 @@
 import Post from "./Post";
 import { useProfile } from "../hooks/useProfile";
 import "../Styles/Profile.css";
-
-import { useEffect } from 'react';
+import "../Styles/Images.css";
 
 const ProfileListItem = (props) => {
     return (
