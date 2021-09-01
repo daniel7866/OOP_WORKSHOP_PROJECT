@@ -4,8 +4,6 @@ import { useProfile } from "../hooks/useProfile";
 import "../Styles/Profile.css";
 import "../Styles/Images.css";
 
-import { useEffect } from 'react';
-
 const ProfileListItem = (props) => {
     return (
         <div className="profile-list-item">
