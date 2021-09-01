@@ -35,7 +35,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
                         select row).FirstOrDefault();
 
             if (follow is not null)
-                return false;
+                throw new Exception("you are already following that user");
 
             _context.Followers.Add(new Followers { FollowingId = following, FollowedId = followed });
             return _context.SaveChanges() > 0;
