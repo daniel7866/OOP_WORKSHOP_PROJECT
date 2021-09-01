@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using OOP_WORKSHOP_PROJECT.Data;
 using OOP_WORKSHOP_PROJECT.Dtos;
 using OOP_WORKSHOP_PROJECT.Helpers;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace OOP_WORKSHOP_PROJECT.Controllers
 {
@@ -29,6 +31,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         }
 
         [HttpGet]
+      /*  [Authorize]*/
         public ActionResult<IEnumerable<User>> GetAllUsers()
         {
             return Ok(_repo.GetAllUsers());
@@ -93,7 +96,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             if (dto.file is null && dto.ImagePath is null)//if there is no profile picture
                 try {
                     result = _repo.AddUser(user);
-                }catch(Exception e)
+                } catch (Exception e)
                 {
                     return BadRequest(e.InnerException.Message.ToString());
                 }
@@ -122,7 +125,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         }
 
         [HttpPost("login")]
-        public  ActionResult<User> Login(LoginDto dto)
+        public ActionResult<User> Login(LoginDto dto)
         {
             var user = _repo.GetUserByEmail(dto.Email);
             if (user == null) return BadRequest(new { message = "Invalid Credentials" });
@@ -182,7 +185,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             }
 
             if (_repo.AddMessage(message))
-                return Ok();
+                return Ok("Message sent successfully");
             else
                 return BadRequest();
         }
@@ -200,6 +203,31 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return Unauthorized();
             }
             return Ok(_repo.GetMessages(userId));
+        }
+
+        [HttpPost("follow/{followedId}")]
+        public ActionResult Follow(int followedId)
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                int followingId = _jwtService.GetUserId(jwt);
+
+                return Ok(_repo.FollowUser(followingId,followedId));
+            }
+
+            catch (Exception e)
+            {
+                return Unauthorized(e.Message);
+            }
+
+        }
+
+        [HttpGet("getFollowers/id/{userId}")]
+        public ActionResult GetAllFollowers(int userId)
+        {
+            var followers = _repo.GetFollowers(userId);
+            return Ok(followers.ToList());
         }
 
 

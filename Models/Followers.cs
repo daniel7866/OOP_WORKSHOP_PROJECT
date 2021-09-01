@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace OOP_WORKSHOP_PROJECT.Models
 {
@@ -14,6 +16,8 @@ namespace OOP_WORKSHOP_PROJECT.Models
      * */
     public class Followers
     {
+        [Key]
+        public int Id { get; set; }
         public int FollowingId { get; set; }
         public int FollowedId { get; set; }
     }

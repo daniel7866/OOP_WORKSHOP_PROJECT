@@ -52,6 +52,10 @@ namespace OOP_WORKSHOP_PROJECT
             services.AddScoped<IUserRepo,SqlUserRepo>();
             services.AddScoped<IPostRepo, SqlPostRepo>();
             services.AddScoped<JwtService>();
+
+            services.AddOptions();
+            services.AddAuthentication();
+            /*services.AddMvcCore().AddJsonFormatters(options => options.ContractResolver = new CamelCasePropertyNamesContractResolver());*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,6 +79,8 @@ namespace OOP_WORKSHOP_PROJECT
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

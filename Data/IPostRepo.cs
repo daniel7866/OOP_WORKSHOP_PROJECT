@@ -21,6 +21,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         bool AddPost(Post post);
 
+        public bool RemovePost(int postId);
+
         //get all users' ids that likes this postId
         IEnumerable<int> GetLikes(int postId);
 
