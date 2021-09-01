@@ -22,6 +22,16 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return _context.SaveChanges() > 0;
         }
 
+        public bool RemovePost(int postId)
+        {
+            var post = GetPostById(postId);
+            if (post is null)
+                throw new Exception("Post does not exist");
+            _context.Remove(post);
+
+            return _context.SaveChanges() > 0;
+        }
+
         public IEnumerable<Post> GetAllPosts()
         {
             return _context.Posts.ToList();

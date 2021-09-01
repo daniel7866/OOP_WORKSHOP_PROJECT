@@ -59,7 +59,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         }
 
         [HttpPost("CreatePost")]
-        public ActionResult CreatePost(/*[FromForm]*/ WritePostDto dto)
+        public ActionResult CreatePost(WritePostDto dto)
         {
 
             try
@@ -74,8 +74,34 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
         }
 
-        [HttpPost("like/post{postId}")]
-        public ActionResult LikePost(int postId)//add verifi , remove userId param
+        [HttpDelete("DeletePost/{postId}")]
+        public ActionResult DeletePost(int postId)
+        {
+            int userId;
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                userId = _jwtService.GetUserId(jwt);
+
+            }
+
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                _repo.RemovePost(postId);
+            }
+            catch (Exception err) { return NotFound("Post is not found"); }
+
+            return Ok();
+
+        }
+        
+        [HttpPost("like/post/{postId}")]
+        public ActionResult LikePost(int postId)
         {
             int userId;
             try
@@ -94,7 +120,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             {
                 _repo.LikePost(postId, userId);
             }
-            catch (Exception err) { return NotFound("Post is not found"); }
+            catch (Exception err) { return BadRequest(err.Message); }
 
             return Ok();
         }

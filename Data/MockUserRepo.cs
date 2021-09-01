@@ -57,6 +57,11 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return _users;
         }
 
+        public bool FollowUser(int following, int followed) //placeholder implementation, DO NOT USE
+        {
+            return true; 
+        }
+
         public IEnumerable<int> GetFollowers(int id)
         {
             List<int> followers = (from row in _followers
