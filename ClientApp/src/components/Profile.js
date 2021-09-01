@@ -2,6 +2,7 @@
 import Post from "./Post";
 import { useProfile } from "../hooks/useProfile";
 import "../Styles/Profile.css";
+import "../Styles/Images.css";
 
 import { useEffect } from 'react';
 
