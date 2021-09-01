@@ -34,6 +34,20 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return true;
         }
 
+        public bool RemovePost(int postId)
+        {
+            var post = GetPostById(postId);
+            if (post is null)
+                throw new Exception("Post does not exist");
+
+            _posts.Remove(post);
+
+            return true;
+
+
+        }
+        
+
         public IEnumerable<Post> GetAllPosts()
         {
             return _posts;

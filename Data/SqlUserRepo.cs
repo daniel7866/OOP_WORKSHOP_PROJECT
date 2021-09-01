@@ -22,6 +22,26 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return _context.SaveChanges() > 0;
         }
 
+        public bool FollowUser(int following, int followed)
+        {
+            var user = (from row in _context.Users
+                        where row.Id == followed
+                        select row).FirstOrDefault();
+            if (user is null)
+                throw new Exception("User does not exist!");
+
+            var follow = (from row in _context.Followers
+                        where row.FollowingId == following && row.FollowedId == followed
+                        select row).FirstOrDefault();
+
+            if (follow is not null)
+                throw new Exception("you are already following that user");
+
+            _context.Followers.Add(new Followers { FollowingId = following, FollowedId = followed });
+            return _context.SaveChanges() > 0;
+        }
+
+
         public IEnumerable<User> GetAllUsers()
         {
             return _context.Users.ToList();

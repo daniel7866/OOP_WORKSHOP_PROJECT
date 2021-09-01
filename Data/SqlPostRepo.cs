@@ -22,6 +22,16 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return _context.SaveChanges() > 0;
         }
 
+        public bool RemovePost(int postId)
+        {
+            var post = GetPostById(postId);
+            if (post is null)
+                throw new Exception("Post does not exist");
+            _context.Remove(post);
+
+            return _context.SaveChanges() > 0;
+        }
+
         public IEnumerable<Post> GetAllPosts()
         {
             return _context.Posts.ToList();
@@ -62,8 +72,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
             var like = (from row in _context.Likes
                         where row.PostId == postId && row.UserId == userId
                         select row).FirstOrDefault();
-            if (like is not null)
-                return false;
+            if (like != null)
+                throw new Exception("you already like this post");
 
             _context.Likes.Add(new Likes { PostId = postId, UserId = userId });
             return _context.SaveChanges() > 0;

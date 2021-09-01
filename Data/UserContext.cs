@@ -16,7 +16,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Followers>().HasNoKey();
+            /*modelBuilder.Entity<Followers>()*//*.HasNoKey();*/
             modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
             modelBuilder.Entity<Message>().Property(u => u.DateSent).HasColumnType("datetime2").HasPrecision(0);
         }

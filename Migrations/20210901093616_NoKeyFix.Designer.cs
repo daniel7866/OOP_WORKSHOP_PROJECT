@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OOP_WORKSHOP_PROJECT.Data;
 
 namespace OOP_WORKSHOP_PROJECT.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20210901093616_NoKeyFix")]
+    partial class NoKeyFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,18 +23,11 @@ namespace OOP_WORKSHOP_PROJECT.Migrations
 
             modelBuilder.Entity("OOP_WORKSHOP_PROJECT.Models.Followers", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<int>("FollowedId")
                         .HasColumnType("int");
 
                     b.Property<int>("FollowingId")
                         .HasColumnType("int");
-
-                    b.HasKey("Id");
 
                     b.ToTable("Followers");
                 });
