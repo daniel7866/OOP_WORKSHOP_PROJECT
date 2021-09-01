@@ -16,7 +16,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Likes>().HasNoKey();
+/*            modelBuilder.Entity<Likes>().HasNoKey();*/
         }
 
         public DbSet<Post> Posts { get; set; }

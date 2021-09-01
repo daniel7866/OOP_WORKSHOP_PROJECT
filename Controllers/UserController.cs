@@ -206,7 +206,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         }
 
         [HttpPost("follow/{followedId}")]
-        public IActionResult Follow(int followedId)
+        public ActionResult Follow(int followedId)
         {
             try
             {
@@ -221,6 +221,13 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return Unauthorized(e.Message);
             }
 
+        }
+
+        [HttpGet("getFollowers/id/{userId}")]
+        public ActionResult GetAllFollowers(int userId)
+        {
+            var followers = _repo.GetFollowers(userId);
+            return Ok(followers.ToList());
         }
 
 
