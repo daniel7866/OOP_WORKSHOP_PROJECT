@@ -10,7 +10,7 @@ const ProfileListItem = (props) => {
             <div className="image-cropper tiny">
                 <img className="profile-image" src={props.imagePath} />
             </div>
-            <a><h5>{props.name}</h5></a>
+            <a><h6>{props.name}</h6></a>
         </div>
     )
 }
@@ -30,12 +30,12 @@ const Profile = () => {
             </div>
             <div className="profile-people-container">
                 <div className="profile-follow-list">
-                    <h5>Following:</h5>
+                    <h6>Following:</h6>
                     {following.map(f =>
                         (<ProfileListItem key={f.id} id={f.id} name={f.name} imagePath={f.imagePath} />))}
                 </div>
                 <div className="profile-follow-list">
-                    <h5>Followers:</h5>
+                    <h6>Followers:</h6>
                     {followers.map(f =>
                         (<ProfileListItem key={f.id} id={f.id} name={f.name} imagePath={f.imagePath} />))}
                 </div>
