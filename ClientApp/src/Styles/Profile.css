@@ -1,10 +1,11 @@
 ﻿.profile-container {
-    position: fixed;
+    /*position: fixed;
+    position:absolute;
     top: 100px;
-    bottom: 0;
+    bottom: 0;*/
     display: grid;
     grid-template-columns: 1fr 2fr 2fr;
-    grid-template-rows: 1fr 2fr 2fr;
+    grid-template-rows: auto 2fr 2fr;
     grid-template-areas:
         "profile-container-top profile-container-top profile-container-top"
         "profile-people-container profile-post-container profile-post-container"
@@ -15,15 +16,18 @@
 .profile-container-top {
     grid-area: profile-container-top;
     justify-self: center;
+    height: min-content;
 }
 
 .profile-people-container {
-    max-height: 100%;
-    background-color: pink;
+    border: solid grey 1px;
+    border-radius: 1rem;
+    height: min-content;
     grid-area: profile-people-container;
     display: flex;
     overflow-y: auto;
     overflow-x: hidden;
+    padding: 0.2rem;
     /*padding-bottom: 100%;*/
     /*padding-top: 2rem;*/
 }
@@ -31,8 +35,11 @@
 .profile-post-container {
     grid-area: profile-post-container;
     /*min-height: 100%;*/
-    padding-top: 2rem;
-    padding-bottom: 5rem;
+    /*padding-top: 2rem;
+    padding-bottom: 5rem;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     overflow-y: auto;
 }
 
@@ -43,5 +50,9 @@
 @media only screen and (max-width: 1000px) {
     .profile-people-container {
         flex-direction: column;
+    }
+
+    .profile-container{
+        grid-template-columns: 1.7fr 2fr 2fr;
     }
 }
