@@ -21,5 +21,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<Likes> Likes { get; set; }
+
+        public DbSet<Comments> Comments { get; set; }
     }
 }

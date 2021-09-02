@@ -21,5 +21,7 @@ namespace OOP_WORKSHOP_PROJECT.Models
         public string ImagePath { get; set; }
 
         public string Description { get; set; }
+
+        public DateTime DateSent { get; set; }
     }
 }

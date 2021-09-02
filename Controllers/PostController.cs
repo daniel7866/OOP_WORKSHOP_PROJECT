@@ -125,6 +125,76 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok();
         }
 
+        [HttpDelete("unlike/post/{postId}")]
+        public ActionResult UnlikePost(int postId)
+        {
+            int userId;
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                userId = _jwtService.GetUserId(jwt);
+
+            }
+
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                _repo.UnLikePost(postId, userId);
+            }
+            catch (Exception err) { return BadRequest(err.Message); }
+
+            return Ok();
+        }
+
+        [HttpPost("comment/post/{postId}")]
+        public ActionResult CreateComment(Comments comment, int postId)
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                comment.UserId = _jwtService.GetUserId(jwt);
+
+            }
+
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
+
+            comment.PostId = postId;
+            _repo.Comment(postId, comment);
+
+            return Created("Comment posted succesfully",comment);
+        }
+
+        [HttpDelete("removeComment/post/{commentId}")]
+        public ActionResult RemoveComment(int commentId)
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                _repo.RemoveComment(commentId,_jwtService.GetUserId(jwt));
+            }
+
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
+
+            return Ok("Comment Removed");
+        }
+
+
+        [HttpGet("comments")]
+        public ActionResult GetAllComments()
+        {
+            return Ok(_repo.GetAllComments());
+        }
+
         private ReadPostDto MapToReadPostDto(Post post)
         {
             return new ReadPostDto()

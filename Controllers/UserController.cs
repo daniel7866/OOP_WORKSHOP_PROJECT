@@ -177,7 +177,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             try
             {
                 var jwt = Request.Cookies["jwt"];
-                var token = _jwtService.Verify(jwt);
+                message.SenderId = _jwtService.GetUserId(jwt);
             }
             catch (Exception e)
             {
@@ -185,7 +185,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             }
 
             if (_repo.AddMessage(message))
-                return Ok("Message sent successfully");
+                return Created("Message sent successfully",message);
             else
                 return BadRequest();
         }

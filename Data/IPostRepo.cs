@@ -29,5 +29,11 @@ namespace OOP_WORKSHOP_PROJECT.Data
         bool LikePost(int postId, int userId);
 
         bool UnLikePost(int postId, int userId);
+
+        public bool Comment(int postId, Comments comment);
+
+        public IEnumerable<Comments> GetAllComments();
+
+        public bool RemoveComment(int commentId, int userId);
     }
 }

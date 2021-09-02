@@ -117,5 +117,25 @@ namespace OOP_WORKSHOP_PROJECT.Data
             _likes.Remove(like);
             return true;
         }
+
+        public bool Comment(int postId, Comments comment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Comments> GetAllComments()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveComment()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveComment(int commentId, int userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

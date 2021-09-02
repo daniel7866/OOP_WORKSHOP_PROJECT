@@ -97,5 +97,39 @@ namespace OOP_WORKSHOP_PROJECT.Data
             _context.Remove(like);
             return _context.SaveChanges() > 0;
         }
+
+        public bool Comment (int postId, Comments comment)
+        {
+            var post = (from row in _context.Posts
+                        where row.Id == postId
+                        select row).FirstOrDefault();
+            if (post is null)
+                throw new Exception("Post does not exist!");
+
+
+            _context.Comments.Add(new Comments { UserId = comment.UserId, PostId = comment.PostId, Body = comment.Body });
+            return _context.SaveChanges() > 0;
+        }
+
+        public bool RemoveComment(int commentId, int userId)
+        {
+            var commentToRemove = (from row in _context.Comments
+                        where row.Id == commentId
+                        select row).FirstOrDefault();
+            if (commentToRemove is null)
+                throw new Exception("Comment does not exist!");
+            if (commentToRemove.UserId != userId)
+                throw new Exception("Not your comment!");
+
+            _context.Comments.Remove(commentToRemove);
+            return _context.SaveChanges() > 0;
+        }
+
+        public IEnumerable<Comments> GetAllComments()
+        {
+            return _context.Comments.ToList();
+        }
+
+
     }
 }
