@@ -248,7 +248,9 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         private User MapToUser(WriteUserDto dto)
         {
             if (!IsValidEmail(dto.Email))
-                throw new Exception("Invalid email format");
+                throw new Exception("Invalid email");
+            if (!IsValidPassword(dto.Password))
+                throw new Exception("Password must be at least 4 characters long and include one letter and one number");
 
             return new User()
             {
@@ -271,6 +273,17 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             {
                 return false;
             }
+        }
+
+        private bool IsValidPassword(String password)
+        {
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasChar = new Regex(@"[a-zA-Z]+");
+            var hasMinimum4Chars = new Regex(@".{4,}");
+
+            var isValidated = hasNumber.IsMatch(password) && hasChar.IsMatch(password) && hasMinimum4Chars.IsMatch(password);
+
+            return isValidated;
         }
     }
 }
