@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 
 namespace OOP_WORKSHOP_PROJECT.Controllers
@@ -246,6 +247,9 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
         private User MapToUser(WriteUserDto dto)
         {
+            if (!IsValidEmail(dto.Email))
+                throw new Exception("Invalid email format");
+
             return new User()
             {
                 Email = dto.Email,
@@ -253,6 +257,20 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 Name = dto.Name,
                 ImagePath = dto.ImagePath
             };
+        }
+
+        private bool IsValidEmail(String email)
+        {
+            try
+            {
+                return Regex.IsMatch(email,
+                    @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return false;
+            }
         }
     }
 }
