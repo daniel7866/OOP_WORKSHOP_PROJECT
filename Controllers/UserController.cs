@@ -58,6 +58,13 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(dto);
         }
 
+        [HttpGet("search/{searchInput}")]
+        public ActionResult<User> SearchUser(string searchInput)
+        {
+            var result = _repo.SearchUser(searchInput);
+            return Ok(result);
+        }
+
         [HttpPost("add")]
         public async Task<ActionResult<User>> AddUserAsync(/*[FromForm]*/ WriteUserDto dto)
         {

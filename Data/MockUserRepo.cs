@@ -98,5 +98,10 @@ namespace OOP_WORKSHOP_PROJECT.Data
                     return usr;
             return null;
         }
+
+        public IEnumerable<User> SearchUser(string searchInput)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -28,6 +28,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
         //get all users' ids that follow this user
         IEnumerable<int> GetFollowers(int userId);
 
+        IEnumerable<User> SearchUser(String searchInput);
+
         bool AddMessage(Message message);
 
         IEnumerable<Message> GetMessages(int userId);

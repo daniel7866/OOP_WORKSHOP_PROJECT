@@ -63,6 +63,17 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return following;
         }
 
+        public IEnumerable<User> SearchUser(string searchInput)
+        {
+            var searchResults = (from row in _context.Users
+                             where row.Name.Contains(searchInput)
+                             select row).ToList();
+
+            searchResults.Insert(0, GetUserByEmail(searchInput));
+
+            return searchResults;
+        }
+
         public IEnumerable<Message> GetMessages(int userId)
         {
             var messages = (from row in _context.Messages
