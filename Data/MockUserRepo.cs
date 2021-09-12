@@ -103,5 +103,10 @@ namespace OOP_WORKSHOP_PROJECT.Data
         {
             throw new NotImplementedException();
         }
+
+        public bool UnfollowUser(int follwingId, int followedId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

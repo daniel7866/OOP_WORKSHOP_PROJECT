@@ -137,5 +137,10 @@ namespace OOP_WORKSHOP_PROJECT.Data
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Post> Feed(int userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

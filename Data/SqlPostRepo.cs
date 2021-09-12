@@ -61,6 +61,11 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return posts;
         }
 
+        public IEnumerable<Post> Feed(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool LikePost(int postId, int userId)
         {
             var post = (from row in _context.Posts

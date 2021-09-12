@@ -231,11 +231,36 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
         }
 
+        [HttpDelete("unfollow/{followedId}")]
+        public ActionResult Unfollow(int followedId)
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                int followingId = _jwtService.GetUserId(jwt);
+
+                return Ok(_repo.UnfollowUser(followingId, followedId));
+            }
+
+            catch (Exception e)
+            {
+                return Unauthorized(e.Message);
+            }
+
+        }
+
         [HttpGet("getFollowers/id/{userId}")]
-        public ActionResult GetAllFollowers(int userId)
+        public ActionResult GetFollowers(int userId)
         {
             var followers = _repo.GetFollowers(userId);
-            return Ok(followers.ToList());
+            return Ok(followers);
+        }
+
+        [HttpGet("getFollowing/id/{userId}")]
+        public ActionResult GetFollowing(int userId)
+        {
+            var following = _repo.GetFollowing(userId);
+            return Ok(following);
         }
 
 

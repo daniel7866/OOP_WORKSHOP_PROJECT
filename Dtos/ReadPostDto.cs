@@ -15,6 +15,8 @@ namespace OOP_WORKSHOP_PROJECT.Dtos
 
         public string Description { get; set; }
 
+        public DateTime DatePosted { get; set; }
+
         public IEnumerable<int> likes { get; set; }
     }
 }

@@ -61,6 +61,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         [HttpPost("CreatePost")]
         public ActionResult CreatePost(WritePostDto dto)
         {
+            dto.DatePosted = DateTime.Now;
 
             try
             {
@@ -203,6 +204,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 UserId = post.UserId,
                 Description = post.Description,
                 ImagePath = post.ImagePath,
+                DatePosted = post.DatePosted,
                 likes = _repo.GetLikes(post.Id)
             };
         }
@@ -215,6 +217,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 UserId = dto.UserId,
                 ImagePath = dto.ImagePath,
                 Description = dto.Description,
+                DatePosted = dto.DatePosted
             };
         }
     }

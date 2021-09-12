@@ -16,7 +16,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-/*            modelBuilder.Entity<Likes>().HasNoKey();*/
+            /*            modelBuilder.Entity<Likes>().HasNoKey();*/
+            modelBuilder.Entity<Post>().Property(u => u.DatePosted).HasColumnType("datetime2").HasPrecision(0);
         }
 
         public DbSet<Post> Posts { get; set; }

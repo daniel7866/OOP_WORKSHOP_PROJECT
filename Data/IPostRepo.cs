@@ -13,11 +13,13 @@ namespace OOP_WORKSHOP_PROJECT.Data
             throw new NotImplementedException();
         }
 
-        IEnumerable<Post> GetAllPosts();
-
         Post GetPostById(int postId);
 
+        IEnumerable<Post> GetAllPosts();
+
         IEnumerable<Post> GetUserPosts(int userId);
+
+        IEnumerable<Post> Feed(int userId);
 
         bool AddPost(Post post);
 

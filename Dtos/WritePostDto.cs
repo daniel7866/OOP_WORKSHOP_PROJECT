@@ -11,5 +11,6 @@ namespace OOP_WORKSHOP_PROJECT.Dtos
         public int UserId { get; set; }
         public string ImagePath { get; set; }
         public string Description { get; set; }
+        public DateTime DatePosted { get; set; }
     }
 }

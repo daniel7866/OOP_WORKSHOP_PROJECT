@@ -23,6 +23,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         bool FollowUser(int followingId, int followedId);
 
+        bool UnfollowUser(int follwingId, int followedId);
+
         //get all users' ids that this user is following
         IEnumerable<int> GetFollowing(int userId);
         //get all users' ids that follow this user

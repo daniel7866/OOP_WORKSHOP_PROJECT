@@ -15,6 +15,11 @@ namespace OOP_WORKSHOP_PROJECT.Data
             _context = context;
         }
 
+        public IEnumerable<User> GetAllUsers()
+        {
+            return _context.Users.ToList();
+        }
+
         public bool AddUser(User user)
         {
             _context.Users.Add(user);
@@ -41,11 +46,24 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return _context.SaveChanges() > 0;
         }
 
-
-        public IEnumerable<User> GetAllUsers()
+        public bool UnfollowUser(int following, int followed)
         {
-            return _context.Users.ToList();
+            var user = (from row in _context.Users
+                        where row.Id == followed
+                        select row).FirstOrDefault();
+            if (user is null)
+                throw new Exception("User does not exist!");
+
+            var follow = (from row in _context.Followers
+                          where row.FollowingId == following && row.FollowedId == followed
+                          select row).FirstOrDefault();
+            if (follow is null)
+                throw new Exception("you aren't following that user!");
+            _context.Followers.Remove(follow);
+            return _context.SaveChanges() > 0;
+
         }
+
 
         public IEnumerable<int> GetFollowers(int userId)
         {
@@ -103,5 +121,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
             _context.Messages.Add(message);
             return _context.SaveChanges() > 0;
         }
+
+
     }
 }

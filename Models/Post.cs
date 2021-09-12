@@ -22,6 +22,6 @@ namespace OOP_WORKSHOP_PROJECT.Models
 
         public string Description { get; set; }
 
-        public DateTime DateSent { get; set; }
+        public DateTime DatePosted { get; set; }
     }
 }
