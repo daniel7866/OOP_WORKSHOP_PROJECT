@@ -41,6 +41,7 @@
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
+    padding: 0.2rem;
 }
 
 .profile-list-item {

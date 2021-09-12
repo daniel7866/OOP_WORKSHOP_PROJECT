@@ -19,3 +19,19 @@ export const takeLastUrlItem = (str) => {
     }
     return str;
 }
+
+
+export const getUsers = (uidList) => {
+    let promises = [];
+    for (let i = 0;i < uidList.length; i++) {
+        promises.push(getUser(uidList[i]));
+    }
+
+    return Promise.all(promises);
+}
+
+export const getUser = (uid) =>
+    fetch(`${getAddress()}/api/user/id/${uid}`)
+        .then(response => response.json())
+        .then(result => result)
+        .catch(error => console.log('error', error));

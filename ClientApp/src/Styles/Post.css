@@ -11,6 +11,18 @@
     flex-direction: column;
     justify-items: center;
     overflow: hidden;
+
+    min-width: 80%;
+}
+
+.add-post {
+    background-color: rgba(229, 229, 229, 0.8);
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    box-shadow: #282c34 0 0 4px 0;
+    padding: 10px;
+    width: 50%;
 }
 
 .post-bottom-container{

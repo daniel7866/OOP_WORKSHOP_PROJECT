@@ -1,8 +1,14 @@
-﻿import React from "react";
+﻿import React, { useState,useEffect } from "react";
 import Post from "./Post";
 import { useProfile } from "../hooks/useProfile";
+import AddPost from "./AddPost";
+import { takeLastUrlItem, getAddress } from "../Services";
 import "../Styles/Profile.css";
 import "../Styles/Images.css";
+
+import { Link } from 'react-router-dom';
+
+import { useSelector, useDispatch } from "react-redux";
 
 const ProfileListItem = (props) => {
     return (
@@ -10,14 +16,75 @@ const ProfileListItem = (props) => {
             <div className="image-cropper tiny">
                 <img className="profile-image" src={props.imagePath} />
             </div>
-            <a><h6>{props.name}</h6></a>
+            <Link to={`/profile/${props.id}`}>{props.name}</Link>
         </div>
     )
 }
 
-const Profile = () => {
+const followUser = (id) => {
+    var requestOptions = {
+        method: 'POST',
+        redirect: 'follow'
+    };
 
-    const [following, followers, posts, name, imagePath, isLoggedProfile] = useProfile();
+    fetch(`${getAddress()}/api/user/follow/${id}`, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+}
+
+const unfollowUser = (id) => {
+    var requestOptions = {
+        method: 'DELETE',
+        redirect: 'follow'
+    };
+
+    fetch(`${getAddress()}/api/user/unfollow/${id}`, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+}
+
+const ProfileFollowButton = (props) => {
+    const uid = parseInt(takeLastUrlItem(window.location.pathname)); // user id of current profile showing based on url
+    const user = useSelector(state => state.user);
+    const [following, setFollowing] = useState([]);
+    const [flag, setFlag] = useState(false);
+
+    useEffect(() => {
+        if (user.uid !== null) {
+            fetch(`${getAddress()}/api/user/id/${user.uid}`)
+                .then(response => response.json())
+                .then(result => { setFollowing(result.following); setFlag(true); })
+                .catch(error => console.log('error', error));
+        }
+    }, [user, props.refresh]);
+
+    if (flag) { // flag is set when all the asynchronus tasks finish
+        if (following.indexOf(uid) < 0) {
+            return (
+                <button className="btn btn-outline-info" onClick={() => { followUser(uid); props.setRefresh(value => !value); }}> Follow</button >
+            );
+        }
+        else {
+            return (
+                <button className="btn btn-outline-info" onClick={() => { unfollowUser(uid); props.setRefresh(value => !value); }}>Unfollow</button>
+            );
+        }
+    }
+
+    return null;
+}
+
+const Profile = () => {
+    const [following, followers, posts, name, imagePath, isLoggedProfile, fetchAll] = useProfile();
+
+    const [refresh, setRefresh] = useState(false);
+
+    useEffect(() => {
+        fetchAll();
+    }
+        ,[refresh]);
 
     return (
         <div className="profile-container">
@@ -26,7 +93,7 @@ const Profile = () => {
                     <img className="profile-image" src={imagePath} />
                 </div>
                 <h3>{name}</h3>
-                {isLoggedProfile?null:<button className="btn btn-outline-info">Follow</button>}
+                {isLoggedProfile ? null : <ProfileFollowButton setRefresh={setRefresh} />}
             </div>
             <div className="profile-people-container">
                 <div className="profile-follow-list">
@@ -41,8 +108,11 @@ const Profile = () => {
                 </div>
             </div>
             <div className="profile-post-container">
+                <>
+                    {isLoggedProfile ? <AddPost refresh={refresh} setRefresh={setRefresh} />: null}
+                </>
                 {posts.map(p => (<Post key={p.id} id={p.id} userId={p.userId} description={p.description}
-                    imagePath={p.imagePath} ownedByLoggedUser={isLoggedProfile} />))}
+                    imagePath={p.imagePath} ownedByLoggedUser={isLoggedProfile} setRefresh={setRefresh} />))}
             </div>
         </div>
     )
