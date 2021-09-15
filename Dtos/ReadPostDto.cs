@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OOP_WORKSHOP_PROJECT.Models;
 
 namespace OOP_WORKSHOP_PROJECT.Dtos
 {
@@ -9,7 +10,7 @@ namespace OOP_WORKSHOP_PROJECT.Dtos
     {
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        public User UserData { get; set; }
 
         public string ImagePath { get; set; }
 
