@@ -31,8 +31,6 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             _jwtService = jwtService;
         }
 
-        [HttpGet]
-      /*  [Authorize]*/
         public ActionResult<IEnumerable<User>> GetAllUsers()
         {
             return Ok(_repo.GetAllUsers());
@@ -65,67 +63,18 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(result);
         }
 
-        [HttpPost("add")]
-        public async Task<ActionResult<User>> AddUserAsync(/*[FromForm]*/ WriteUserDto dto)
-        {
-            User user = MapToUser(dto);
-            bool result;
-            WriteUserDto cpy = dto;
-            if (dto.file is null && dto.ImagePath is null)//if there is no profile picture
-                result = _repo.AddUser(user);
-            else // there is a profile picture to save
-            {
-                try
-                {
-                    //string path = _webHostEnvironment.WebRootPath + "\\uploads\\";
-
-                    //user.ImagePath = Services.SaveImage(dto.file, path);
-                    //string dummyfile = @"C:\Users\danie\Downloads\h.jpg";
-                    user.ImagePath = await Services.SaveImageAWSAsync(dto.ImagePath);
-                    result = _repo.AddUser(user);
-                }
-                catch (Exception e) {
-                    result = false;
-                    Console.WriteLine(e);
-                    return BadRequest(e);
-                }
-            }
-            if (result)
-                return Ok(user);
-            else
-                return BadRequest();
-        }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> RegisterUser(/*[FromForm]*/ WriteUserDto dto)
+        public ActionResult<User> RegisterUser(/*[FromForm]*/ WriteUserDto dto)
         {
-            User user = MapToUser(dto);
-            bool result;
-            if (dto.file is null && dto.ImagePath is null)//if there is no profile picture
-                try {
-                    result = _repo.AddUser(user);
-                } catch (Exception e)
-                {
-                    return BadRequest(e.InnerException.Message.ToString());
-                }
-            else // there is a profile picture to save
-            {
-                try
-                {
-                    //string path = _webHostEnvironment.WebRootPath + "\\uploads\\";
+            if (!ValidateEmail(dto.Email))
+                return BadRequest("Invalid email");
+            if (!ValidatePassword(dto.Password))
+                return BadRequest("Password must be at least 4 characters long and include one letter and one number");
 
-                    //user.ImagePath = Services.SaveImage(dto.file, path);
-                    //string dummyfile = @"C:\Users\danie\Downloads\h.jpg";
-                    user.ImagePath = await Services.SaveImageAWSAsync(dto.ImagePath);
-                    result = _repo.AddUser(user);
-                }
-                catch (Exception e)
-                {
-                    result = false;
-                    Console.WriteLine(e);
-                    return BadRequest(e);
-                }
-            }
+            User user = MapToUser(dto);
+            bool result = _repo.AddUser(user);
+
             if (result)
                 return Created("success", user);
             else
@@ -264,6 +213,8 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         }
 
 
+
+
         private ReadUserDto MapToReadUserDto(User user)
         {
             return new ReadUserDto()
@@ -279,11 +230,6 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
         private User MapToUser(WriteUserDto dto)
         {
-            if (!IsValidEmail(dto.Email))
-                throw new Exception("Invalid email");
-            if (!IsValidPassword(dto.Password))
-                throw new Exception("Password must be at least 4 characters long and include one letter and one number");
-
             return new User()
             {
                 Email = dto.Email,
@@ -293,8 +239,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             };
         }
 
-        private bool IsValidEmail(String email)
-        {
+        private bool ValidateEmail(String email) { 
             try
             {
                 return Regex.IsMatch(email,
@@ -307,7 +252,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             }
         }
 
-        private bool IsValidPassword(String password)
+        private bool ValidatePassword(String password)
         {
             var hasNumber = new Regex(@"[0-9]+");
             var hasChar = new Regex(@"[a-zA-Z]+");

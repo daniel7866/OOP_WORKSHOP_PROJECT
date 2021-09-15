@@ -18,12 +18,14 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         private readonly IPostRepo _repo;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly JwtService _jwtService;
+        private readonly IUserRepo _userRepo;
 
-        public PostController(IPostRepo repo, IWebHostEnvironment webHostEnvironment, JwtService jwtService)
+        public PostController(IPostRepo repo, IWebHostEnvironment webHostEnvironment, JwtService jwtService, IUserRepo userRepo)
         {
             _repo = repo;
             _webHostEnvironment = webHostEnvironment;
             _jwtService = jwtService;
+            _userRepo = userRepo;
         }
 
         [HttpGet]
@@ -201,7 +203,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return new ReadPostDto()
             {
                 Id = post.Id,
-                UserId = post.UserId,
+                UserData = _userRepo.GetUserById(post.UserId),
                 Description = post.Description,
                 ImagePath = post.ImagePath,
                 DatePosted = post.DatePosted,

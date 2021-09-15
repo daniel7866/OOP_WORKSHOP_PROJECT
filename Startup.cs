@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OOP_WORKSHOP_PROJECT.Controllers;
 using OOP_WORKSHOP_PROJECT.Data;
 using OOP_WORKSHOP_PROJECT.Helpers;
 
@@ -52,6 +53,7 @@ namespace OOP_WORKSHOP_PROJECT
             services.AddScoped<IUserRepo,SqlUserRepo>();
             services.AddScoped<IPostRepo, SqlPostRepo>();
             services.AddScoped<JwtService>();
+
 
             services.AddOptions();
             services.AddAuthentication();
