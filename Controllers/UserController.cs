@@ -12,7 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-
+using Microsoft.Data.SqlClient;
 
 namespace OOP_WORKSHOP_PROJECT.Controllers
 {
@@ -73,12 +73,20 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return BadRequest("Password must be at least 4 characters long and include one letter and one number");
 
             User user = MapToUser(dto);
-            bool result = _repo.AddUser(user);
-
-            if (result)
+            try
+            {
+                _repo.AddUser(user);
                 return Created("success", user);
-            else
-                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                while (e.InnerException != null) e = e.InnerException; // find the most inner exception
+                if(e is SqlException sqlException && sqlException.Number == 2601) // code for duplicate key(The only duplication that could happen is the email)
+                {
+                    return BadRequest("Email is already used!");
+                }
+                return BadRequest(e.Message);//else return 
+            }
         }
 
         [HttpPost("login")]

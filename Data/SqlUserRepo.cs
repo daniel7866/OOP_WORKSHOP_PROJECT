@@ -1,4 +1,5 @@
-﻿using OOP_WORKSHOP_PROJECT.Models;
+﻿using Microsoft.Data.SqlClient;
+using OOP_WORKSHOP_PROJECT.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,6 @@ namespace OOP_WORKSHOP_PROJECT.Data
         public bool AddUser(User user)
         {
             _context.Users.Add(user);
-
             return _context.SaveChanges() > 0;
         }
 
