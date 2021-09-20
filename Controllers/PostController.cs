@@ -15,14 +15,14 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
     [Route("api/[controller]")]
     public class PostController : ControllerBase
     {
-        private readonly IPostRepo _repo;
+        private readonly IPostRepo _postRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly JwtService _jwtService;
         private readonly IUserRepo _userRepo;
 
         public PostController(IPostRepo repo, IWebHostEnvironment webHostEnvironment, JwtService jwtService, IUserRepo userRepo)
         {
-            _repo = repo;
+            _postRepo = repo;
             _webHostEnvironment = webHostEnvironment;
             _jwtService = jwtService;
             _userRepo = userRepo;
@@ -31,13 +31,13 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Post>> GetAllPosts()
         {
-            return Ok(_repo.GetAllPosts());
+            return Ok(_postRepo.GetAllPosts());
         }
 
         [HttpGet("id/{postId}")]
         public ActionResult<ReadPostDto> GetPostById(int postId)
         {
-            var post = _repo.GetPostById(postId);
+            var post = _postRepo.GetPostById(postId);
             if (post is null)
                 return NotFound();
 
@@ -48,7 +48,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         [HttpGet("user/id/{userId}")]
         public ActionResult<IEnumerable<ReadPostDto>> GetUserPosts(int userId)
         {
-            var posts = _repo.GetUserPosts(userId);
+            var posts = _postRepo.GetUserPosts(userId);
             if (posts is null)
                 return NotFound();
 
@@ -72,7 +72,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             }
             catch (Exception e) { return Unauthorized(); }
             Post post = MapToPost(dto);
-            _repo.AddPost(post);
+            _postRepo.AddPost(post);
             return Created("success", post);
 
         }
@@ -95,7 +95,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
             try
             {
-                _repo.RemovePost(postId);
+                _postRepo.RemovePost(postId);
             }
             catch (Exception err) { return NotFound("Post is not found"); }
 
@@ -121,7 +121,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
             try
             {
-                _repo.LikePost(postId, userId);
+                _postRepo.LikePost(postId, userId);
             }
             catch (Exception err) { return BadRequest(err.Message); }
 
@@ -146,7 +146,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
             try
             {
-                _repo.UnLikePost(postId, userId);
+                _postRepo.UnLikePost(postId, userId);
             }
             catch (Exception err) { return BadRequest(err.Message); }
 
@@ -169,7 +169,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             }
 
             comment.PostId = postId;
-            _repo.Comment(postId, comment);
+            _postRepo.Comment(postId, comment);
 
             return Created("Comment posted succesfully",comment);
         }
@@ -180,7 +180,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             try
             {
                 var jwt = Request.Cookies["jwt"];
-                _repo.RemoveComment(commentId,_jwtService.GetUserId(jwt));
+                _postRepo.RemoveComment(commentId,_jwtService.GetUserId(jwt));
             }
 
             catch (Exception e)
@@ -195,7 +195,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         [HttpGet("comments")]
         public ActionResult GetAllComments()
         {
-            return Ok(_repo.GetAllComments());
+            return Ok(_postRepo.GetAllComments());
         }
 
         private ReadPostDto MapToReadPostDto(Post post)
@@ -203,11 +203,11 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return new ReadPostDto()
             {
                 Id = post.Id,
-                UserData = _userRepo.GetUserById(post.UserId),
+                User = Services.MapToReadUserDto(_userRepo.GetUserById(post.UserId),_userRepo),
                 Description = post.Description,
                 ImagePath = post.ImagePath,
                 DatePosted = post.DatePosted,
-                likes = _repo.GetLikes(post.Id)
+                likes = _postRepo.GetLikes(post.Id)
             };
         }
 

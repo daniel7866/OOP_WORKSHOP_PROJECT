@@ -42,7 +42,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             var user = _repo.GetUserById(id);
             if (user is null)
                 return NotFound();
-            ReadUserDto dto = MapToReadUserDto(user);
+            ReadUserDto dto = Services.MapToReadUserDto(user,_repo);
             return Ok(dto);
         }
 
@@ -52,7 +52,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             var user = _repo.GetUserByEmail(email);
             if (user is null)
                 return NotFound();
-            ReadUserDto dto = MapToReadUserDto(user);
+            ReadUserDto dto = Services.MapToReadUserDto(user,_repo);
             return Ok(dto);
         }
 
@@ -72,7 +72,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             if (!ValidatePassword(dto.Password))
                 return BadRequest("Password must be at least 4 characters long and include one letter and one number");
 
-            User user = MapToUser(dto);
+            User user = Services.MapToUser(dto);
             try
             {
                 _repo.AddUser(user);
@@ -218,33 +218,6 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         {
             var following = _repo.GetFollowing(userId);
             return Ok(following);
-        }
-
-
-
-
-        private ReadUserDto MapToReadUserDto(User user)
-        {
-            return new ReadUserDto()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                ImagePath = user.ImagePath,
-                Followers = (List<int>)_repo.GetFollowers(user.Id),
-                Following = (List<int>)_repo.GetFollowing(user.Id)
-            };
-        }
-
-        private User MapToUser(WriteUserDto dto)
-        {
-            return new User()
-            {
-                Email = dto.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Name = dto.Name,
-                ImagePath = dto.ImagePath
-            };
         }
 
         private bool ValidateEmail(String email) { 

@@ -111,7 +111,7 @@ const Profile = () => {
                 <>
                     {isLoggedProfile ? <AddPost refresh={refresh} setRefresh={setRefresh} />: null}
                 </>
-                {posts.map(p => (<Post key={p.id} id={p.id} userId={p.userId} description={p.description}
+                {posts.map(p => (<Post key={p.id} id={p.id} user={p.user} description={p.description} datePosted={p.datePosted}
                     imagePath={p.imagePath} ownedByLoggedUser={isLoggedProfile} setRefresh={setRefresh} />))}
             </div>
         </div>

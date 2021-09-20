@@ -1,6 +1,9 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http;
+using OOP_WORKSHOP_PROJECT.Data;
+using OOP_WORKSHOP_PROJECT.Dtos;
+using OOP_WORKSHOP_PROJECT.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +18,31 @@ namespace OOP_WORKSHOP_PROJECT
     {
         private const string bucketName = "oopbucket";
         private const string baseObjURL = @"https://oopbucket.s3.us-east-2.amazonaws.com/";
+
+        public static ReadUserDto MapToReadUserDto(User user, IUserRepo repo)
+        {
+            return new ReadUserDto()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                ImagePath = user.ImagePath,
+                Followers = (List<int>)repo.GetFollowers(user.Id),
+                Following = (List<int>)repo.GetFollowing(user.Id)
+            };
+        }
+
+        public static User MapToUser(WriteUserDto dto)
+        {
+            return new User()
+            {
+                Email = dto.Email,
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                Name = dto.Name,
+                ImagePath = dto.ImagePath
+            };
+        }
+
         public static string SaveImage(IFormFile file, string path)
         {
             if (!Directory.Exists(path))

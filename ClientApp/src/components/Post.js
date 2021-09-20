@@ -1,5 +1,6 @@
 ﻿import React from "react";
 import "../Styles/Post.css";
+import "../Styles/Images.css"
 import { Link } from 'react-router-dom';
 import { getAddress } from "../Services";
 
@@ -19,8 +20,13 @@ const Post = (props) => {
     }
     return (
         <div className="post-container">
-            <h5><a href={`/profile/${props.userId}`}>{props.userId}</a></h5>
-            {/*<Link to={`/profile/${props.userId}`}>props.userName</Link>*/}
+            <div className="post-top" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <div className="image-cropper tiny">
+                    <img className="profile-image" src={props.user.imagePath} />
+                </div>
+                    <h5><Link to={`/profile/${props.user.id}`}>{props.user.name}</Link></h5>
+            </div>
+            <p>{ props.datePosted }</p>
             <div className="post-image-container">
                 <img className="post-image" src={props.imagePath} width="300" height="300" />
             </div>

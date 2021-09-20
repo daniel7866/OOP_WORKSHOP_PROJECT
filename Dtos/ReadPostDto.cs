@@ -10,7 +10,7 @@ namespace OOP_WORKSHOP_PROJECT.Dtos
     {
         public int Id { get; set; }
 
-        public User UserData { get; set; }
+        public ReadUserDto User { get; set; }
 
         public string ImagePath { get; set; }
 
