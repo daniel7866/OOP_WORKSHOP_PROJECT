@@ -103,7 +103,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
         }
         
-        [HttpPost("like/post/{postId}")]
+        [HttpPost("like/id/{postId}")]
         public ActionResult LikePost(int postId)
         {
             int userId;
@@ -128,7 +128,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok();
         }
 
-        [HttpDelete("unlike/post/{postId}")]
+        [HttpDelete("unlike/id/{postId}")]
         public ActionResult UnlikePost(int postId)
         {
             int userId;

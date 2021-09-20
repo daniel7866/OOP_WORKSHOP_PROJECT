@@ -1,8 +1,57 @@
-﻿import React from "react";
+﻿import React, { useState } from "react";
 import "../Styles/Post.css";
 import "../Styles/Images.css"
 import { Link } from 'react-router-dom';
 import { getAddress } from "../Services";
+import { useSelector } from "react-redux";
+
+
+const likePost = (postId,setLikes) => {
+    var requestOptions = {
+        method: 'POST',
+        redirect: 'follow'
+    };
+
+    fetch(`${getAddress()}/api/post/like/id/${postId}`, requestOptions)
+        .then(result => {
+            fetch(`${getAddress()}/api/post/id/${postId}`)
+                .then(response => response.json())
+                .then(result => setLikes(result.likes))
+        })
+        .catch(error => console.log('error', error));
+}
+
+const unlikePost = (postId, setLikes) => {
+    var requestOptions = {
+        method: 'DELETE',
+        redirect: 'follow'
+    };
+
+    fetch(`${getAddress()}/api/post/unlike/id/${postId}`, requestOptions)
+        .then(result => {
+            fetch(`${getAddress()}/api/post/id/${postId}`)
+                .then(response => response.json())
+                .then(result => setLikes(result.likes))
+        })
+        .catch(error => console.log('error', error));
+}
+
+const PostLikeButton = (props) => {
+    const user = useSelector(state => state.user);
+
+    if (props.likes.indexOf(user.uid) < 0) {
+        return (
+            <button className="btn btn-outline-info" onClick={() => { likePost(props.postId, props.setLikes) }}>👍🏻</button >
+        );
+    }
+    else {
+        return (
+            <button className="btn btn-outline-info" onClick={() => { unlikePost(props.postId, props.setLikes) }}>👎🏻</button>
+        );
+    }
+
+    return null;
+}
 
 const Post = (props) => {
     const deleteHandler = () => {
@@ -18,6 +67,9 @@ const Post = (props) => {
             .then(response => props.setRefresh(x=>!x))
             .catch(error => console.log('error', error));
     }
+
+    const [likes, setLikes] = useState(props.likes);
+
     return (
         <div className="post-container">
             <div className="post-top" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -32,7 +84,8 @@ const Post = (props) => {
             </div>
             <p>{props.description}</p>
             <div className="post-bottom-container">
-                {props.ownedByLoggedUser ? <button className="btn btn-outline-danger" onClick={deleteHandler} ><span style={{ fontSize: "xx-small" }}>Remove</span></button> : null}
+                {props.ownedByLoggedUser ? <button className="btn btn-outline-danger" onClick={deleteHandler} ><span style={{ fontSize: "xx-small" }}>🗑</span></button> : null}
+                <PostLikeButton postId={ props.id } likes={likes} setLikes={setLikes} />
             </div>
         </div>
     );
