@@ -198,6 +198,35 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(_postRepo.GetAllComments());
         }
 
+        [HttpGet("feed")]
+        public ActionResult GetFeed()
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                var myId = _jwtService.GetUserId(jwt);
+                IEnumerable<Post> myPosts = _postRepo.GetUserPosts(myId);
+                var following = _userRepo.GetFollowing(myId);
+                IEnumerable<Post> followingPosts = new List<Post>();
+                foreach (var user in following)
+                {
+                    followingPosts = followingPosts.Concat(_postRepo.GetUserPosts(user));
+                }
+
+                var feed = myPosts.Concat(followingPosts);
+                feed = feed.OrderByDescending(x => x.DatePosted);
+
+                return Ok(feed);
+            }
+
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
+
+            
+
+        }
         private ReadPostDto MapToReadPostDto(Post post)
         {
             return new ReadPostDto()
