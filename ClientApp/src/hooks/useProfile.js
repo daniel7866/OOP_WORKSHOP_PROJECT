@@ -67,30 +67,11 @@ export const useProfile = () => {
 
     useEffect(() => {
         if (flag) {
-            /*fetch(`${getAddress()}/api/user/id/${uid}`)
-                .then(response => response.json())
-                .then(result => {
-
-                    *//*Get user's followers*//*
-                    setFollowers(result.followers);
-
-                    *//*setFollowers(people);*//*
-                    getUsers(result.following)
-                        .then(res => setFollowing(res));
-                    *//*Get user's posts*//*
-                    fetch(`${getAddress()}/api/post/user/id/${uid}`)
-                        .then(response => response.json())
-                        .then(result => setPosts(result));
-
-                    setName(result.name);
-                    setImagePath(result.imagePath);
-                })
-                .catch(error => console.log('error', error))*/
             fetchAll();
         }
     }, [user.uid, uid]);
 
     const isLoggedUser = uid == user.uid; // this flag tells us if the profile component is the profile we are logged into or a different one
 
-    return [following, followers, posts, name, imagePath, isLoggedUser, fetchAll];
+    return [following, setFollowing, followers, setFollowers, posts, name, imagePath, isLoggedUser, fetchAll];
 }

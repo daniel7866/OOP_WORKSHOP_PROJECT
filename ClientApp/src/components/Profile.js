@@ -3,7 +3,7 @@ import Post from "./Post";
 import ProfileListItem from "./ProfileListItem";
 import { useProfile } from "../hooks/useProfile";
 import AddPost from "./AddPost";
-import { takeLastUrlItem, getAddress } from "../Services";
+import { takeLastUrlItem, getAddress, findIdInUserList, getUsers } from "../Services";
 import "../Styles/Profile.css";
 import "../Styles/Images.css";
 
@@ -15,9 +15,8 @@ const followUser = (id) => {
         redirect: 'follow'
     };
 
-    fetch(`${getAddress()}/api/user/follow/${id}`, requestOptions)
+    return fetch(`${getAddress()}/api/user/follow/${id}`, requestOptions)
         .then(response => response.text())
-        .then(result => console.log(result))
         .catch(error => console.log('error', error));
 }
 
@@ -27,45 +26,52 @@ const unfollowUser = (id) => {
         redirect: 'follow'
     };
 
-    fetch(`${getAddress()}/api/user/unfollow/${id}`, requestOptions)
+    return fetch(`${getAddress()}/api/user/unfollow/${id}`, requestOptions)
         .then(response => response.text())
-        .then(result => console.log(result))
         .catch(error => console.log('error', error));
 }
 
 const ProfileFollowButton = (props) => {
     const uid = parseInt(takeLastUrlItem(window.location.pathname)); // user id of current profile showing based on url
     const user = useSelector(state => state.user);
-    const [following, setFollowing] = useState([]);
-    const [flag, setFlag] = useState(false);
+    const [flag, setFlag] = useState(false); //flag is true if i'm already follow this user
 
     useEffect(() => {
-        if (user.uid !== null) {
-            fetch(`${getAddress()}/api/user/id/${user.uid}`)
-                .then(response => response.json())
-                .then(result => { setFollowing(result.following); setFlag(true); })
-                .catch(error => console.log('error', error));
-        }
-    }, [user, props.refresh]);
-
-    if (flag) { // flag is set when all the asynchronus tasks finish
-        if (following.indexOf(uid) < 0) {
-            return (
-                <button className="btn btn-outline-info" onClick={() => { followUser(uid); props.setRefresh(value => !value); }}> Follow</button >
-            );
-        }
-        else {
-            return (
-                <button className="btn btn-outline-info" onClick={() => { unfollowUser(uid); props.setRefresh(value => !value); }}>Unfollow</button>
-            );
-        }
+        if (findIdInUserList(props.followers, user.uid) < 0) // if you're not following him => flag is false
+            setFlag(false);
+        else
+            setFlag(true);
+            }, [props.followers]);//check the flag each time the followers changed
+    if (!flag) {//if not following - show a follow button
+        return (
+            <button className="btn btn-outline-info" onClick={() => {
+                followUser(uid)
+                    .then(res => {
+                        fetch(`${getAddress()}/api/user/id/${uid}`)
+                            .then(response => response.json())
+                            .then(result => { getUsers(result.followers).then(res=>props.setFollowers(res)); })
+                });
+            }}> Follow</button >
+        );
+    }
+    else {//if following - show an unfollow button
+        return (
+            <button className="btn btn-outline-info" onClick={() => {
+                unfollowUser(uid)
+                    .then(res => {
+                        fetch(`${getAddress()}/api/user/id/${uid}`)
+                            .then(response => response.json())
+                            .then(result => { getUsers(result.followers).then(res => props.setFollowers(res)); })
+                    });
+            }}> Unfollow</button >
+        );
     }
 
     return null;
 }
 
 const Profile = () => {
-    const [following, followers, posts, name, imagePath, isLoggedProfile, fetchAll] = useProfile();
+    const [following, setFollowing, followers, setFollowers, posts, name, imagePath, isLoggedProfile, fetchAll] = useProfile();
 
     const [refresh, setRefresh] = useState(false);
 
@@ -81,7 +87,7 @@ const Profile = () => {
                     <img className="profile-image" src={imagePath} />
                 </div>
                 <h3>{name}</h3>
-                {isLoggedProfile ? null : <ProfileFollowButton setRefresh={setRefresh} />}
+                {isLoggedProfile ? null : <ProfileFollowButton followers={followers} setFollowers={setFollowers} />}
             </div>
             <div className="profile-people-container">
                 <div className="profile-follow-list">

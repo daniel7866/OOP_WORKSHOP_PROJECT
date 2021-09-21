@@ -35,3 +35,12 @@ export const getUser = (uid) =>
         .then(response => response.json())
         .then(result => result)
         .catch(error => console.log('error', error));
+
+export const findIdInUserList = (userList, id) => {
+    for (let i = 0; i < userList.length; i++) {
+        if (userList[i].id == id) {
+            return i;
+        }
+    }
+    return -1;
+}
