@@ -56,10 +56,14 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(dto);
         }
 
-        [HttpGet("search/{searchInput}")]
-        public ActionResult<User> SearchUser(string searchInput)
+        [HttpPost("search/")]
+        public ActionResult<User> SearchUser(dynamic searchInput)
         {
-            var result = _repo.SearchUser(searchInput);
+            string search = searchInput.GetProperty("search").ToString();
+            if (search == "")
+                return Ok(new List<User>());
+            
+            var result = _repo.SearchUser(search);
             return Ok(result);
         }
 

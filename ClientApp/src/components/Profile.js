@@ -1,25 +1,13 @@
 ﻿import React, { useState,useEffect } from "react";
 import Post from "./Post";
+import ProfileListItem from "./ProfileListItem";
 import { useProfile } from "../hooks/useProfile";
 import AddPost from "./AddPost";
 import { takeLastUrlItem, getAddress } from "../Services";
 import "../Styles/Profile.css";
 import "../Styles/Images.css";
 
-import { Link } from 'react-router-dom';
-
 import { useSelector, useDispatch } from "react-redux";
-
-const ProfileListItem = (props) => {
-    return (
-        <div className="profile-list-item">
-            <div className="image-cropper tiny">
-                <img className="profile-image" src={props.imagePath} />
-            </div>
-            <Link to={`/profile/${props.id}`}>{props.name}</Link>
-        </div>
-    )
-}
 
 const followUser = (id) => {
     var requestOptions = {

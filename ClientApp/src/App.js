@@ -14,6 +14,7 @@ import './custom.css'
 
 //used to import redux state
 import { useSelector } from 'react-redux';
+import Search from './components/Search';
 
 const App = () => {
     const user = useSelector(state => state.user);//import redux global state
@@ -29,6 +30,7 @@ return (
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/dashboard' component={Dashboard} />
         <Route path='/register' component={Register} />
+        <Route path='/search' component={Search} />
         <Route path='/profile' component={Profile} />
     </Layout>
 )

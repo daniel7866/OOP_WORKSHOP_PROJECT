@@ -86,8 +86,9 @@ namespace OOP_WORKSHOP_PROJECT.Data
             var searchResults = (from row in _context.Users
                              where row.Name.Contains(searchInput)
                              select row).ToList();
-
-            searchResults.Insert(0, GetUserByEmail(searchInput));
+            var emailResult = GetUserByEmail(searchInput);
+            if (emailResult != null)
+                searchResults.Insert(0, emailResult);
 
             return searchResults;
         }
