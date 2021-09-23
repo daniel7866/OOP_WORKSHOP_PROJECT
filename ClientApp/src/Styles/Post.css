@@ -13,6 +13,7 @@
     overflow: hidden;
 
     min-width: 80%;
+    align-items: center;
 }
 
 .add-post {
