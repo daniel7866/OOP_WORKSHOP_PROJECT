@@ -43,12 +43,12 @@ const PostLikeButton = (props) => {
 
     if (props.likes.indexOf(user.uid) < 0) {
         return (
-            <button className="btn btn-outline-info" onClick={() => { likePost(props.postId, props.setLikes) }}>👍🏻</button >
+            <button className="btn btn-outline-info" title="like" onClick={() => { likePost(props.postId, props.setLikes) }}>👍🏻</button >
         );
     }
     else {
         return (
-            <button className="btn btn-outline-info" onClick={() => { unlikePost(props.postId, props.setLikes) }}>👎🏻</button>
+            <button className="btn btn-outline-info" title="unlike" onClick={() => { unlikePost(props.postId, props.setLikes) }}>👎🏻</button>
         );
     }
 
@@ -87,7 +87,7 @@ const Post = (props) => {
             </div>
             <p>{props.description}</p>
             <div className="post-bottom-container">
-                {props.ownedByLoggedUser ? <button className="btn btn-outline-danger" onClick={deleteHandler} ><span style={{ fontSize: "xx-small" }}>🗑</span></button> : null}
+                {props.ownedByLoggedUser ? <button className="btn btn-outline-danger" title="remove" onClick={deleteHandler} ><span >🗑</span></button> : null}
                 <PostLikeButton postId={props.id} likes={likes} setLikes={setLikes} />
                 <button className="btn btn-outline-primary" onClick={()=>setLikesPopupTrigger(true)} >{likes.length == 1 ? likes.length + " like" : likes.length + " likes"}</button>
                 <Popup trigger={likesPopupTrigger} >
