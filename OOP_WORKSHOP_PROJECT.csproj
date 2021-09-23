@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\firebase\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
