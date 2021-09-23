@@ -85,7 +85,8 @@ const Post = (props) => {
             <p>{props.description}</p>
             <div className="post-bottom-container">
                 {props.ownedByLoggedUser ? <button className="btn btn-outline-danger" onClick={deleteHandler} ><span style={{ fontSize: "xx-small" }}>🗑</span></button> : null}
-                <PostLikeButton postId={ props.id } likes={likes} setLikes={setLikes} />
+                <PostLikeButton postId={props.id} likes={likes} setLikes={setLikes} />
+                <button className="btn btn-outline-primary" >{likes.length == 1 ? likes.length + " like" : likes.length + " likes"}</button>
             </div>
         </div>
     );

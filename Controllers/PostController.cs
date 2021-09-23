@@ -213,9 +213,14 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                     followingPosts = followingPosts.Concat(_postRepo.GetUserPosts(user));
                 }
 
-                var feed = myPosts.Concat(followingPosts);
-                feed = feed.OrderByDescending(x => x.DatePosted);
+                var posts = myPosts.Concat(followingPosts);
+                posts = posts.OrderByDescending(x => x.DatePosted);
 
+                var feed = new List<ReadPostDto>();
+                foreach (var item in posts)
+                {
+                    feed.Add(MapToReadPostDto(item));
+                }
                 return Ok(feed);
             }
 
