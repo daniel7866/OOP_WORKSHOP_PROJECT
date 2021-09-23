@@ -49,8 +49,8 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         public ActionResult<IEnumerable<ReadPostDto>> GetUserPosts(int userId)
         {
             var posts = _postRepo.GetUserPosts(userId);
-            if (posts is null)
-                return NotFound();
+
+            posts = posts.OrderByDescending(p => p.DatePosted);
 
             var dtos = new List<ReadPostDto>();
             foreach (var item in posts)
