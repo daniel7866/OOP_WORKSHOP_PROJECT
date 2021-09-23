@@ -11,7 +11,7 @@ const Home = () => {
     const [refresh, setRefresh] = useState(false);
     const user = useSelector(state => state.user);
 
-    useEffect(() => { fetchAll() }, [refresh]);
+    useEffect(() => { fetchAll() }, [refresh, user]);
 
     return (
         <div className="profile-post-container">
