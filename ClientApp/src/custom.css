@@ -23,3 +23,8 @@ body {
     margin: 0;
     background-attachment: scroll;
 }
+
+.btn {
+    padding: 0.2rem;
+    font-size: medium;
+}

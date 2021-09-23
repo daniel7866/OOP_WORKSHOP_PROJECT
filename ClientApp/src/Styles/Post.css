@@ -31,9 +31,10 @@
     justify-content: center;
 }
 
-.btn {
-    padding: 0;
-}
+/*.btn {
+    padding: 0.2rem;
+    font-size: xx-large;
+}*/
 
 /*.post-image-container{
     max-width: 100%;
