@@ -15,10 +15,11 @@ const AddPost = (props) => {
 
     const uploadHandler = () => {
         var myHeaders = new Headers();
-        var imageURL;
         myHeaders.append("Content-Type", "application/json");
 
-        const uploadTask = storage.ref(`images/${image.name}`).put(image);
+        let hashed = `${image.name} + ${Date.now()}`;
+
+        const uploadTask = storage.ref(`images/${hashed}`).put(image);
         uploadTask.on(
             "state_changed",
             snapshot => { },
@@ -28,30 +29,29 @@ const AddPost = (props) => {
             () => {
                 storage
                     .ref("images")
-                    .child(image.name)
+                    .child(hashed)
                     .getDownloadURL()
                     .then(url => {
-                        imageURL=url;
+
+                        var raw = JSON.stringify({
+                            "description": `${text}`,
+                            "imagePath": `${url}`
+                        });
+
+                        var requestOptions = {
+                            method: 'POST',
+                            headers: myHeaders,
+                            body: raw,
+                            redirect: 'follow'
+                        };
+
+                        fetch(`${getAddress()}/api/post/createpost`, requestOptions)
+                            .then(response => response.json())
+                            .then(result => { console.log(result); props.setRefresh(value => !value); setText(""); setImage(null); })
+                            .catch(error => console.log('error', error));
                     });
             }
         );
-
-        var raw = JSON.stringify({
-            "description": `${text}`,
-            "imagePath": `${imageURL}`
-        });
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
-
-        fetch(`${getAddress()}/api/post/createpost`, requestOptions)
-            .then(response => response.json())
-            .then(result => { console.log(result); props.setRefresh(value => !value); setText(""); setImage(null); })
-            .catch(error => console.log('error', error));
     }
 
     return (
