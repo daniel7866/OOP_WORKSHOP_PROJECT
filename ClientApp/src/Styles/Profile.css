@@ -20,6 +20,8 @@
 }
 
 .profile-people-container {
+    background-color: rgba(229, 229, 229, 0.8);
+
     border: solid grey 1px;
     border-radius: 1rem;
     height: min-content;

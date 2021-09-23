@@ -4,6 +4,8 @@ import "../Styles/Images.css"
 import { Link } from 'react-router-dom';
 import { getAddress } from "../Services";
 import { useSelector } from "react-redux";
+import Popup from "./Popup";
+import LikesList from "./LikesList";
 
 
 const likePost = (postId,setLikes) => {
@@ -69,6 +71,7 @@ const Post = (props) => {
     }
 
     const [likes, setLikes] = useState(props.likes);
+    const [likesPopupTrigger, setLikesPopupTrigger] = useState(false);
 
     return (
         <div className="post-container">
@@ -86,7 +89,10 @@ const Post = (props) => {
             <div className="post-bottom-container">
                 {props.ownedByLoggedUser ? <button className="btn btn-outline-danger" onClick={deleteHandler} ><span style={{ fontSize: "xx-small" }}>🗑</span></button> : null}
                 <PostLikeButton postId={props.id} likes={likes} setLikes={setLikes} />
-                <button className="btn btn-outline-primary" >{likes.length == 1 ? likes.length + " like" : likes.length + " likes"}</button>
+                <button className="btn btn-outline-primary" onClick={()=>setLikesPopupTrigger(true)} >{likes.length == 1 ? likes.length + " like" : likes.length + " likes"}</button>
+                <Popup trigger={likesPopupTrigger} >
+                    <LikesList likes={likes} setTrigger={setLikesPopupTrigger} />
+                </Popup>
             </div>
         </div>
     );

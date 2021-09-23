@@ -12,3 +12,14 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    background: linear-gradient(to bottom, #33ccff 0%, #cc99ff 100%);
+    background-repeat: no-repeat;
+    margin: 0;
+    background-attachment: scroll;
+}
