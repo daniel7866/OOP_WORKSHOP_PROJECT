@@ -19,6 +19,20 @@ namespace OOP_WORKSHOP_PROJECT
         private const string bucketName = "oopbucket";
         private const string baseObjURL = @"https://oopbucket.s3.us-east-2.amazonaws.com/";
 
+        public static ReadCommentDto MapToReadCommentDto(Comments comment, IPostRepo postRepo, IUserRepo userRepo){
+            var user = userRepo.GetUserById(comment.UserId);
+
+            return new ReadCommentDto(){
+                Id = comment.Id,
+                PostId = comment.PostId,
+                UserId = comment.UserId,
+                UserName = user.Name,
+                UserImagePath = user.ImagePath,
+                Body = comment.Body,
+                DatePosted = comment.DatePosted
+            };
+        }
+
         public static ReadUserDto MapToReadUserDto(User user, IUserRepo repo)
         {
             return new ReadUserDto()

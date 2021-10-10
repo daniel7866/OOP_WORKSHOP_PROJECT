@@ -6,6 +6,7 @@ import { getAddress } from "../Services";
 import { useSelector } from "react-redux";
 import Popup from "./Popup";
 import LikesList from "./LikesList";
+import CommentsList from "./CommentsList";
 
 
 const likePost = (postId,setLikes) => {
@@ -73,6 +74,9 @@ const Post = (props) => {
     const [likes, setLikes] = useState(props.likes);
     const [likesPopupTrigger, setLikesPopupTrigger] = useState(false);
 
+    const [comments, setComments] = useState(props.comments);
+    const [commentsPopupTrigger, setCommentsPopupTrigger] = useState(false);
+
     return (
         <div className="post-container">
             <div className="post-top" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -89,9 +93,15 @@ const Post = (props) => {
             <div className="post-bottom-container">
                 {props.ownedByLoggedUser ? <button className="btn btn-outline-danger" title="remove" onClick={deleteHandler} ><span >🗑</span></button> : null}
                 <PostLikeButton postId={props.id} likes={likes} setLikes={setLikes} />
+                
                 <button className="btn btn-outline-primary" onClick={()=>setLikesPopupTrigger(true)} >{likes.length == 1 ? likes.length + " like" : likes.length + " likes"}</button>
                 <Popup trigger={likesPopupTrigger} >
                     <LikesList likes={likes} setTrigger={setLikesPopupTrigger} />
+                </Popup>
+                
+                <button className="btn btn-outline-primary" onClick={()=>setCommentsPopupTrigger(true)} >{comments.length == 1 ? comments.length + " comments" : comments.length + " comments"}</button>
+                <Popup trigger={commentsPopupTrigger} >
+                    <CommentsList comments={comments} setTrigger={setCommentsPopupTrigger} />
                 </Popup>
             </div>
         </div>

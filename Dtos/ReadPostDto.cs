@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OOP_WORKSHOP_PROJECT.Models;
+using OOP_WORKSHOP_PROJECT.Dtos;
 
 namespace OOP_WORKSHOP_PROJECT.Dtos
 {
@@ -19,5 +20,7 @@ namespace OOP_WORKSHOP_PROJECT.Dtos
         public DateTime DatePosted { get; set; }
 
         public IEnumerable<int> likes { get; set; }
+
+        public IEnumerable<ReadCommentDto> Comments { get; set; }
     }
 }

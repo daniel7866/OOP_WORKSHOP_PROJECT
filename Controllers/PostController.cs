@@ -202,7 +202,12 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         public ActionResult GetPostComments(int postId)
         {
             var comments = _postRepo.GetPostComments(postId);
-            return Ok(comments);
+
+            var dtos = new List<ReadCommentDto>();
+
+            foreach(var comment in comments)
+                dtos.Add(Services.MapToReadCommentDto(comment, _postRepo, _userRepo));
+            return Ok(dtos);
         }
 
         [HttpGet("feed")]
@@ -241,6 +246,11 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         }
         private ReadPostDto MapToReadPostDto(Post post)
         {
+            var comments = _postRepo.GetPostComments(post.Id);
+            var dtos = new List<ReadCommentDto>();
+            foreach(var comment in comments)
+                dtos.Add(Services.MapToReadCommentDto(comment, _postRepo, _userRepo));
+            
             return new ReadPostDto()
             {
                 Id = post.Id,
@@ -248,7 +258,8 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 Description = post.Description,
                 ImagePath = post.ImagePath,
                 DatePosted = post.DatePosted,
-                likes = _postRepo.GetLikes(post.Id)
+                likes = _postRepo.GetLikes(post.Id),
+                Comments = dtos
             };
         }
 
