@@ -17,7 +17,7 @@ const Home = () => {
         <div className="profile-post-container">
             <AddPost refresh={refresh} setRefresh={setRefresh} />
             {feed.map(p => (<Post key={p.id} id={p.id} user={p.user} description={p.description} datePosted={p.datePosted} likes={p.likes}
-                imagePath={p.imagePath} ownedByLoggedUser={user.uid === p.user.id} setRefresh={setRefresh} />))}
+                imagePath={p.imagePath} comments={p.comments} ownedByLoggedUser={user.uid === p.user.id} setRefresh={setRefresh} />))}
             <h1>{ label }</h1>
         </div>
     );

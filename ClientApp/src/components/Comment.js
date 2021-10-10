@@ -21,10 +21,10 @@ const Comment = (props) => {
             }
 
     return (
-        <div className="comment-container">
+        <div className="comment-container" style={{textAlign: "center"}}>
             <ProfileListItem id={props.userId} name={props.name} imagePath={props.imagePath} />
             <p>{props.body}</p>
-            {props.ownedByUser?<button className="btn btn-danger" onClick={removeComment}>X</button>:null}
+            {props.ownedByUser?<button className="btn btn-outline-danger" onClick={removeComment}><span >🗑</span></button>:null}
         </div>
     );
 }
