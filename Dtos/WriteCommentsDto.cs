@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OOP_WORKSHOP_PROJECT.Models
+namespace OOP_WORKSHOP_PROJECT.Dtos
 {
-    public class Comments
+    public class WriteCommentsDto
     {
         [Key]
         public int Id { get; set; }

@@ -198,6 +198,13 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(_postRepo.GetAllComments());
         }
 
+        [HttpGet("comments/{postId}")]
+        public ActionResult GetPostComments(int postId)
+        {
+            var comments = _postRepo.GetPostComments(postId);
+            return Ok(comments);
+        }
+
         [HttpGet("feed")]
         public ActionResult GetFeed()
         {

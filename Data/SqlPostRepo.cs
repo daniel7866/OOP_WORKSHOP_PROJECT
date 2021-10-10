@@ -135,6 +135,13 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return _context.Comments.ToList();
         }
 
-
+        public IEnumerable<Comments> GetPostComments(int postId)
+        {
+            var comments = (IEnumerable<Comments>)(from row in _context.Comments
+                            where row.PostId == postId
+                            select row).ToList();
+            comments = comments.OrderByDescending(x => x.DatePosted);
+            return comments;
+        }
     }
 }

@@ -142,5 +142,10 @@ namespace OOP_WORKSHOP_PROJECT.Data
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Comments> GetPostComments(int postId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

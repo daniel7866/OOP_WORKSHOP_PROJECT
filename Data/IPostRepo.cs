@@ -36,6 +36,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         public IEnumerable<Comments> GetAllComments();
 
+        public IEnumerable<Comments> GetPostComments(int postId);
+
         public bool RemoveComment(int commentId, int userId);
     }
 }
