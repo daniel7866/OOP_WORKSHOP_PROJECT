@@ -153,8 +153,8 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok();
         }
 
-        [HttpPost("comment/post/{postId}")]
-        public ActionResult CreateComment(Comments comment, int postId)
+        [HttpPost("comment/")]
+        public ActionResult CreateComment(Comments comment)
         {
             try
             {
@@ -168,13 +168,12 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return Unauthorized();
             }
 
-            comment.PostId = postId;
-            _postRepo.Comment(postId, comment);
+            _postRepo.Comment(comment.PostId, comment);
 
             return Created("Comment posted succesfully",comment);
         }
 
-        [HttpDelete("removeComment/post/{commentId}")]
+        [HttpDelete("comment/{commentId}")]
         public ActionResult RemoveComment(int commentId)
         {
             try

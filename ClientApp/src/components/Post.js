@@ -101,7 +101,7 @@ const Post = (props) => {
                 
                 <button className="btn btn-outline-primary" onClick={()=>setCommentsPopupTrigger(true)} >{comments.length == 1 ? comments.length + " comments" : comments.length + " comments"}</button>
                 <Popup trigger={commentsPopupTrigger} >
-                    <CommentsList comments={comments} setTrigger={setCommentsPopupTrigger} />
+                    <CommentsList postId={props.id} comments={comments} setComments={setComments} setTrigger={setCommentsPopupTrigger} />
                 </Popup>
             </div>
         </div>
