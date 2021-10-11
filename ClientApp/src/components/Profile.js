@@ -101,10 +101,15 @@ const ProfileMessageButton = ()=>{
 
     return (
         <>
-            <button className="btn btn-outline-warning" onClick={()=>setMessagePopupTrigger(true)}>Message</button>
+            <button className="btn btn-outline-success" onClick={()=>setMessagePopupTrigger(true)}>Message</button>
             <Popup trigger={messagePopupTrigger} >
-                    <input type="text" className="form-control" placeholder="Type your message here" setTrigger={setMessagePopupTrigger} value={text} onChange={(e)=>setText(e.target.value)} />
-                    <button onClick={()=>{ sendMessageHandler();}}>Send</button>
+                <>
+                    <button className="btn btn-danger" onClick={()=>setMessagePopupTrigger(false)}>X</button>
+                    <div>
+                        <input type="text" className="form-control" placeholder="Type your message here" setTrigger={setMessagePopupTrigger} value={text} onChange={(e)=>setText(e.target.value)} />
+                        <button className="btn btn-success" disabled={text.length==0} onClick={()=>{ sendMessageHandler();}}>Send</button>
+                    </div>
+                </>
                 </Popup>
         </>
     )
@@ -127,8 +132,10 @@ const Profile = () => {
                     <img className="profile-image" src={imagePath} />
                 </div>
                 <h3>{name}</h3>
-                {isLoggedProfile ? null : <ProfileFollowButton followers={followers} setFollowers={setFollowers} />}
-                {isLoggedProfile ? null : <ProfileMessageButton />}
+                <div style={{backgroundColor: "rgba(229, 229, 229, 0.8)",borderRadius: "1rem",boxShadow: "#282c34 0 0 4px 0", padding: "1rem"}}>
+                    {isLoggedProfile ? null : <ProfileFollowButton followers={followers} setFollowers={setFollowers} />}
+                    {isLoggedProfile ? null : <ProfileMessageButton />}
+                </div>
             </div>
             <div className="profile-people-container">
                 <div className="profile-follow-list">
