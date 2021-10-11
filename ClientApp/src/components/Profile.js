@@ -71,6 +71,10 @@ const ProfileFollowButton = (props) => {
     return null;
 }
 
+/**
+ * 
+ * This button will be revealed when visiting a different profile, when pressing it will show a popup of an input field to send a message to that particular user
+ */
 const ProfileMessageButton = ()=>{
     const uid = parseInt(takeLastUrlItem(window.location.pathname)); // user id of current profile showing based on url
     const [text, setText] = useState('');
@@ -110,6 +114,55 @@ const ProfileMessageButton = ()=>{
     )
 }
 
+const EditProfileDetails = (props) => {
+    const [picture, setPicture] = useState(null);
+    const [name, setName] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [repeatNewPassword, setRepeatNewPassword] = useState('');
+
+    return (
+        <div>
+            <button className="btn btn-outline-danger" onClick={()=>props.setEditPopup(false)} >Close Window</button>
+            <br />
+            <label>Edit profile details:</label>
+            <div>
+                <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
+                    <label>Change profile picture:</label>
+                    <input type="file" className="form-control-file" style={{margin: "auto", width: "min-content"}} placeholder="New profile picture" value={picture} onChange={(e)=>setPicture(e.target.value)} />
+                    <button className="btn btn-primary">Change profile picture</button>
+                </div>
+                <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
+                    <label>Change profile name:</label>
+                    <input type="text" className="form-control" placeholder="New name" value={name} onChange={(e)=>setName(e.target.value)} />
+                    <button className="btn btn-primary">Change profile name</button>
+                </div>
+                <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
+                    <label>Change password:</label>
+                    <input type="password" className="form-control" placeholder="Old password" value={oldPassword} onChange={(e)=>setOldPassword(e.target.value)} />
+                    <input type="password" className="form-control" placeholder="New password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)}/>
+                    <input type="password" className="form-control" placeholder="Repeat new password" value={repeatNewPassword} onChange={(e)=>setRepeatNewPassword(e.target.value)}/>
+                    <button className="btn btn-primary">Change password</button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const EditProfileButton = () => {
+    const [editPopup, setEditPopup] = useState(false);
+
+    return (
+        <>
+            <button className="btn btn-danger" onClick={()=>setEditPopup(true)}>Edit Profile Details</button>
+            <Popup trigger={editPopup} >
+                <EditProfileDetails setEditPopup={setEditPopup} />
+            </Popup>
+        </>
+    );
+}
+
+
 const Profile = () => {
     const [following, setFollowing, followers, setFollowers, posts, name, imagePath, isLoggedProfile, fetchAll] = useProfile();
 
@@ -129,6 +182,7 @@ const Profile = () => {
                 <h3>{name}</h3>
                 {isLoggedProfile ? null : <ProfileFollowButton followers={followers} setFollowers={setFollowers} />}
                 {isLoggedProfile ? null : <ProfileMessageButton />}
+                {isLoggedProfile ? <EditProfileButton /> : null}
             </div>
             <div className="profile-people-container">
                 <div className="profile-follow-list">
