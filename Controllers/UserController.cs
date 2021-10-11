@@ -167,7 +167,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 var jwt = Request.Cookies["jwt"];
                 var token = _jwtService.Verify(jwt);
                 var userId = _jwtService.GetUserId(jwt);
-                return Ok(_repo.GetMessages(userId).OrderByDescending(x => x.DateSent));
+                return Ok(_repo.GetMessages(userId).OrderBy(x => x.DateSent));
             }
             catch (Exception e)
             {

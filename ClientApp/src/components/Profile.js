@@ -4,6 +4,7 @@ import ProfileListItem from "./ProfileListItem";
 import { useProfile } from "../hooks/useProfile";
 import AddPost from "./AddPost";
 import { takeLastUrlItem, getAddress, findIdInUserList, getUsers } from "../Services";
+import Popup from "./Popup";
 import "../Styles/Profile.css";
 import "../Styles/Images.css";
 
@@ -70,6 +71,45 @@ const ProfileFollowButton = (props) => {
     return null;
 }
 
+const ProfileMessageButton = ()=>{
+    const uid = parseInt(takeLastUrlItem(window.location.pathname)); // user id of current profile showing based on url
+    const [text, setText] = useState('');
+    const [messagePopupTrigger, setMessagePopupTrigger] = useState(false);
+
+    const sendMessageHandler = ()=>{
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+        "receiverId": uid,
+        "messageContent": text
+        });
+
+        var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+        };
+
+        setText('');
+
+        fetch(`${getAddress()}/api/user/message`, requestOptions)
+        .then(response => setMessagePopupTrigger(false))
+        .catch(error => console.log('error', error));
+    }
+
+    return (
+        <>
+            <button className="btn btn-outline-warning" onClick={()=>setMessagePopupTrigger(true)}>Message</button>
+            <Popup trigger={messagePopupTrigger} >
+                    <input type="text" className="form-control" placeholder="Type your message here" setTrigger={setMessagePopupTrigger} value={text} onChange={(e)=>setText(e.target.value)} />
+                    <button onClick={()=>{ sendMessageHandler();}}>Send</button>
+                </Popup>
+        </>
+    )
+}
+
 const Profile = () => {
     const [following, setFollowing, followers, setFollowers, posts, name, imagePath, isLoggedProfile, fetchAll] = useProfile();
 
@@ -88,6 +128,7 @@ const Profile = () => {
                 </div>
                 <h3>{name}</h3>
                 {isLoggedProfile ? null : <ProfileFollowButton followers={followers} setFollowers={setFollowers} />}
+                {isLoggedProfile ? null : <ProfileMessageButton />}
             </div>
             <div className="profile-people-container">
                 <div className="profile-follow-list">

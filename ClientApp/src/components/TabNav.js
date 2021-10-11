@@ -12,7 +12,6 @@ const TabItem = (props) => {
 }
 
 const TabNav = (props) => {
-    console.log(props.tabs);
     return (
         <div>
             <ul className="nav nav-tabs">

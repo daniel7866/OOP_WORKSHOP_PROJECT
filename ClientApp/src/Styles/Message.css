@@ -1,0 +1,32 @@
+.message {
+    border: 1px solid black;
+    border-radius: 2rem;
+    max-width: fit-content;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    margin: 0.2rem;
+}
+
+.right {
+    margin-left: auto;
+    background-color: greenyellow;
+}
+
+.left {
+    margin-right: auto;
+    background-color: whitesmoke;
+}
+
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    min-width: fit-content;
+    max-width: 40%;
+    max-height: 450px;
+    margin: auto;
+    margin-top: 1rem;
+    background-color: rgba(229, 229, 229, 0.8);
+    border-radius: 1rem;
+    box-shadow: #282c34 0 0 4px 0;
+    padding: 10px;
+    overflow-y: auto;
+}
