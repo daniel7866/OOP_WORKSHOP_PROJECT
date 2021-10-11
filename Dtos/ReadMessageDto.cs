@@ -8,26 +8,10 @@ namespace OOP_WORKSHOP_PROJECT.Dtos
 {
     public class ReadMessageDto
     {
-        [Key]
-        public int Id
-        {
-            get; set;
-        }
-        public int UserId
-        {
-            get; set;
-        }
-        public int PostId
-        {
-            get; set;
-        }
-        public string Body
-        {
-            get; set;
-        }
-        public DateTime DatePosted
-        {
-            get; set;
-        }
+        public int Id { get; set; } //Message Id
+        public int SenderId { get; set; }
+        public int ReceiverId { get; set; }
+        public string MessageContent { get; set; }
+        public DateTime DateSent { get; set; }
     }
 }

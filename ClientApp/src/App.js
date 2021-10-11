@@ -15,6 +15,7 @@ import './custom.css'
 //used to import redux state
 import { useSelector } from 'react-redux';
 import Search from './components/Search';
+import Messages from './components/Messages';
 
 const App = () => {
     const user = useSelector(state => state.user);//import redux global state
@@ -32,6 +33,7 @@ return (
         <Route path='/register' component={Register} />
         <Route path='/search' component={Search} />
         <Route path='/profile' component={Profile} />
+        <Route path='/messages' component={Messages} />
     </Layout>
 )
 };

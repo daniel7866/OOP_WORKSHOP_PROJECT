@@ -37,8 +37,11 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/search">Search</NavLink>
                 </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to={`/profile/${this.props.user?this.props.user.uid:""}`}>Profile</NavLink>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/messages">Messages</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to={`/profile/${this.props.user?this.props.user.uid:""}`}>Profile</NavLink>
                 </NavItem>
                 <NavItem>
                         <button className="btn btn-outline-dark"

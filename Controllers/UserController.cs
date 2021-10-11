@@ -159,19 +159,20 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return BadRequest();
         }
 
-        [HttpGet("message/{userId}")]
-        public ActionResult<IEnumerable<Message>> GetMessages(int userId)
+        [HttpGet("messages/")]
+        public ActionResult<IEnumerable<Message>> GetMessages()
         {
             try
             {
                 var jwt = Request.Cookies["jwt"];
                 var token = _jwtService.Verify(jwt);
+                var userId = _jwtService.GetUserId(jwt);
+                return Ok(_repo.GetMessages(userId).OrderByDescending(x => x.DateSent));
             }
             catch (Exception e)
             {
                 return Unauthorized();
             }
-            return Ok(_repo.GetMessages(userId));
         }
 
         [HttpPost("follow/{followedId}")]
