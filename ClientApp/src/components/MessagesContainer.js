@@ -42,7 +42,7 @@ const MessagesContainer = (props) => {
             {props.messages.map(message => <Message loggedUserId={props.loggedUserId} key={message.id} message={message} />)}
             <span style={{display: "flex"}}>
                 <input type="text" className="form-control" placeholder="Type your message here" value={text} onChange={(e)=>setText(e.target.value)} />
-                <button className="btn btn-outline-info" onClick={sendMessageHandler}>Send</button>
+                <button disabled={text.length==0} className="btn btn-outline-info" onClick={sendMessageHandler}>Send</button>
             </span>
         </div>
     )
