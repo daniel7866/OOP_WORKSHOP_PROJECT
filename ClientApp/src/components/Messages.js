@@ -8,20 +8,21 @@ import MessagesContainer from './MessagesContainer';
 
 const Messages = (props) => {
     const user = useSelector(state => state.user);
-    const [messages, usersMessaged, label, fetchAll] = useMessages();
+    const [messages, messagedUsers, label, fetchMessagedUsers, fetchMessagesWithUser] = useMessages();
 
     useEffect(()=>{
         if(user != null && user.uid != null)
-            fetchAll(user.uid);
+            fetchMessagedUsers();
     },[user]);
+
     const [selected, setSelected] = useState(null);
 
     return (
         <div>
             <h1>{label}</h1>
-            <TabNav setSelected={setSelected} tabs={usersMessaged} selected={selected}>
-                {usersMessaged.map(x => <Tab key={x.id} id={x.id} isSelected={x.id === selected} >
-                    {<MessagesContainer fetchAll={()=>fetchAll(user.uid)} loggedUserId={user.uid} messages={messages.filter(message => (message.senderId===x.id || message.receiverId === x.id))} />}
+            <TabNav setSelected={setSelected} tabs={messagedUsers} selected={selected}>
+                {messagedUsers.map(x => <Tab key={x.id} id={x.id} isSelected={x.id === selected} >
+                    {<MessagesContainer fetchMessages={()=>fetchMessagesWithUser(selected)} loggedUserId={user.uid} messages={messages} />}
                 </Tab>)}
             </TabNav>
             {Messages===[]?<h4>No messages, to send someone a message go to their profile and click on message.</h4>:null}

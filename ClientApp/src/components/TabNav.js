@@ -18,8 +18,6 @@ const TabNav = (props) => {
                 {
                     props.tabs.map(tab => {
                         const active = tab.id === props.selected?'active':'';
-                        console.log(tab.id);
-                        console.log(props.selected);
                         return (
                             <li className="nav-item" key={ tab.id }>
                                 <a className={`nav-link + ${active}`} onClick={()=>props.setSelected(tab.id)}>

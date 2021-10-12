@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { getAddress } from "../Services";
 import "../Styles/Message.css";
 
@@ -33,9 +33,18 @@ const MessagesContainer = (props) => {
 
         fetch(`${getAddress()}/api/user/message`, requestOptions)
         .then(response => response.json())
-        .then(result => props.fetchAll())
+        .then(result => props.fetchMessages())
         .catch(error => console.log('error', error));
     }
+
+    useEffect(()=>{
+        props.fetchMessages();
+    },[]);
+
+    useEffect(()=>{
+        let messageContainerDiv = document.getElementById("messages-container1");
+        messageContainerDiv.scrollTop = messageContainerDiv.scrollHeight;
+    },[props.messages]);
 
     return (
         <div className="messages-container" id="messages-container1">
@@ -43,6 +52,7 @@ const MessagesContainer = (props) => {
             <span style={{display: "flex"}}>
                 <input type="text" className="form-control" placeholder="Type your message here" value={text} onChange={(e)=>setText(e.target.value)} />
                 <button disabled={text.length==0} className="btn btn-outline-info" onClick={sendMessageHandler}>Send</button>
+                <button className="btn btn-primary" onClick={props.fetchMessages} title="refresh" >↻</button>
             </span>
         </div>
     )

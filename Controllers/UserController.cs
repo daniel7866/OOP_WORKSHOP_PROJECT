@@ -186,7 +186,21 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 var jwt = Request.Cookies["jwt"];
                 var token = _jwtService.Verify(jwt);
                 var userId = _jwtService.GetUserId(jwt);
-                return Ok(_repo.GetMessagedUsers(userId));
+                
+                var usersIdList = _repo.GetMessagedUsers(userId);
+                var users = new List<User>();
+
+                foreach(var id in usersIdList){
+                    users.Add(_repo.GetUserById(id));
+                }
+
+                var dtos = new List<ReadUserDto>();
+
+                foreach(var user in users){
+                    dtos.Add(Services.MapToReadUserDto(user, _repo));
+                }
+
+                return Ok(dtos);
             }
             catch (Exception e)
             {
