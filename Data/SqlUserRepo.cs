@@ -133,5 +133,12 @@ namespace OOP_WORKSHOP_PROJECT.Data
             
             return senders.Concat(receivers).Distinct().ToList();
         }
+
+        public IEnumerable<Message> GetMessagesFromUser(int loggedUserId, int userId){
+            var messages = (from row in _context.Messages
+                            where ((row.ReceiverId == userId && row.SenderId == loggedUserId) || (row.ReceiverId == loggedUserId && row.SenderId == userId))
+                            select row).ToList();
+            return messages;
+        }
     }
 }

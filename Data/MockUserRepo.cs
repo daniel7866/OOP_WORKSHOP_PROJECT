@@ -112,5 +112,9 @@ namespace OOP_WORKSHOP_PROJECT.Data
         public IEnumerable<int> GetMessagedUsers(int loggedUserId){
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Message> GetMessagesFromUser(int loggedUserId, int userId){
+            throw new NotImplementedException();
+        }
     }
 }

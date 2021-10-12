@@ -37,5 +37,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
         IEnumerable<Message> GetMessages(int userId);
 
         IEnumerable<int> GetMessagedUsers(int loggedUserId);
+
+        IEnumerable<Message> GetMessagesFromUser(int loggedUserId, int userId);
     }
 }

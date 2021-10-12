@@ -194,6 +194,24 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             }
         }
 
+        /**
+        This method will get a user id with whom we have messages with, and it will return all those messages
+        **/
+        [HttpGet("messages/user/{userId}")]
+        public ActionResult<IEnumerable<Message>> GetMessagesFromUser(int userId){
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                var token = _jwtService.Verify(jwt);
+                var loggedUserId = _jwtService.GetUserId(jwt);
+                return Ok(_repo.GetMessagesFromUser(loggedUserId, userId));
+            }
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
+        }
+
         [HttpPost("follow/{followedId}")]
         public ActionResult Follow(int followedId)
         {
