@@ -108,5 +108,9 @@ namespace OOP_WORKSHOP_PROJECT.Data
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<int> GetMessagedUsers(int loggedUserId){
+            throw new NotImplementedException();
+        }
     }
 }

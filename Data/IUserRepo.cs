@@ -35,5 +35,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
         bool AddMessage(Message message);
 
         IEnumerable<Message> GetMessages(int userId);
+
+        IEnumerable<int> GetMessagedUsers(int loggedUserId);
     }
 }

@@ -175,6 +175,25 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             }
         }
 
+        /**
+        This method will return the list of all the users we have messages with
+        */
+        [HttpGet("messages/users")]
+        public ActionResult<IEnumerable<int>> GetMessagedUsers()
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                var token = _jwtService.Verify(jwt);
+                var userId = _jwtService.GetUserId(jwt);
+                return Ok(_repo.GetMessagedUsers(userId));
+            }
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
+        }
+
         [HttpPost("follow/{followedId}")]
         public ActionResult Follow(int followedId)
         {

@@ -123,6 +123,15 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return _context.SaveChanges() > 0;
         }
 
-
+        public IEnumerable<int> GetMessagedUsers(int loggedUserId){
+            var senders = (from row in _context.Messages
+                         where row.ReceiverId == loggedUserId
+                         select row.SenderId).ToList();
+            var receivers = (from row in _context.Messages
+                         where row.SenderId == loggedUserId
+                         select row.ReceiverId).ToList();
+            
+            return senders.Concat(receivers).Distinct().ToList();
+        }
     }
 }
