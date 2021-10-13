@@ -25,8 +25,8 @@ const Messages = (props) => {
                     {<MessagesContainer fetchMessages={()=>fetchMessagesWithUser(selected)} loggedUserId={user.uid} messages={messages} />}
                 </Tab>)}
             </TabNav>
-            {Messages===[]?<h4>No messages, to send someone a message go to their profile and click on message.</h4>:null}
-            {selected===null?<h4>Click on a tab to view your message history with someone!</h4>:null}
+            {(messagedUsers.length>0&&selected===null)?<h4>Click on a tab to view your message history with someone!</h4>:null}
+            {messagedUsers.length===0?<h4>You have not yet started a conversation. To send someone a message go to their profile and click on message.</h4>:null}
         </div>
     );
 }

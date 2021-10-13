@@ -34,7 +34,8 @@ export const useRegister = () => {
         fetch(`${getAddress()}/api/user/register`, requestOptions)
             .then(response => {
                 if (response.ok) {
-                    setLabel("Registered successfully");
+                    setLabel("Registered successfully! Going to homepage in 3 seconds...");
+                    setTimeout(()=>{window.location.replace(window.location.origin);}, 3000)
                 }
                 else {
                     response.text().then(text => setLabel(text));

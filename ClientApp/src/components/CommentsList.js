@@ -49,9 +49,9 @@ const CommentsList = (props) => {
 
     return (
         <div>
-            <div style={{ position: "relative" }}>
-                <button style={{ position: "absolute", top: 0, right: 0 }} className="btn btn-outline-danger" onClick={ ()=>props.setTrigger(false)} >X</button>
-            </div>
+            <button className="btn btn-outline-danger" onClick={()=>props.setTrigger(false)} >Close Window</button>
+            <br />
+            <label>Comments on this post:</label>
             <div className="profile-follow-list">
                 {props.comments.map(r => 
                 <div>

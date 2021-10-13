@@ -20,7 +20,7 @@ export const useMessages = () => {
         .then(response => response.json())
         .then(users => {
             if(users.length == 0){
-                setLabel("No messages");
+                setLabel("No conversations");
             }else{
                 setMessagedUsers(users);
             }
