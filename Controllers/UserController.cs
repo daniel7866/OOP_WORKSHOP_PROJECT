@@ -77,6 +77,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return BadRequest("Password must be at least 4 characters long and include one letter and one number");
 
             User user = Services.MapToUser(dto);
+            user.ImagePath = "https://firebasestorage.googleapis.com/v0/b/oop-project-5cde7.appspot.com/o/images%2Fblank-profile-picture-973460_1280.png%20%2B%201634107421204?alt=media&token=2b476f59-ba06-45ad-ba3b-92025e7863f0";
             try
             {
                 _repo.AddUser(user);

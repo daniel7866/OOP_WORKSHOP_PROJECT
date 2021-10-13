@@ -21,11 +21,11 @@ const Register = () => {
                 <input type="password" className="form-control" id="inputpassword1" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <div id="emailHelp" class="form-text">Don't have an account? Create one <a href="/register">here</a></div>
-            <div class="input-group mb-3">
+            {/*<div class="input-group mb-3">
                 <label for="inputGroupFile02" className="form-label">Profile Picture</label>
                 <input type="file" class="form-control" id="inputGroupFile02" onChange={(e) => { setFile(e.target.files[0].href) }} />
                 <label class="input-group-text" for="inputGroupFile02">Upload</label>
-            </div>
+    </div>*/}
             <button type="submit" class="btn btn-primary mb-3" onClick={(e) => { registerHandler(e); }}>Register</button>
             <label>{label}</label>
         </form>
