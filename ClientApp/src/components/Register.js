@@ -20,6 +20,7 @@ const Register = () => {
     return (
         <form className="register-form">
             <h2>Register:</h2>
+            <h6>A password must be at least 4 characters long and contain letters and numbers</h6>
             <div className="mb-3">
                 <label for="inputname1" className="form-label">Name</label>
                 <input type="text" className="form-control" id="inputname1" value={name} onChange={(e) => setName(e.target.value)} />
