@@ -196,11 +196,13 @@ const Profile = () => {
                     <h6>Following:</h6>
                     {following.map(f =>
                         (<ProfileListItem key={f.id} id={f.id} name={f.name} imagePath={f.imagePath} />))}
+                        {following.length===0?<h6>Not following anyone</h6>:null}
                 </div>
                 <div className="profile-follow-list">
                     <h6>Followers:</h6>
                     {followers.map(f =>
                         (<ProfileListItem key={f.id} id={f.id} name={f.name} imagePath={f.imagePath} />))}
+                        {followers.length===0?<h6>No followers</h6>:null}
                 </div>
             </div>
             <div className="profile-post-container">
@@ -209,6 +211,7 @@ const Profile = () => {
                 </>
                 {posts.map(p => (<Post key={p.id} id={p.id} user={p.user} description={p.description} datePosted={p.datePosted} likes={p.likes}
                     comments={p.comments} imagePath={p.imagePath} ownedByLoggedUser={isLoggedProfile} setRefresh={setRefresh} />))}
+                    {posts.length===0?<h1>You have not yet uploaded any post</h1>:null}
             </div>
         </div>
     )

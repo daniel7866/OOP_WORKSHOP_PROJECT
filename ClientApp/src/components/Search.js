@@ -11,6 +11,7 @@ const Search = (props) => {
     return (
         <div className="search-container">
             <h1>Search for users:</h1>
+            <h6>You can search for partial name or an exact email address</h6>
             <div>
                 <input className="from-control" type="text" value={input} onChange={(e) => { setInput(e.target.value); }} />
                 <button className="btn btn-primary" onClick={searchHandler} >Search</button>
