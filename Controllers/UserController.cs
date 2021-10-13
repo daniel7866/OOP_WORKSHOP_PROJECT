@@ -1,16 +1,13 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using OOP_WORKSHOP_PROJECT.Data;
 using OOP_WORKSHOP_PROJECT.Dtos;
 using OOP_WORKSHOP_PROJECT.Helpers;
 using OOP_WORKSHOP_PROJECT.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Microsoft.Data.SqlClient;
 
@@ -30,7 +27,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             _webHostEnvironment = webHostEnvironment;
             _jwtService = jwtService;
         }
-
+        [HttpGet()]
         public ActionResult<IEnumerable<User>> GetAllUsers()
         {
             return Ok(_repo.GetAllUsers());
@@ -93,6 +90,35 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             }
         }
 
+        [HttpPatch("update")]
+        public ActionResult<User> UpdateUserInfo(UpdateUserDto newUserInfo)
+        {
+            var user = GetUserByToken();
+            if (!BCrypt.Net.BCrypt.Verify(newUserInfo.OldPassword, user.Password)) return BadRequest(new { message = "Wrong Password" });
+
+            if (!String.IsNullOrEmpty(newUserInfo.Email))
+            {
+                if (!ValidateEmail(newUserInfo.Email))
+                    return BadRequest("Invalid email");
+            }
+
+            if (!String.IsNullOrEmpty(newUserInfo.Password))
+            { 
+                if (!ValidatePassword(newUserInfo.Password))
+                    return BadRequest("Password must be at least 4 characters long and include one letter and one number"); 
+            }
+
+
+            try
+            {
+                _repo.UpdateUserInfo(newUserInfo,user.Id);
+                return Created("success", newUserInfo);
+            }
+
+            catch(Exception e) { return Unauthorized(); }
+
+        }
+
         [HttpPost("login")]
         public ActionResult<User> Login(LoginDto dto)
         {
@@ -112,23 +138,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
         }
 
-        [HttpPost("getUser")] //receives the JWT token and returns the user
-        public IActionResult GetUserByToken()
-        {
-            try
-            {
-                var jwt = Request.Cookies["jwt"];
-                int userId = _jwtService.GetUserId(jwt);
-                var user = _repo.GetUserById(userId);
 
-                return Ok(user);
-            }
-
-            catch (Exception e)
-            {
-                return Unauthorized();
-            }
-        }
 
         [HttpPost("logOut")]
         public IActionResult LogOut()
@@ -274,6 +284,22 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         {
             var following = _repo.GetFollowing(userId);
             return Ok(following);
+        }
+
+        public User GetUserByToken()//extracts the User from the JWT token
+        {
+            try
+            {
+                var jwt = Request.Cookies["jwt"];
+                int userId = _jwtService.GetUserId(jwt);
+                var user = _repo.GetUserById(userId);
+
+                return user;
+            }
+
+            catch (Exception e) { }
+
+            return null;
         }
 
         private bool ValidateEmail(String email) { 

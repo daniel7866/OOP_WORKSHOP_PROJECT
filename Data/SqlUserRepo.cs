@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using OOP_WORKSHOP_PROJECT.Dtos;
 using OOP_WORKSHOP_PROJECT.Models;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,38 @@ namespace OOP_WORKSHOP_PROJECT.Data
         {
             _context.Users.Add(user);
             return _context.SaveChanges() > 0;
+        }
+
+        public bool UpdateUserInfo(UpdateUserDto newInfo,int userId)
+        {
+            var user = (from row in _context.Users
+                        where row.Id == userId
+                        select row).FirstOrDefault();
+            if (user == null)
+                return false;
+
+            if (!String.IsNullOrEmpty(newInfo.Name))
+            {
+                user.Name = newInfo.Name; }
+
+
+            if (!String.IsNullOrEmpty(newInfo.Email))
+            {
+                user.Email = newInfo.Email;
+            }
+
+            if (!String.IsNullOrEmpty(newInfo.Password))
+            {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(newInfo.Password);
+            }
+
+            if (!String.IsNullOrEmpty(newInfo.ImagePath))
+            {
+                user.ImagePath = newInfo.ImagePath;
+            }
+
+                return _context.SaveChanges() > 0;
+
         }
 
         public bool FollowUser(int following, int followed)

@@ -1,4 +1,5 @@
-﻿using OOP_WORKSHOP_PROJECT.Models;
+﻿using OOP_WORKSHOP_PROJECT.Dtos;
+using OOP_WORKSHOP_PROJECT.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
         User GetUserByEmail(string email);
 
         bool AddUser(User user);
+
+        bool UpdateUserInfo(UpdateUserDto newInfo,int userId);
 
         bool FollowUser(int followingId, int followedId);
 

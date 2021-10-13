@@ -1,4 +1,5 @@
-﻿using OOP_WORKSHOP_PROJECT.Models;
+﻿using OOP_WORKSHOP_PROJECT.Dtos;
+using OOP_WORKSHOP_PROJECT.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -114,6 +115,11 @@ namespace OOP_WORKSHOP_PROJECT.Data
         }
 
         public IEnumerable<Message> GetMessagesFromUser(int loggedUserId, int userId){
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateUserInfo(UpdateUserDto user, int userId)
+        {
             throw new NotImplementedException();
         }
     }

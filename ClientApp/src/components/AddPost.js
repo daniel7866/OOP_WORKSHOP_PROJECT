@@ -2,10 +2,12 @@
 import { getAddress } from '../Services';
 import "../Styles/Post.css";
 import { storage } from "../firebase/index.js";
+import ProgressBar from "./ProgressBar"
 
 const AddPost = (props) => {
     const [text, setText] = useState('');
     const [image, setImage] = useState(null);
+    const [progress, setProgress] = useState(0);
 
     const handleChange = e => {
         if (e.target.files[0]) {
@@ -22,7 +24,11 @@ const AddPost = (props) => {
         const uploadTask = storage.ref(`images/${hashed}`).put(image);
         uploadTask.on(
             "state_changed",
-            snapshot => { },
+            snapshot => {
+                const progress = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                setProgress(progress);
+            },
             error => {
                 console.log(error);
             },
@@ -56,6 +62,7 @@ const AddPost = (props) => {
 
     return (
         <div className="add-post">
+            <ProgressBar bgcolor={"#00695c"} completed={progress}/>
             <h3>Add a new post</h3>
             <input type="file" onChange={handleChange} />
             <input type="text" placeholder="Type description here" value={text} onChange={(e) => setText(e.target.value)} />
