@@ -3,12 +3,14 @@ import Post from "./Post";
 import ProfileListItem from "./ProfileListItem";
 import { useProfile } from "../hooks/useProfile";
 import AddPost from "./AddPost";
+import { storage } from "../firebase/index.js";
 import { takeLastUrlItem, getAddress, findIdInUserList, getUsers } from "../Services";
 import Popup from "./Popup";
 import "../Styles/Profile.css";
 import "../Styles/Images.css";
 
 import { useSelector, useDispatch } from "react-redux";
+import ProgressBar from "./ProgressBar";
 
 const followUser = (id) => {
     var requestOptions = {
@@ -120,11 +122,37 @@ const ProfileMessageButton = ()=>{
 }
 
 const EditProfileDetails = (props) => {
-    const [picture, setPicture] = useState(null);
+    const [image, setImage] = useState(null);
     const [name, setName] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
+
+    const [progress, setProgress] = useState(0);
+
+    const editProfileNameHandler = ()=>{
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+        "name": name,
+        "oldPassword": "",
+        "password": "",
+        "imagePath": ""
+        });
+
+        var requestOptions = {
+        method: 'PATCH',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+        };
+
+        fetch(`${getAddress()}/api/user/update`, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+    }
 
     return (
         <div>
@@ -133,14 +161,15 @@ const EditProfileDetails = (props) => {
             <label>Edit profile details:</label>
             <div>
                 <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
-                    <label>Change profile picture:</label>
-                    <input type="file" className="form-control-file" style={{margin: "auto", width: "min-content"}} placeholder="New profile picture" value={picture} onChange={(e)=>setPicture(e.target.value)} />
-                    <button className="btn btn-primary">Change profile picture</button>
+                    <label>Change profile image:</label>
+                    <input type="file" className="form-control-file" style={{margin: "auto", width: "min-content"}} placeholder="New profile image" value={image} onChange={(e)=>setImage(e.target.value)} />
+                    <button className="btn btn-primary" >Change profile image</button>
+                    <ProgressBar bgcolor={"#00695c"} completed={progress}/>
                 </div>
                 <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
                     <label>Change profile name:</label>
                     <input type="text" className="form-control" placeholder="New name" value={name} onChange={(e)=>setName(e.target.value)} />
-                    <button className="btn btn-primary">Change profile name</button>
+                    <button className="btn btn-primary" onClick={editProfileNameHandler}>Change profile name</button>
                 </div>
                 <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
                     <label>Change password:</label>

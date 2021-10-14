@@ -94,8 +94,22 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         [HttpPatch("update")]
         public ActionResult<User> UpdateUserInfo(UpdateUserDto newUserInfo)
         {
-            var user = GetUserByToken();
-            if (!BCrypt.Net.BCrypt.Verify(newUserInfo.OldPassword, user.Password)) return BadRequest(new { message = "Wrong Password" });
+            User user = null;
+            try{
+                user = GetUserByToken();
+                if(user == null)
+                    return Unauthorized();
+            }
+            catch(Exception e){ return Unauthorized();}
+
+            if(!String.IsNullOrEmpty(newUserInfo.OldPassword)){
+                if (!BCrypt.Net.BCrypt.Verify(newUserInfo.OldPassword, user.Password))
+                    return BadRequest(new { message = "Wrong Password" });
+            }
+            else{
+                newUserInfo.OldPassword = null;
+                newUserInfo.Password = null;
+            }
 
             if (!String.IsNullOrEmpty(newUserInfo.Email))
             {
@@ -109,14 +123,13 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                     return BadRequest("Password must be at least 4 characters long and include one letter and one number"); 
             }
 
-
             try
             {
                 _repo.UpdateUserInfo(newUserInfo,user.Id);
                 return Created("success", newUserInfo);
             }
 
-            catch(Exception e) { return Unauthorized(); }
+            catch(Exception e) { return BadRequest(e.InnerException.Message.ToString()); }
 
         }
 

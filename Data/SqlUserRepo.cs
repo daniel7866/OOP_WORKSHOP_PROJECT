@@ -38,7 +38,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
             if (!String.IsNullOrEmpty(newInfo.Name))
             {
-                user.Name = newInfo.Name; }
+                user.Name = newInfo.Name; 
+            }
 
 
             if (!String.IsNullOrEmpty(newInfo.Email))
