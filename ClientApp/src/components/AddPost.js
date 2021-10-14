@@ -16,6 +16,10 @@ const AddPost = (props) => {
     };
 
     const uploadHandler = () => {
+        if(image==null){
+            alert("You must select an image");
+            return;
+        }
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 

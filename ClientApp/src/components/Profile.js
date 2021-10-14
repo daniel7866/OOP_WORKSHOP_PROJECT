@@ -129,6 +129,43 @@ const EditProfileDetails = (props) => {
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
 
     const [progress, setProgress] = useState(0);
+    const [label, setLabel] = useState('');
+
+    const verifyMatchingPasswords = () => {
+        if(repeatNewPassword===newPassword){
+            setLabel("");
+            return true;
+        }
+        //else
+        setLabel("Passwords do not match!");
+        return false;
+    }
+
+    const editProfilePasswordHandler = ()=>{
+        if(!verifyMatchingPasswords(newPassword,repeatNewPassword))
+            return;
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+        "name": "",
+        "oldPassword": oldPassword,
+        "password": newPassword,
+        "imagePath": ""
+        });
+
+        var requestOptions = {
+        method: 'PATCH',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+        };
+
+        fetch(`${getAddress()}/api/user/update`, requestOptions)
+        .then(response => setLabel("Changes applied"))
+        .catch(error => console.log('error', error));
+    }
+
 
     const editProfileNameHandler = ()=>{
         var myHeaders = new Headers();
@@ -149,9 +186,66 @@ const EditProfileDetails = (props) => {
         };
 
         fetch(`${getAddress()}/api/user/update`, requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
+        .then(response => setLabel("Changes applied"))
         .catch(error => console.log('error', error));
+    }
+
+    const handleFileChange = (e) => {
+        if (e.target.files[0]) {
+            setImage(e.target.files[0]);
+        }
+    }
+
+    const editProfilePictureHandler = () => {
+        if(image==null){
+            alert("You must select an image");
+            return;
+        }
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        let hashed = `${image.name} + ${Date.now()}`;
+
+        const uploadTask = storage.ref(`images/${hashed}`).put(image);
+        uploadTask.on(
+            "state_changed",
+            snapshot => {
+                const prog = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                setProgress(prog);
+            },
+            error => {
+                console.log(error);
+            },
+            () => {
+                storage
+                    .ref("images")
+                    .child(hashed)
+                    .getDownloadURL()
+                    .then(url => {
+                        console.log(url);
+
+                        var raw = JSON.stringify({
+                            "name": "",
+                            "oldPassword": "",
+                            "password": "",
+                            "imagePath": `${url}`
+                        });
+
+                        var requestOptions = {
+                            method: 'PATCH',
+                            headers: myHeaders,
+                            body: raw,
+                            redirect: 'follow'
+                        };
+
+                        fetch(`${getAddress()}/api/user/update`, requestOptions)
+                            .then(response => setLabel("Changes applied"))
+                            .catch(error => console.log('error', error));
+                    });
+            }
+        );
     }
 
     return (
@@ -162,8 +256,8 @@ const EditProfileDetails = (props) => {
             <div>
                 <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
                     <label>Change profile image:</label>
-                    <input type="file" className="form-control-file" style={{margin: "auto", width: "min-content"}} placeholder="New profile image" value={image} onChange={(e)=>setImage(e.target.value)} />
-                    <button className="btn btn-primary" >Change profile image</button>
+                    <input type="file" className="form-control-file" style={{margin: "auto", width: "min-content"}} placeholder="New profile image" onChange={handleFileChange} />
+                    <button className="btn btn-primary" onClick={editProfilePictureHandler}>Change profile image</button>
                     <ProgressBar bgcolor={"#00695c"} completed={progress}/>
                 </div>
                 <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
@@ -175,9 +269,10 @@ const EditProfileDetails = (props) => {
                     <label>Change password:</label>
                     <input type="password" className="form-control" placeholder="Old password" value={oldPassword} onChange={(e)=>setOldPassword(e.target.value)} />
                     <input type="password" className="form-control" placeholder="New password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)}/>
-                    <input type="password" className="form-control" placeholder="Repeat new password" value={repeatNewPassword} onChange={(e)=>setRepeatNewPassword(e.target.value)}/>
-                    <button className="btn btn-primary">Change password</button>
+                    <input type="password" className="form-control" placeholder="Repeat new password" value={repeatNewPassword} onKeyUp={verifyMatchingPasswords} onChange={(e)=>setRepeatNewPassword(e.target.value)}/>
+                    <button className="btn btn-primary" onClick={editProfilePasswordHandler}>Change password</button>
                 </div>
+                <h6>{label}</h6>
             </div>
         </div>
     )
