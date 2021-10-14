@@ -5,7 +5,7 @@ export const useHome = () => {
     const [feed, setFeed] = useState([]);
     const [label, setLabel] = useState('');
 
-    const fetchAll = () => {
+    const fetchAll = () => { //fetch all the posts in the user's feed
         fetch(`${getAddress()}/api/post/feed`)
             .then(response => response.json())
             .then(result => {

@@ -45,6 +45,8 @@ const ProfileFollowButton = (props) => {
         else
             setFlag(true);
             }, [props.followers]);//check the flag each time the followers changed
+
+
     if (!flag) {//if not following - show a follow button
         return (
             <button className="btn btn-outline-info" onClick={() => {
@@ -121,13 +123,20 @@ const ProfileMessageButton = ()=>{
     )
 }
 
+
+/**
+ * This component is responsible for changing user's account details
+ * It will display a form with details to choose from:
+ * Profile picture
+ * Name
+ * Password
+ */
 const EditProfileDetails = (props) => {
     const [image, setImage] = useState(null);
     const [name, setName] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
-
     const [progress, setProgress] = useState(0);
     const [label, setLabel] = useState('');
 
@@ -141,8 +150,9 @@ const EditProfileDetails = (props) => {
         return false;
     }
 
+    //change password
     const editProfilePasswordHandler = ()=>{
-        if(!verifyMatchingPasswords(newPassword,repeatNewPassword))
+        if(!verifyMatchingPasswords(newPassword,repeatNewPassword))//don't do anything if passwords do not match
             return;
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -165,8 +175,10 @@ const EditProfileDetails = (props) => {
         .then(response => setLabel("Changes applied"))
         .catch(error => console.log('error', error));
     }
+    //change password
 
 
+    //change name
     const editProfileNameHandler = ()=>{
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -189,6 +201,8 @@ const EditProfileDetails = (props) => {
         .then(response => setLabel("Changes applied"))
         .catch(error => console.log('error', error));
     }
+    //change name
+
 
     const handleFileChange = (e) => {
         if (e.target.files[0]) {
@@ -196,6 +210,7 @@ const EditProfileDetails = (props) => {
         }
     }
 
+    //change profile picture
     const editProfilePictureHandler = () => {
         if(image==null){
             alert("You must select an image");
@@ -247,6 +262,7 @@ const EditProfileDetails = (props) => {
             }
         );
     }
+    //change profile picture
 
     return (
         <div>
@@ -278,6 +294,9 @@ const EditProfileDetails = (props) => {
     )
 }
 
+/**
+ * This button will view the popup window of the change details form
+ */
 const EditProfileButton = () => {
     const [editPopup, setEditPopup] = useState(false);
 
@@ -292,6 +311,10 @@ const EditProfileButton = () => {
 }
 
 
+
+/**
+ * This component is the user's profile
+ */
 const Profile = () => {
     const [following, setFollowing, followers, setFollowers, posts, name, imagePath, isLoggedProfile, fetchAll] = useProfile();
 
