@@ -129,7 +129,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
                 throw new Exception("Post does not exist!");
 
             //add the comment to the database
-            _context.Comments.Add(new Comments { UserId = comment.UserId, PostId = comment.PostId, Body = comment.Body });
+            _context.Comments.Add(comment);
             return _context.SaveChanges() > 0;
         }
 

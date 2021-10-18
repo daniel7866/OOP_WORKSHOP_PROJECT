@@ -178,6 +178,8 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return Unauthorized();
             }
 
+            comment.DatePosted = DateTime.Now;
+
             _postRepo.Comment(comment.PostId, comment);
 
             return Created("Comment posted succesfully",comment);
