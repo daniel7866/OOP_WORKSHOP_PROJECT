@@ -144,22 +144,22 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             if (!String.IsNullOrEmpty(newUserInfo.Email))//if he wants to change his email - validate it
             {
                 if (!ValidateEmail(newUserInfo.Email))
-                    return BadRequest("Invalid email");
+                    return BadRequest(new { message = "Invalid email"});
                 if(_repo.GetUserByEmail(newUserInfo.Email) != null){
-                    return BadRequest("Email already exists");
+                    return BadRequest(new { message = "Email already exists"});
                 }
             }
 
             if (!String.IsNullOrEmpty(newUserInfo.Password))
             { 
                 if (!ValidatePassword(newUserInfo.Password))
-                    return BadRequest("Password must be at least 4 characters long and include one letter and one number"); 
+                    return BadRequest(new { message = "Password must be at least 4 characters long and include one letter and one number" }); 
             }
 
             try
             {
                 _repo.UpdateUserInfo(newUserInfo,user.Id);
-                return Created("success", newUserInfo);
+                return Ok(new { message = "Changes applied" });
             }
 
             catch(Exception e) { return BadRequest(e.InnerException.Message.ToString()); }

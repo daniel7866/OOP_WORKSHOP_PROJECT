@@ -172,7 +172,8 @@ const EditProfileDetails = (props) => {
         };
 
         fetch(`${getAddress()}/api/user/update`, requestOptions)
-        .then(response => setLabel("Changes applied"))
+        .then(response => response.json())
+        .then(result => setLabel(result.message))
         .catch(error => console.log('error', error));
     }
     //change password
@@ -198,7 +199,8 @@ const EditProfileDetails = (props) => {
         };
 
         fetch(`${getAddress()}/api/user/update`, requestOptions)
-        .then(response => setLabel("Changes applied"))
+        .then(response => response.json())
+        .then(result => setLabel(result.message))
         .catch(error => console.log('error', error));
     }
     //change name
@@ -256,7 +258,8 @@ const EditProfileDetails = (props) => {
                         };
 
                         fetch(`${getAddress()}/api/user/update`, requestOptions)
-                            .then(response => setLabel("Changes applied"))
+                        .then(response => response.json())
+                        .then(result => setLabel(result.message))
                             .catch(error => console.log('error', error));
                     });
             }
