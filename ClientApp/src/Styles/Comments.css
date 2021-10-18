@@ -4,3 +4,10 @@
 
     box-shadow: #282c34 0 0 4px 0;
 }
+
+.comments-list-container{
+    /* overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10cm; */
+}

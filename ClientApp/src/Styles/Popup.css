@@ -1,6 +1,6 @@
 ﻿.popup {
     position: fixed;
-    top: 0;
+    top: 0px;
     left: 0;
     width: 100%;
     height: 100vh;
@@ -16,11 +16,14 @@
     padding: 32px;
     width: 100%;
     max-width: 640px;
+    max-height: 700px;
     background-color: #FFF;
 
     border-radius: 2rem;
 
     box-shadow: rgb(128 128 128) 0px 0px 10px;
+
+    overflow-y: auto;
 }
 
 .popup-inner .close-btn{

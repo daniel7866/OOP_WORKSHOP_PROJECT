@@ -48,7 +48,7 @@ const CommentsList = (props) => {
     }
 
     return (
-        <div>
+        <div className="comments-list-container">
             <button className="btn btn-outline-danger" onClick={()=>props.setTrigger(false)} >Close Window</button>
             <br />
             <label>Comments on this post:</label>
