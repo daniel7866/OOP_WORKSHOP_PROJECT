@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace OOP_WORKSHOP_PROJECT.Data
 {
+
+    /*
+        This is a mock class for testing purposes using lists to store the data
+    */
     public class MockPostRepo : IPostRepo
     {
         private readonly List<Post> _posts;

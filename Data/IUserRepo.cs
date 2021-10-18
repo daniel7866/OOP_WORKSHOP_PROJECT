@@ -22,7 +22,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         bool AddUser(User user);
 
-        bool UpdateUserInfo(UpdateUserDto newInfo,int userId);
+        bool UpdateUserInfo(UpdateUserDto newInfo,int userId); // change details of existing user in the database
 
         bool FollowUser(int followingId, int followedId);
 
@@ -33,14 +33,14 @@ namespace OOP_WORKSHOP_PROJECT.Data
         //get all users' ids that follow this user
         IEnumerable<int> GetFollowers(int userId);
 
-        IEnumerable<User> SearchUser(String searchInput);
+        IEnumerable<User> SearchUser(String searchInput); // search for users using a search input
 
         bool AddMessage(Message message);
 
-        IEnumerable<Message> GetMessages(int userId);
+        IEnumerable<Message> GetMessages(int userId); // get all the messages of a particular user(that he sent and received)
 
-        IEnumerable<int> GetMessagedUsers(int loggedUserId);
+        IEnumerable<int> GetMessagedUsers(int loggedUserId); // get all the users' id's that have messages with this user
 
-        IEnumerable<Message> GetMessagesFromUser(int loggedUserId, int userId);
+        IEnumerable<Message> GetMessagesFromUser(int loggedUserId, int userId); // get messages involving two users
     }
 }

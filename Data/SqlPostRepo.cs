@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace OOP_WORKSHOP_PROJECT.Data
 {
+    /*
+        This class implements the functionality of IPostRepo (The posts' repository) through SQL database
+    */
     public class SqlPostRepo : IPostRepo
     {
-        private readonly PostContext _context;
+        private readonly PostContext _context; //SQL database must have a context class
 
         public SqlPostRepo(PostContext context)
         {
@@ -19,7 +22,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
         {
             _context.Posts.Add(post);
 
-            return _context.SaveChanges() > 0;
+            return _context.SaveChanges() > 0; // save the changes to the database
         }
 
         public bool RemovePost(int postId)
@@ -37,6 +40,10 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return _context.Posts.ToList();
         }
 
+
+        /*
+            Get the list of all users' id's that likes this postId
+        */
         public IEnumerable<int> GetLikes(int postId)
         {
             var likes = (from row in _context.Likes
@@ -53,6 +60,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return post;
         }
 
+        //Get all the posts this userId has uploaded
         public IEnumerable<Post> GetUserPosts(int userId)
         {
             var posts = (from row in _context.Posts
@@ -68,50 +76,59 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         public bool LikePost(int postId, int userId)
         {
+            // check that the post exists
             var post = (from row in _context.Posts
                         where row.Id == postId
                         select row).FirstOrDefault();
             if (post is null)
                 throw new Exception("Post does not exist!");
-
+            
+            //check that user does not already like this post
             var like = (from row in _context.Likes
                         where row.PostId == postId && row.UserId == userId
                         select row).FirstOrDefault();
             if (like != null)
                 throw new Exception("you already like this post");
 
+            //add the like to the database
             _context.Likes.Add(new Likes { PostId = postId, UserId = userId });
             return _context.SaveChanges() > 0;
         }
 
         public bool UnLikePost(int postId, int userId)
         {
+            // check that the post exists
             var post = (from row in _context.Posts
                         where row.Id == postId
                         select row).FirstOrDefault();
             if (post is null)
                 throw new Exception("Post does not exist!");
-
+            
+            //check that user does like this post
             var like = (from row in _context.Likes
                         where row.PostId == postId && row.UserId == userId
                         select row).FirstOrDefault();
 
             if (like is null)
                 return false;
+            
 
+            //remove the like from the database
             _context.Remove(like);
             return _context.SaveChanges() > 0;
         }
 
+        //add a new comment to a post
         public bool Comment (int postId, Comments comment)
         {
+            //check that the post exists
             var post = (from row in _context.Posts
                         where row.Id == postId
                         select row).FirstOrDefault();
             if (post is null)
                 throw new Exception("Post does not exist!");
 
-
+            //add the comment to the database
             _context.Comments.Add(new Comments { UserId = comment.UserId, PostId = comment.PostId, Body = comment.Body });
             return _context.SaveChanges() > 0;
         }
@@ -123,18 +140,22 @@ namespace OOP_WORKSHOP_PROJECT.Data
                         select row).FirstOrDefault();
             if (commentToRemove is null)
                 throw new Exception("Comment does not exist!");
-            if (commentToRemove.UserId != userId)
+            if (commentToRemove.UserId != userId) //user must be the owner of the comment in order to remove it
                 throw new Exception("Not your comment!");
 
             _context.Comments.Remove(commentToRemove);
             return _context.SaveChanges() > 0;
         }
 
-        public IEnumerable<Comments> GetAllComments()
+        public IEnumerable<Comments> GetAllComments() //get all the comments in the database from all posts
         {
             return _context.Comments.ToList();
         }
 
+
+        /*
+            Get all the comments of a particular post ordered by their dates from recent to old
+        */
         public IEnumerable<Comments> GetPostComments(int postId)
         {
             var comments = (IEnumerable<Comments>)(from row in _context.Comments

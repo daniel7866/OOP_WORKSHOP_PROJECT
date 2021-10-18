@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace OOP_WORKSHOP_PROJECT.Data
 {
+    /*
+        This class connects to the post's database.
+        It stores all the tables that are related to posts:
+            *Posts
+            *Likes to posts
+            *Comments to posts
+    */
     public class PostContext : DbContext
     {
         public PostContext(DbContextOptions<PostContext> opt) : base(opt)
@@ -16,8 +23,9 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*            modelBuilder.Entity<Likes>().HasNoKey();*/
+            //Convert the 'DateTime' C# type to 'datetime2' SQL type
             modelBuilder.Entity<Post>().Property(u => u.DatePosted).HasColumnType("datetime2").HasPrecision(0);
+            modelBuilder.Entity<Comments>().Property(u => u.DatePosted).HasColumnType("datetime2").HasPrecision(0);
         }
 
         public DbSet<Post> Posts { get; set; }

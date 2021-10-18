@@ -65,6 +65,9 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(dto);
         }
 
+        /*
+            Search for users using a search input
+        */
         [HttpPost("search/")]
         public ActionResult<User> SearchUser(dynamic searchInput)
         {

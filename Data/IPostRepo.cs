@@ -15,11 +15,11 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         Post GetPostById(int postId);
 
-        IEnumerable<Post> GetAllPosts();
+        IEnumerable<Post> GetAllPosts(); //get all the posts in the database from all users
 
         IEnumerable<Post> GetUserPosts(int userId);
 
-        IEnumerable<Post> Feed(int userId);
+        IEnumerable<Post> Feed(int userId); //get the feed of a particular user
 
         bool AddPost(Post post);
 
@@ -28,15 +28,15 @@ namespace OOP_WORKSHOP_PROJECT.Data
         //get all users' ids that likes this postId
         IEnumerable<int> GetLikes(int postId);
 
-        bool LikePost(int postId, int userId);
+        bool LikePost(int postId, int userId); // userId likes postId
 
         bool UnLikePost(int postId, int userId);
 
         public bool Comment(int postId, Comments comment);
 
-        public IEnumerable<Comments> GetAllComments();
+        public IEnumerable<Comments> GetAllComments(); // get all comments in the database from all users
 
-        public IEnumerable<Comments> GetPostComments(int postId);
+        public IEnumerable<Comments> GetPostComments(int postId); // get all comments of a particular post
 
         public bool RemoveComment(int commentId, int userId);
     }
