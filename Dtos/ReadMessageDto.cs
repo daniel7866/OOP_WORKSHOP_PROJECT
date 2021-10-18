@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace OOP_WORKSHOP_PROJECT.Dtos
 {
+    /*
+        This object is sent to the client when he wants to get a message object.
+    */
     public class ReadMessageDto
     {
         public int Id { get; set; } //Message Id
