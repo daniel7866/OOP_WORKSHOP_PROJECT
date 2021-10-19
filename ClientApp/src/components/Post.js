@@ -99,7 +99,7 @@ const Post = (props) => {
                     <LikesList likes={likes} setTrigger={setLikesPopupTrigger} />
                 </Popup>
                 
-                <button className="btn btn-outline-primary" onClick={()=>setCommentsPopupTrigger(true)} >{comments.length == 1 ? comments.length + " comments" : comments.length + " comments"}</button>
+                <button className="btn btn-outline-primary" onClick={()=>setCommentsPopupTrigger(true)} >{comments.length == 1 ? comments.length + " comment" : comments.length + " comments"}</button>
                 <Popup trigger={commentsPopupTrigger} >
                     <CommentsList postId={props.id} comments={comments} setComments={setComments} setTrigger={setCommentsPopupTrigger} />
                 </Popup>

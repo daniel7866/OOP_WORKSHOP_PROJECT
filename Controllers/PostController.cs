@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OOP_WORKSHOP_PROJECT.Helpers;
+using OOP_WORKSHOP_PROJECT.Authorization;
 
 namespace OOP_WORKSHOP_PROJECT.Controllers
 {
@@ -26,11 +26,11 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
     {
         private readonly IPostRepo _postRepo; //the repository in which the posts are stored
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly JwtService _jwtService; // handles json web tokens cookies for authorizing actions
+        private readonly IAuthorize _jwtService; // handles json web tokens cookies for authorizing actions
         private readonly IUserRepo _userRepo; // the repository in which the users are stored
 
         //all the properties will be inject using dependency injection in ConfigureServices() method in Startup.CS file
-        public PostController(IPostRepo repo, IWebHostEnvironment webHostEnvironment, JwtService jwtService, IUserRepo userRepo)
+        public PostController(IPostRepo repo, IWebHostEnvironment webHostEnvironment, IAuthorize jwtService, IUserRepo userRepo)
         {
             _postRepo = repo;
             _webHostEnvironment = webHostEnvironment;

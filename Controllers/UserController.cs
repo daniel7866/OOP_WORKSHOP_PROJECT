@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OOP_WORKSHOP_PROJECT.Data;
 using OOP_WORKSHOP_PROJECT.Dtos;
-using OOP_WORKSHOP_PROJECT.Helpers;
+using OOP_WORKSHOP_PROJECT.Authorization;
 using OOP_WORKSHOP_PROJECT.Models;
 using System;
 using System.Collections.Generic;
@@ -27,13 +27,13 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
     {
         private readonly IUserRepo _repo; // the repository in which the users are stored
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly JwtService _jwtService; // json web tokens service for verifying indentity
+        private readonly IAuthorize _jwtService; // json web tokens service for verifying indentity
 
         //This is the default empty profile picture every new user will have untill he uploads a new one
         private readonly string EMPTY_PICTURE = "https://firebasestorage.googleapis.com/v0/b/oop-project-5cde7.appspot.com/o/images%2Fblank-profile-picture-973460_1280.png%20%2B%201634107421204?alt=media&token=2b476f59-ba06-45ad-ba3b-92025e7863f0";
 
         //get the properties using dependency injection in ConfigureServices() in Startup.CS file
-        public UserController(IUserRepo repo, IWebHostEnvironment webHostEnvironment, JwtService jwtService)
+        public UserController(IUserRepo repo, IWebHostEnvironment webHostEnvironment, IAuthorize jwtService)
         {
             _repo = repo;
             _webHostEnvironment = webHostEnvironment;
@@ -185,7 +185,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return BadRequest(new { message = "Invalid Credentials" });
             
             //After validating all the details, create a web token and send it to the user's cookies
-            var jwt = _jwtService.generate(user.Id);
+            var jwt = _jwtService.Generate(user.Id);
 
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
@@ -244,7 +244,6 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             try
             {
                 var jwt = Request.Cookies["jwt"]; //verify his indentity
-                var token = _jwtService.Verify(jwt);
                 var userId = _jwtService.GetUserId(jwt);
                 return Ok(_repo.GetMessages(userId).OrderBy(x => x.DateSent)); // sort them from old to new
             }
@@ -268,7 +267,6 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             {
                 //verify indentity
                 var jwt = Request.Cookies["jwt"];
-                var token = _jwtService.Verify(jwt);
                 var userId = _jwtService.GetUserId(jwt);
                 
                 //get users id list
@@ -302,7 +300,6 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             try
             {
                 var jwt = Request.Cookies["jwt"];
-                var token = _jwtService.Verify(jwt);
                 var loggedUserId = _jwtService.GetUserId(jwt);
                 return Ok(_repo.GetMessagesFromUser(loggedUserId, userId));
             }

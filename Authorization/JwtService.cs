@@ -6,12 +6,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace OOP_WORKSHOP_PROJECT.Helpers
+namespace OOP_WORKSHOP_PROJECT.Authorization
 {
-    public class JwtService
+    public class JwtService : IAuthorize
     {
         private string secureKey = "amazingly few discotheques provide jukeboxes";
-        public string generate(int id)
+        public string Generate(int id)
         {
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secureKey));
             var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
@@ -23,7 +23,7 @@ namespace OOP_WORKSHOP_PROJECT.Helpers
             return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
 
-        public JwtSecurityToken Verify(string jwt)
+        private JwtSecurityToken Verify(string jwt)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secureKey);
