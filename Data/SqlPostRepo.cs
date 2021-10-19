@@ -25,12 +25,30 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return _context.SaveChanges() > 0; // save the changes to the database
         }
 
+        /*
+            Remove an existing post from the database.
+            In order to do that we also need to remove all of it's likes and comments
+        */
         public bool RemovePost(int postId)
         {
             var post = GetPostById(postId);
             if (post is null)
                 throw new Exception("Post does not exist");
-            _context.Remove(post);
+            
+            //get likes and comments of the post
+            var post_comments = GetPostComments(postId);
+            var post_likes = (from row in _context.Likes
+                                where row.PostId == postId
+                                select row).ToList();
+            
+            //remove likes and comments of the post
+            foreach(var comment in post_comments)
+                _context.Comments.Remove(comment);
+            foreach(var like in post_likes)
+                _context.Likes.Remove(like);
+            
+            //remove the post
+            _context.Posts.Remove(post);
 
             return _context.SaveChanges() > 0;
         }
