@@ -6,12 +6,14 @@ import "../Styles/Comments.css";
 
 import { useSelector, useDispatch } from "react-redux";
 
-
+/** 
+ * This component is a container that holds all comments on a particular post
+*/
 const CommentsList = (props) => {
     const user = useSelector(state => state.user);
     const [text, setText] = useState('');
 
-    const AddCommentHandler = ()=> {
+    const AddCommentHandler = ()=> { //create a new comment
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -35,7 +37,7 @@ const CommentsList = (props) => {
         .catch(error => console.log('error', error));
     }
 
-    const getComments = ()=>{
+    const getComments = ()=>{ //get all the comments of a post
         var requestOptions = {
             method: 'GET',
             redirect: 'follow'

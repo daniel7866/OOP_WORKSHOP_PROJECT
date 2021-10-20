@@ -6,16 +6,24 @@ import Tab from './Tab';
 import "../Styles/Images.css";
 import MessagesContainer from './MessagesContainer';
 
+/** 
+ * This component is the messages page.
+ * It contains tabs of all active conversation(tab for each user)
+ * When clicking on a tab it will display a 'MessageContainer' component in which it will show all messages with this user
+*/
 const Messages = (props) => {
-    const user = useSelector(state => state.user);
+    const user = useSelector(state => state.user);//get logged user from redux state
+
+    //custom hook for fetching messages
+    //messagedUsers-users we have messages with
     const [messages, messagedUsers, label, fetchMessagedUsers, fetchMessagesWithUser] = useMessages();
 
     useEffect(()=>{
         if(user != null && user.uid != null)
             fetchMessagedUsers();
-    },[user]);
+    },[user]); // fetch the users after loading redux state
 
-    const [selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState(null); // a state for tab selection
 
     return (
         <div>

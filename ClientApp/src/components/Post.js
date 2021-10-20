@@ -8,7 +8,7 @@ import Popup from "./Popup";
 import LikesList from "./LikesList";
 import CommentsList from "./CommentsList";
 
-
+//like post - logic
 const likePost = (postId,setLikes) => {
     var requestOptions = {
         method: 'POST',
@@ -24,6 +24,7 @@ const likePost = (postId,setLikes) => {
         .catch(error => console.log('error', error));
 }
 
+//unlike post - logic
 const unlikePost = (postId, setLikes) => {
     var requestOptions = {
         method: 'DELETE',
@@ -39,9 +40,12 @@ const unlikePost = (postId, setLikes) => {
         .catch(error => console.log('error', error));
 }
 
+// like/unlike post - button
 const PostLikeButton = (props) => {
     const user = useSelector(state => state.user);
 
+    // if user does not like the post - display a like button
+    // otherwise - display an unlike button
     if (props.likes.indexOf(user.uid) < 0) {
         return (
             <button className="btn btn-outline-info" title="like" onClick={() => { likePost(props.postId, props.setLikes) }}>👍🏻</button >
@@ -56,6 +60,16 @@ const PostLikeButton = (props) => {
     return null;
 }
 
+/**
+ * Post component:
+ * A post will have:
+ *  Post owner (user name, link and profile picture)
+ *  Time of post
+ *  Image
+ *  Text
+ * Few buttons including:
+ *  Delete, like and comment
+ */
 const Post = (props) => {
     const deleteHandler = () => {
         if (!window.confirm("Are you sure you want to delete this post?")) {
@@ -71,9 +85,11 @@ const Post = (props) => {
             .catch(error => console.log('error', error));
     }
 
+    //likes
     const [likes, setLikes] = useState(props.likes);
     const [likesPopupTrigger, setLikesPopupTrigger] = useState(false);
 
+    //comments
     const [comments, setComments] = useState(props.comments);
     const [commentsPopupTrigger, setCommentsPopupTrigger] = useState(false);
 
@@ -85,11 +101,15 @@ const Post = (props) => {
                 </div>
                     <h5><Link to={`/profile/${props.user.id}`}>{props.user.name}</Link></h5>
             </div>
+
             <p>{ props.datePosted }</p>
+
             <div className="post-image-container">
                 <img className="post-image" src={props.imagePath} width="300" height="300" />
             </div>
+
             <p>{props.description}</p>
+
             <div className="post-bottom-container">
                 {props.ownedByLoggedUser ? <button className="btn btn-outline-danger" title="remove" onClick={deleteHandler} ><span >🗑</span></button> : null}
                 <PostLikeButton postId={props.id} likes={likes} setLikes={setLikes} />

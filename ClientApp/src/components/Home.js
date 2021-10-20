@@ -6,12 +6,16 @@ import { useSelector } from 'react-redux';
 import "../Styles/Profile.css";
 import "../Styles/Images.css";
 
+/** 
+ * This component represents the home page that holds the posts' feed of the logged in user
+*/
 const Home = () => {
-    const [feed, label, fetchAll] = useHome();
-    const [refresh, setRefresh] = useState(false);
-    const user = useSelector(state => state.user);
+    const [feed, label, fetchAll] = useHome(); // custom hook for fetching posts
+    const [refresh, setRefresh] = useState(false); // a flag for updating components
 
-    useEffect(() => { fetchAll() }, [refresh, user]);
+    const user = useSelector(state => state.user); // use redux to get logged user id
+
+    useEffect(() => { fetchAll() }, [refresh, user]); // fetch feed everytime there is a change of state
 
     return (
         <div className="profile-post-container">

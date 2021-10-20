@@ -12,6 +12,7 @@ import "../Styles/Images.css";
 import { useSelector, useDispatch } from "react-redux";
 import ProgressBar from "./ProgressBar";
 
+//follow user - logic
 const followUser = (id) => {
     var requestOptions = {
         method: 'POST',
@@ -23,6 +24,7 @@ const followUser = (id) => {
         .catch(error => console.log('error', error));
 }
 
+//unfollow user - logic
 const unfollowUser = (id) => {
     var requestOptions = {
         method: 'DELETE',
@@ -34,9 +36,13 @@ const unfollowUser = (id) => {
         .catch(error => console.log('error', error));
 }
 
+
+// this button will check if we are following this user:
+// if we are - display an unfollow button
+// otherwise - display a follow button
 const ProfileFollowButton = (props) => {
     const uid = parseInt(takeLastUrlItem(window.location.pathname)); // user id of current profile showing based on url
-    const user = useSelector(state => state.user);
+    const user = useSelector(state => state.user); // logged user from redux state
     const [flag, setFlag] = useState(false); //flag is true if i'm already follow this user
 
     useEffect(() => {
@@ -77,12 +83,13 @@ const ProfileFollowButton = (props) => {
 
 /**
  * 
- * This button will be revealed when visiting a different profile, when pressing it will show a popup of an input field to send a message to that particular user
+ * This button will be revealed when visiting a different profile, when pressing it will show a popup of an input field to send a quick message to that particular user
+ * When clicking on this button it will display the sendMessageComponent in a new popup window
  */
 const ProfileMessageButton = ()=>{
     const uid = parseInt(takeLastUrlItem(window.location.pathname)); // user id of current profile showing based on url
     const [text, setText] = useState('');
-    const [messagePopupTrigger, setMessagePopupTrigger] = useState(false);
+    const [messagePopupTrigger, setMessagePopupTrigger] = useState(false); // state for displaying the popup component - default is false
 
     const sendMessageHandler = ()=>{
         var myHeaders = new Headers();

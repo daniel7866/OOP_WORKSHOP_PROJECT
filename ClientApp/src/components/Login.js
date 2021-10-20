@@ -4,7 +4,7 @@ import { useFirstLogin, useLogin } from "../hooks/useLogin";
 const Login = () => {
     useFirstLogin();//first try to login automatically if possible
 
-    const [email, setEmail, password, setPassword, label, loginHandler] = useLogin();
+    const [email, setEmail, password, setPassword, label, loginHandler] = useLogin(); // use custom hook for logic
 
     return (
         <form className="login-form">

@@ -2,6 +2,9 @@ import React, {useEffect, useState} from "react";
 import { getAddress } from "../Services";
 import "../Styles/Message.css";
 
+// a simple message component which displays the message content with css styles:
+// messages from logged user are displayed on the right in green
+// messages from other users are displayed on the left in gray
 const Message = (props) => {
     return (
         <div className={`message ${(props.loggedUserId === props.message.senderId)?"right":"left"}`}>
@@ -10,8 +13,11 @@ const Message = (props) => {
     )
 }
 
+/**
+ * This component displays all the messages with a particular user
+ */
 const MessagesContainer = (props) => {
-    const [text, setText] = useState('');
+    const [text, setText] = useState(''); // state for sending a new message
     
     const sendMessageHandler = ()=>{
         var myHeaders = new Headers();
@@ -33,14 +39,15 @@ const MessagesContainer = (props) => {
 
         fetch(`${getAddress()}/api/user/message`, requestOptions)
         .then(response => response.json())
-        .then(result => props.fetchMessages())
+        .then(result => props.fetchMessages()) // after sending a message refresh messages
         .catch(error => console.log('error', error));
     }
 
     useEffect(()=>{
         props.fetchMessages();
-    },[]);
+    },[]); // fetch messages when component mounts
 
+    // scroll to the bottom automatically to view the most recent message
     useEffect(()=>{
         let messageContainerDiv = document.getElementById("messages-container1");
         messageContainerDiv.scrollTop = messageContainerDiv.scrollHeight;

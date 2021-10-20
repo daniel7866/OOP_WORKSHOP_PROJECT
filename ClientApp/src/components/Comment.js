@@ -3,6 +3,10 @@ import ProfileListItem from './ProfileListItem';
 import "../Styles/Comments.css";
 import { getAddress } from '../Services';
 
+/** 
+ * This component is a comment on a post.
+ * A comment is simply text.
+*/
 const Comment = (props) => {
     
     const removeComment = () =>{

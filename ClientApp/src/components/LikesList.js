@@ -2,6 +2,10 @@
 import ProfileListItem from "./ProfileListItem";
 import { getUsers } from "../Services";
 
+/** 
+ * This component is a list of all likes to a particular post.
+ * It will display a list of users that likes this post.
+*/
 const LikesList = (props) => {
     const [likesUsers, setLikesUsers] = useState([]);
 

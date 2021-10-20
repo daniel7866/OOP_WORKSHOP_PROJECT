@@ -55,6 +55,19 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(dto);
         }
 
+        /*
+            This method will receive a jwt and give the user the appropriate User object.
+        */
+        [HttpGet("token")]
+        public ActionResult<ReadUserDto> GetUserFromToken()
+        {
+            var user = GetUserByToken();
+            if (user is null)
+                return NotFound();
+            ReadUserDto dto = Services.MapToReadUserDto(user,_repo);
+            return Ok(dto);
+        }
+
         [HttpGet("email/{email}")]
         public ActionResult<ReadUserDto> GetUserByEmail(string email)
         {

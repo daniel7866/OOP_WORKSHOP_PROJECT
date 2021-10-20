@@ -4,18 +4,24 @@ import "../Styles/Post.css";
 import { storage } from "../firebase/index.js";
 import ProgressBar from "./ProgressBar"
 
+
+/** 
+ * This component is a form that adds a new post to the application.
+ * A post includes an image and a text description.
+ * It includes a progress bar for the image upload.
+*/
 const AddPost = (props) => {
     const [text, setText] = useState('');
     const [image, setImage] = useState(null);
     const [progress, setProgress] = useState(0);
 
-    const handleChange = e => {
+    const handleChange = e => { //file change handler
         if (e.target.files[0]) {
             setImage(e.target.files[0]);
         }
     };
 
-    const uploadHandler = () => {
+    const uploadHandler = () => { //upload the image to firebase
         if(image==null){
             alert("You must select an image");
             return;

@@ -5,22 +5,15 @@ import { getAddress } from "../Services";
 
 
     /**
-     * This code will try to get the user from a token saved on cookie, if succeded - user can surf the site, else - needs to login with the form below
+     * This code will try to get the user from a token saved on cookie, if succeded - user can surf the site, else - needs to login with the form below.
+     * The login will update the user in the global state in Redux
      * */
 export const useFirstLogin = () => {
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
     const [flag, setFlag] = useState(true);
-    if (flag) {
-        var myHeaders = new Headers();
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            redirect: 'follow'
-        };
-
-        fetch(`${getAddress()}/api/user/getUser`, requestOptions)
+    if (flag) { // make sure we run only once
+        fetch(`${getAddress()}/api/user/token`)
             .then(response => response.json())
             .then(result => { dispatch(login(result)); })
             .catch(error => console.log('error', error));
@@ -28,14 +21,19 @@ export const useFirstLogin = () => {
     }
 }
 
+/**
+ * This custom hook will store the information the user is typing for login and send the request.
+ * After a successfull login - the user state will be stored in Redux gloal state
+ */
 export const useLogin = () => {
+    //redux state management
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const [label, setLabel] = useState('');
+    const [label, setLabel] = useState(''); // label for error messages
 
     const loginHandler = (e) => {
         e.preventDefault();
@@ -56,7 +54,7 @@ export const useLogin = () => {
 
         fetch(`${getAddress()}/api/user/login`, requestOptions)
             .then(response => response.json())
-            .then(result => { console.log(result); setLabel(result.message); dispatch(login(result)); })
+            .then(result => { setLabel(result.message); dispatch(login(result)); })
             .catch(error => null);
 
     }
