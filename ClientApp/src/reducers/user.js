@@ -1,6 +1,7 @@
 ﻿/*
+ * Redux global state
  * User reducer will represent the user state:
- * The state contains jwt, user_id and user_email.
+ * The state contains user_id, user_email and user_name.
  * The default state sets all the fields to null
  * */
 

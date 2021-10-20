@@ -1,6 +1,10 @@
 ﻿import React, { useState } from "react";
 import { getAddress } from "../Services";
 
+
+/**
+ * This custom hook will load all the posts in the user feed and store the result in a state
+ */
 export const useHome = () => {
     const [feed, setFeed] = useState([]);
     const [label, setLabel] = useState('');

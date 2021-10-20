@@ -1,6 +1,10 @@
 ﻿import React, { useState } from 'react';
 import { getAddress } from "../Services";
 
+/**
+ * This custom hook will register a new user into the system.
+ * After successfull register it will redirect the user to the login page.
+ */
 export const useRegister = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');

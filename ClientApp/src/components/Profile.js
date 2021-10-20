@@ -3,6 +3,7 @@ import Post from "./Post";
 import ProfileListItem from "./ProfileListItem";
 import { useProfile } from "../hooks/useProfile";
 import AddPost from "./AddPost";
+import EditProfileDetails from './EditProfileDetails';
 import { storage } from "../firebase/index.js";
 import { takeLastUrlItem, getAddress, findIdInUserList, getUsers } from "../Services";
 import Popup from "./Popup";
@@ -130,180 +131,6 @@ const ProfileMessageButton = ()=>{
     )
 }
 
-
-/**
- * This component is responsible for changing user's account details
- * It will display a form with details to choose from:
- * Profile picture
- * Name
- * Password
- */
-const EditProfileDetails = (props) => {
-    const [image, setImage] = useState(null);
-    const [name, setName] = useState('');
-    const [oldPassword, setOldPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [repeatNewPassword, setRepeatNewPassword] = useState('');
-    const [progress, setProgress] = useState(0);
-    const [label, setLabel] = useState('');
-
-    const verifyMatchingPasswords = () => {
-        if(repeatNewPassword===newPassword){
-            setLabel("");
-            return true;
-        }
-        //else
-        setLabel("Passwords do not match!");
-        return false;
-    }
-
-    //change password
-    const editProfilePasswordHandler = ()=>{
-        if(!verifyMatchingPasswords(newPassword,repeatNewPassword))//don't do anything if passwords do not match
-            return;
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        var raw = JSON.stringify({
-        "name": "",
-        "oldPassword": oldPassword,
-        "password": newPassword,
-        "imagePath": ""
-        });
-
-        var requestOptions = {
-        method: 'PATCH',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-        };
-
-        fetch(`${getAddress()}/api/user/update`, requestOptions)
-        .then(response => response.json())
-        .then(result => setLabel(result.message))
-        .catch(error => console.log('error', error));
-    }
-    //change password
-
-
-    //change name
-    const editProfileNameHandler = ()=>{
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        var raw = JSON.stringify({
-        "name": name,
-        "oldPassword": "",
-        "password": "",
-        "imagePath": ""
-        });
-
-        var requestOptions = {
-        method: 'PATCH',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-        };
-
-        fetch(`${getAddress()}/api/user/update`, requestOptions)
-        .then(response => response.json())
-        .then(result => setLabel(result.message))
-        .catch(error => console.log('error', error));
-    }
-    //change name
-
-
-    const handleFileChange = (e) => {
-        if (e.target.files[0]) {
-            setImage(e.target.files[0]);
-        }
-    }
-
-    //change profile picture
-    const editProfilePictureHandler = () => {
-        if(image==null){
-            alert("You must select an image");
-            return;
-        }
-
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        let hashed = `${image.name} + ${Date.now()}`;
-
-        const uploadTask = storage.ref(`images/${hashed}`).put(image);
-        uploadTask.on(
-            "state_changed",
-            snapshot => {
-                const prog = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                setProgress(prog);
-            },
-            error => {
-                console.log(error);
-            },
-            () => {
-                storage
-                    .ref("images")
-                    .child(hashed)
-                    .getDownloadURL()
-                    .then(url => {
-                        console.log(url);
-
-                        var raw = JSON.stringify({
-                            "name": "",
-                            "oldPassword": "",
-                            "password": "",
-                            "imagePath": `${url}`
-                        });
-
-                        var requestOptions = {
-                            method: 'PATCH',
-                            headers: myHeaders,
-                            body: raw,
-                            redirect: 'follow'
-                        };
-
-                        fetch(`${getAddress()}/api/user/update`, requestOptions)
-                        .then(response => response.json())
-                        .then(result => setLabel(result.message))
-                            .catch(error => console.log('error', error));
-                    });
-            }
-        );
-    }
-    //change profile picture
-
-    return (
-        <div>
-            <button className="btn btn-outline-danger" onClick={()=>props.setEditPopup(false)} >Close Window</button>
-            <br />
-            <label>Edit profile details:</label>
-            <div>
-                <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
-                    <label>Change profile image:</label>
-                    <input type="file" className="form-control-file" style={{margin: "auto", width: "min-content"}} placeholder="New profile image" onChange={handleFileChange} />
-                    <button className="btn btn-primary" onClick={editProfilePictureHandler}>Change profile image</button>
-                    <ProgressBar bgcolor={"#00695c"} completed={progress}/>
-                </div>
-                <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
-                    <label>Change profile name:</label>
-                    <input type="text" className="form-control" placeholder="New name" value={name} onChange={(e)=>setName(e.target.value)} />
-                    <button className="btn btn-primary" onClick={editProfileNameHandler}>Change profile name</button>
-                </div>
-                <div style={{margin: "1rem" , padding: "1rem", display: "flex", flexDirection: "column",  backgroundColor: "background-color: rgba(229, 229, 229, 0.8)", borderRadius: "1rem", boxShadow: "#282c34 0 0 4px 0", padding: "1px", alignItems: "center"}} >
-                    <label>Change password:</label>
-                    <input type="password" className="form-control" placeholder="Old password" value={oldPassword} onChange={(e)=>setOldPassword(e.target.value)} />
-                    <input type="password" className="form-control" placeholder="New password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)}/>
-                    <input type="password" className="form-control" placeholder="Repeat new password" value={repeatNewPassword} onKeyUp={verifyMatchingPasswords} onChange={(e)=>setRepeatNewPassword(e.target.value)}/>
-                    <button className="btn btn-primary" onClick={editProfilePasswordHandler}>Change password</button>
-                </div>
-                <h6>{label}</h6>
-            </div>
-        </div>
-    )
-}
-
 /**
  * This button will view the popup window of the change details form
  */
@@ -328,12 +155,12 @@ const EditProfileButton = () => {
 const Profile = () => {
     const [following, setFollowing, followers, setFollowers, posts, name, imagePath, isLoggedProfile, fetchAll] = useProfile();
 
-    const [refresh, setRefresh] = useState(false);
+    const [refresh, setRefresh] = useState(false); // flag for refreshing page
 
     useEffect(() => {
         fetchAll();
     }
-        ,[refresh]);
+        ,[refresh]); // reload every refresh
 
     return (
         <div className="profile-container">

@@ -1,6 +1,10 @@
 ﻿import firebase from "firebase/compat/app";
 import "firebase/compat/storage";
 
+/**
+ * This file contains the firebase storage details for uploading images
+ */
+
 const firebaseConfig = {
     apiKey: "AIzaSyAgnWt531K5SGNbGwMQ-TNXU-gGBbwHRL8",
     authDomain: "oop-project-5cde7.firebaseapp.com",

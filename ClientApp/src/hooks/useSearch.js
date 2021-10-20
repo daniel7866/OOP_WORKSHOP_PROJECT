@@ -3,7 +3,7 @@ import { getAddress } from "../Services";
 
 
 /**
- * @return {[input, setInput, results, setResults, label, searchHandler]}
+ * This custom hook will search people and store the results
  * */
 export const useSearch = () => {
     const [input, setInput] = useState('');

@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 
 
 /**
- * Combine reducers in case we have multiple global states.
+ * Combine reducers in case we could have multiple global states.
  * */
 
 const allReducers = combineReducers({

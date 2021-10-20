@@ -1,5 +1,9 @@
 ﻿import React from "react";
 
+
+/**
+ * This component is a progress bar for uploading new images
+ */
 const ProgressBar = (props) => {
     const { bgcolor, completed } = props;
 
