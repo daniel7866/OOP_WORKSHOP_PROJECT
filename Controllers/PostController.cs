@@ -164,12 +164,12 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         }
 
         [HttpPost("comment/")]
-        public ActionResult CreateComment(Comments comment)
+        public ActionResult CreateComment(WriteCommentsDto dto)
         {
             try
             {
                 var jwt = Request.Cookies["jwt"];
-                comment.UserId = _jwtService.GetUserId(jwt);
+                dto.UserId = _jwtService.GetUserId(jwt);
 
             }
 
@@ -178,8 +178,10 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return Unauthorized();
             }
 
-            comment.DatePosted = DateTime.Now;
+            dto.DatePosted = DateTime.Now;
 
+            var comment = Services.MapToComment(dto);
+            
             _postRepo.Comment(comment.PostId, comment);
 
             return Created("Comment posted succesfully",comment);
@@ -227,7 +229,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         User's own posts and all of the posts of the people he follows
         **/
         [HttpGet("feed")]
-        public ActionResult GetFeed()
+        public ActionResult<IEnumerable<ReadPostDto>> GetFeed()
         {
             try
             {

@@ -100,7 +100,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             It will check that the password is valid.
         */
         [HttpPost("register")]
-        public ActionResult<User> RegisterUser(/*[FromForm]*/ WriteUserDto dto)
+        public ActionResult<User> RegisterUser(WriteUserDto dto)
         {
             if (!ValidateEmail(dto.Email))
                 return BadRequest("Invalid email");
@@ -137,7 +137,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             In order to chane his password he must also enter his old password and it must be verified.
         */
         [HttpPatch("update")]
-        public ActionResult<User> UpdateUserInfo(UpdateUserDto newUserInfo)
+        public ActionResult UpdateUserInfo(UpdateUserDto newUserInfo)
         {
             User user = null;
             try{ //check for token to verify indentity
@@ -230,19 +230,21 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             set the time of the message.
         */
         [HttpPost("message")]
-        public IActionResult SendMessage(Message message)
+        public IActionResult SendMessage(WriteMessageDto dto)
         {
-            message.DateSent = DateTime.Now; // set the time of the message
+            dto.DateSent = DateTime.Now; // set the time of the message
 
             try
             {
                 var jwt = Request.Cookies["jwt"];
-                message.SenderId = _jwtService.GetUserId(jwt); // get the sender id from the cookie token
+                dto.SenderId = _jwtService.GetUserId(jwt); // get the sender id from the cookie token
             }
             catch (Exception e)
             {
                 return Unauthorized();
             }
+
+            var message = Services.MapToMessage(dto);
 
             if (_repo.AddMessage(message))
                 return Created("Message sent successfully",message);
@@ -274,7 +276,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             convert them to a ReadUserDto list and return it.
         */
         [HttpGet("messages/users")]
-        public ActionResult<IEnumerable<int>> GetMessagedUsers()
+        public ActionResult<IEnumerable<ReadUserDto>> GetMessagedUsers()
         {
             try
             {

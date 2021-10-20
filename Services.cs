@@ -46,6 +46,16 @@ namespace OOP_WORKSHOP_PROJECT
             };
         }
 
+        public static ReadMessageDto MapToReadMessageDto(Message message){
+            return new ReadMessageDto()
+            {
+                SenderId = message.SenderId,
+                ReceiverId = message.ReceiverId,
+                MessageContent = message.MessageContent,
+                DateSent = message.DateSent
+            };
+        }
+
         public static User MapToUser(WriteUserDto dto)
         {
             return new User()
@@ -54,6 +64,26 @@ namespace OOP_WORKSHOP_PROJECT
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Name = dto.Name,
                 ImagePath = dto.ImagePath
+            };
+        }
+
+        public static Comments MapToComment(WriteCommentsDto dto){
+            return new Comments()
+            {
+                UserId = dto.UserId,
+                PostId = dto.PostId,
+                Body = dto.Body,
+                DatePosted = dto.DatePosted
+            };
+        }
+
+        public static Message MapToMessage(WriteMessageDto dto){
+            return new Message()
+            {
+                SenderId = dto.SenderId,
+                ReceiverId = dto.ReceiverId,
+                MessageContent = dto.MessageContent,
+                DateSent = dto.DateSent
             };
         }
 

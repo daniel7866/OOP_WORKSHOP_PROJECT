@@ -11,8 +11,6 @@ namespace OOP_WORKSHOP_PROJECT.Dtos
     */
     public class WriteCommentsDto
     {
-        [Key]
-        public int Id { get; set; } // comment id
         public int UserId { get; set; } // owner of the comment
         public int PostId { get; set; } // the post this comment is about
         public string Body { get; set; } // the text of the comment

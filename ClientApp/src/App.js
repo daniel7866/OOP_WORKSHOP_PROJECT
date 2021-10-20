@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import Home from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
-import { Dashboard } from './components/Dashboard';
 import Popup from "./components/Popup";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -27,9 +24,6 @@ return (
             <Login />
         </Popup>
         <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-        <Route path='/dashboard' component={Dashboard} />
         <Route path='/register' component={Register} />
         <Route path='/search' component={Search} />
         <Route path='/profile' component={Profile} />

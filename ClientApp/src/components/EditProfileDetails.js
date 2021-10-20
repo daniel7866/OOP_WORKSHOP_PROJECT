@@ -141,7 +141,7 @@ const formStyle = { margin: "1rem" ,
                  >
 
                     <label>Change profile image:</label>
-                    <input type="file" className="form-control-file" style={{margin: "auto", width: "min-content"}} placeholder="New profile image" onChange={handleFileChange} />
+                    <input type="file" accept="image/*" className="form-control-file" style={{margin: "auto", width: "min-content"}} placeholder="New profile image" onChange={handleFileChange} />
                     <button className="btn btn-primary" onClick={editProfilePictureHandler}>Change profile image</button>
                     <ProgressBar bgcolor={"#00695c"} completed={progress}/>
                 </div>

@@ -74,7 +74,7 @@ const AddPost = (props) => {
         <div className="add-post">
             <ProgressBar bgcolor={"#00695c"} completed={progress}/>
             <h3>Add a new post</h3>
-            <input type="file" onChange={handleChange} />
+            <input type="file" accept="video/* , image/*" onChange={handleChange} />
             <input type="text" placeholder="Type description here" value={text} onChange={(e) => setText(e.target.value)} />
             <button className="btn btn-primary" onClick={() => { uploadHandler(); }}>Upload</button>
         </div>
