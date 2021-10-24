@@ -23,14 +23,20 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CommentReport>();
+            modelBuilder.Entity<PostReport>();
+
             //Convert the 'DateTime' C# type to 'datetime2' SQL type
             modelBuilder.Entity<Post>().Property(u => u.DatePosted).HasColumnType("datetime2").HasPrecision(0);
             modelBuilder.Entity<Comments>().Property(u => u.DatePosted).HasColumnType("datetime2").HasPrecision(0);
+            modelBuilder.Entity<Report>().Property(u => u.DatePosted).HasColumnType("datetime2").HasPrecision(0);
         }
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<Likes> Likes { get; set; }
 
         public DbSet<Comments> Comments { get; set; }
+
+        public DbSet<Report> Reports{get;set;}
     }
 }
