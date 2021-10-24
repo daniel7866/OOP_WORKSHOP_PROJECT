@@ -195,7 +195,7 @@ const Profile = () => {
                 </>
                 {posts.map(p => (<Post key={p.id} id={p.id} user={p.user} description={p.description} datePosted={p.datePosted} likes={p.likes}
                     comments={p.comments} imagePath={p.imagePath} ownedByLoggedUser={isLoggedProfile} setRefresh={setRefresh} />))}
-                    {posts.length===0?<h1>You have not yet uploaded any post</h1>:null}
+                    {posts.length===0?<h1>{name} have not yet uploaded any post</h1>:null}
             </div>
         </div>
     )

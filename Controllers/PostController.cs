@@ -105,6 +105,9 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
             try
             {
+                var post = _postRepo.GetPostById(postId);
+                if(post.UserId != userId)
+                    return Unauthorized();//if user is not the owner
                 _postRepo.RemovePost(postId);
             }
             catch (Exception err) { return NotFound("Post is not found"); }
