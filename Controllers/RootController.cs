@@ -68,9 +68,15 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(readUserDto);
         }
 
-        [HttpGet("reports")]
+        /*
+            Get all the reports in the system.
+            Some of the reports are on posts and some on comments.
+            Get them all and convert them to dtos.
+            Each dto also has a counter of how many reports are on this particular post/comment
+        */
+        [HttpGet("report")]
         public ActionResult<IEnumerable<ReadReportDto>> GetAllReports(){
-            try{
+            try{ // make sure root is logged in
                 int id = _jwtService.GetUserId(Request.Cookies["jwt"]);
                 User user = _userRepo.GetUserById(id);
                 if(user.Email != "root")
@@ -79,12 +85,15 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 return Unauthorized();
             }
 
+            //get all reports
             var postReports = _reportRepo.GetReportedPosts();
             var commentReports = _reportRepo.GetReportedComments();
 
+            //create lists of dtos
             var postReportDtos = new List<ReadPostReportDto>();
             var commentReportDtos = new List<ReadCommentReportDto>();
 
+            //map to dtos and count
             foreach(var report in postReports){
                 if(!IncreasePostCounter(postReportDtos, report.PostId)){ // if we did not map this post - map it and add it to the list
                     postReportDtos.Add(MapToReadPostReportDto(report));
@@ -100,6 +109,52 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(new {posts = postReportDtos, comments = commentReportDtos});
         }
 
+        [HttpDelete("report/post")]
+        public ActionResult RemovePostReport(DeletePostReportDto dto){
+            int rootId = -1;
+            try{
+                rootId = CheckIfRootIsLogged();
+            }catch(Exception e){return Unauthorized();}
+
+            if(!_reportRepo.RemoveAllPostReports(dto.PostId))//remove reports on this post
+                return BadRequest();
+
+            if(dto.Remove){
+                var post = _postRepo.GetPostById(dto.PostId);
+                NotifyUser(rootId, post.UserId);
+                _postRepo.RemovePost(dto.PostId);
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("report/comment")]
+        public ActionResult RemoveCommentReport(DeleteCommentReportDto dto){
+            int rootId = -1;
+            try{
+                rootId = CheckIfRootIsLogged();
+            }catch(Exception e){return Unauthorized();}
+
+            _reportRepo.RemoveAllCommentReports(dto.CommentId);//remove reports on this post
+
+            if(dto.Remove){
+                var comment = _postRepo.GetCommentById(dto.CommentId);
+                NotifyUser(rootId, comment.UserId);
+                _postRepo.RemovePost(dto.CommentId);
+            }
+
+            return Ok();
+        }
+
+        private void NotifyUser(int rootId, int userId){
+            Message message = new Message(){
+                    SenderId = rootId,
+                    ReceiverId = userId,
+                    DateSent = DateTime.Now,
+                    MessageContent = "We removed your post due to inappropriate behavior"
+                };
+                _userRepo.AddMessage(message);
+        }
 
         /*
             This method will get a postId and list of postReportDtos
@@ -147,6 +202,14 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 Count = 1,
                 Comment = Services.MapToReadCommentDto(_postRepo.GetCommentById(report.CommentId),_postRepo,_userRepo)
             };
+        }
+
+        private int CheckIfRootIsLogged(){
+            int id = _jwtService.GetUserId(Request.Cookies["jwt"]);
+            User user = _userRepo.GetUserById(id);
+            if(user.Email != "root")
+                throw new Exception();
+            return id;
         }
     }
 }

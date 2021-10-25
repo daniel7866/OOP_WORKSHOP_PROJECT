@@ -56,6 +56,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
             var list = (from row in _context.Reports
                         where row is CommentReport && ((CommentReport)row).CommentId == commentId
                         select row).ToList();
+            if(list.Count==0)
+                return false;
             _context.RemoveRange(list);
             return _context.SaveChanges() > 0;
         }
@@ -65,6 +67,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
             var list = (from row in _context.Reports
                         where row is PostReport && ((PostReport)row).PostId == postId
                         select row).ToList();
+            if(list.Count==0)
+                return false;
             _context.RemoveRange(list);
             return _context.SaveChanges() > 0;
         }
