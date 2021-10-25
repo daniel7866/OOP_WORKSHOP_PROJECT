@@ -67,5 +67,86 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             var readUserDto = Services.MapToReadUserDto(user, _userRepo);
             return Ok(readUserDto);
         }
+
+        [HttpGet("reports")]
+        public ActionResult<IEnumerable<ReadReportDto>> GetAllReports(){
+            try{
+                int id = _jwtService.GetUserId(Request.Cookies["jwt"]);
+                User user = _userRepo.GetUserById(id);
+                if(user.Email != "root")
+                    return Unauthorized();
+            }catch(Exception e){
+                return Unauthorized();
+            }
+
+            var postReports = _reportRepo.GetReportedPosts();
+            var commentReports = _reportRepo.GetReportedComments();
+
+            var postReportDtos = new List<ReadPostReportDto>();
+            var commentReportDtos = new List<ReadCommentReportDto>();
+
+            foreach(var report in postReports){
+                if(!IncreasePostCounter(postReportDtos, report.PostId)){ // if we did not map this post - map it and add it to the list
+                    postReportDtos.Add(MapToReadPostReportDto(report));
+                }
+            }
+            
+            foreach(var report in commentReports){
+                if(!IncreaseCommentCounter(commentReportDtos, report.CommentId)){ // if we did not map this comment - map it and add it to the list
+                    commentReportDtos.Add(MapToReadCommentReportDto(report));
+                }
+            }
+
+            return Ok(new {posts = postReportDtos, comments = commentReportDtos});
+        }
+
+
+        /*
+            This method will get a postId and list of postReportDtos
+            If it's in the list - we will increase the counter of the appropriate postReport and return true.
+            Else we will return false.
+        */
+        private bool IncreasePostCounter(IEnumerable<ReadPostReportDto> dtos, int postId){
+            foreach(var dto in dtos){
+                if(dto.Post.Id == postId){
+                    dto.Count++;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /*
+            This method will get a comment and list of commentReportDtos
+            If it's in the list - we will increase the counter of the appropriate commentReport and return true.
+            Else we will return false.
+        */
+        private bool IncreaseCommentCounter(IEnumerable<ReadCommentReportDto> dtos, int commentId){
+            foreach(var dto in dtos){
+                if(dto.Comment.Id == commentId){
+                    dto.Count++;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private ReadPostReportDto MapToReadPostReportDto(PostReport report){
+            return new ReadPostReportDto()
+            {
+                Id = report.Id,
+                Count = 1,
+                Post = Services.MapToReadPostDto(_postRepo.GetPostById(report.PostId),_postRepo,_userRepo)
+            };
+        }
+
+        private ReadCommentReportDto MapToReadCommentReportDto(CommentReport report){
+            return new ReadCommentReportDto()
+            {
+                Id = report.Id,
+                Count = 1,
+                Comment = Services.MapToReadCommentDto(_postRepo.GetCommentById(report.CommentId),_postRepo,_userRepo)
+            };
+        }
     }
 }

@@ -182,5 +182,12 @@ namespace OOP_WORKSHOP_PROJECT.Data
             comments = comments.OrderByDescending(x => x.DatePosted);
             return comments;
         }
+
+        public Comments GetCommentById(int commentId)
+        {
+            return (from row in _context.Comments
+                            where row.Id == commentId
+                            select row).FirstOrDefault();
+        }
     }
 }

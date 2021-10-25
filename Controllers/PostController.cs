@@ -29,13 +29,16 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         private readonly IAuthorize _jwtService; // handles json web tokens cookies for authorizing actions
         private readonly IUserRepo _userRepo; // the repository in which the users are stored
 
+        private readonly IReportRepo _reportRepo;
+
         //all the properties will be inject using dependency injection in ConfigureServices() method in Startup.CS file
-        public PostController(IPostRepo repo, IWebHostEnvironment webHostEnvironment, IAuthorize jwtService, IUserRepo userRepo)
+        public PostController(IPostRepo repo, IWebHostEnvironment webHostEnvironment, IAuthorize jwtService, IUserRepo userRepo, IReportRepo reportRepo)
         {
             _postRepo = repo;
             _webHostEnvironment = webHostEnvironment;
             _jwtService = jwtService;
             _userRepo = userRepo;
+            _reportRepo = reportRepo;
         }
 
         [HttpGet]
@@ -269,6 +272,52 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
             
 
+        }
+
+        /*
+            Add a report on abusive post.
+            Get the report with the postId that is being reported.
+            Check for jwt and add the user id to the report as well as current time
+        */
+        [HttpPost("report/post")]
+        public ActionResult AddPostReport(PostReport report){
+            var post = _postRepo.GetPostById(report.PostId);
+            if(post == null)
+                return BadRequest(new {message = "Post does not exist"});
+            
+            try{
+                int id = _jwtService.GetUserId(Request.Cookies["jwt"]);
+                report.UserId = id;
+            }catch(Exception e){ return Unauthorized();}
+
+            report.DatePosted = DateTime.Now;
+
+            if(_reportRepo.AddReport(report))
+                return Created("Created Successfully",report);
+            return BadRequest();
+        }
+
+        /*
+            Add a report on abusive comment.
+            Get the report with the commentId that is being reported.
+            Check for jwt and add the user id to the report as well as current time
+        */
+        [HttpPost("report/comment")]
+        public ActionResult AddCommentReport(CommentReport report){
+            var comment = _postRepo.GetCommentById(report.CommentId);
+            if(comment == null)
+                return BadRequest(new {message = "Comment does not exist"});
+            
+            try{
+                int id = _jwtService.GetUserId(Request.Cookies["jwt"]);
+                report.UserId = id;
+            }catch(Exception e){ return Unauthorized();}
+
+            report.DatePosted = DateTime.Now;
+
+            if(_reportRepo.AddReport(report))
+                return Created("Created Successfully",report);
+            return BadRequest();
         }
 
         /*

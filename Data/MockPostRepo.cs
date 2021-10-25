@@ -151,5 +151,10 @@ namespace OOP_WORKSHOP_PROJECT.Data
         {
             throw new NotImplementedException();
         }
+
+        public Comments GetCommentById(int commentId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

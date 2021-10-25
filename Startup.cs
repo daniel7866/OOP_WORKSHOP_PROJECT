@@ -53,6 +53,7 @@ namespace OOP_WORKSHOP_PROJECT
             services.AddScoped<IUserRepo,SqlUserRepo>();
             services.AddScoped<IPostRepo, SqlPostRepo>();
             services.AddScoped<IAuthorize,JwtService>();
+            services.AddScoped<IReportRepo, SqlReportRepo>();
 
 
             services.AddOptions();

@@ -56,6 +56,28 @@ namespace OOP_WORKSHOP_PROJECT
             };
         }
 
+        /*
+            This function takes a post and map it to a post dto.
+        */
+        public static ReadPostDto MapToReadPostDto(Post post, IPostRepo postRepo, IUserRepo userRepo)
+        {
+            var comments = postRepo.GetPostComments(post.Id);
+            var dtos = new List<ReadCommentDto>();
+            foreach(var comment in comments)
+                dtos.Add(Services.MapToReadCommentDto(comment, postRepo, userRepo));
+            
+            return new ReadPostDto()
+            {
+                Id = post.Id,
+                User = Services.MapToReadUserDto(userRepo.GetUserById(post.UserId),userRepo),
+                Description = post.Description,
+                ImagePath = post.ImagePath,
+                DatePosted = post.DatePosted,
+                likes = postRepo.GetLikes(post.Id),
+                Comments = dtos
+            };
+        }
+
         public static User MapToUser(WriteUserDto dto)
         {
             return new User()

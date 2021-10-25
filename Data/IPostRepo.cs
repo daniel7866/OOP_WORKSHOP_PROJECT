@@ -15,6 +15,8 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         Post GetPostById(int postId);
 
+        Comments GetCommentById(int commentId);
+
         IEnumerable<Post> GetAllPosts(); //get all the posts in the database from all users
 
         IEnumerable<Post> GetUserPosts(int userId);

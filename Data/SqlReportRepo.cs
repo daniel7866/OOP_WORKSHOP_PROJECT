@@ -39,16 +39,16 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         public IEnumerable<CommentReport> GetReportedComments()
         {
-            return (IEnumerable<CommentReport>) (from row in _context.Reports
+            return (from row in _context.Reports
                             where (row is CommentReport)
-                            select row).ToList();
+                            select row).ToList().ConvertAll(x => (CommentReport) x);
         }
 
         public IEnumerable<PostReport> GetReportedPosts()
         {
-            return (IEnumerable<PostReport>) (from row in _context.Reports
+            return (from row in _context.Reports
                             where (row is PostReport)
-                            select row).ToList();
+                            select row).ToList().ConvertAll(x => (PostReport) x);
         }
 
         public bool RemoveReport(int id)
