@@ -19,5 +19,9 @@ namespace OOP_WORKSHOP_PROJECT.Data
         public bool AddReport(Report report);
 
         public bool RemoveReport(int id);
+
+        public bool RemoveAllPostReports(int postId);
+
+        public bool RemoveAllCommentReports(int commentId);
     }
 }

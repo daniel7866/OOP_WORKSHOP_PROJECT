@@ -51,6 +51,24 @@ namespace OOP_WORKSHOP_PROJECT.Data
                             select row).ToList().ConvertAll(x => (PostReport) x);
         }
 
+        public bool RemoveAllCommentReports(int commentId)
+        {
+            var list = (from row in _context.Reports
+                        where row is CommentReport && ((CommentReport)row).CommentId == commentId
+                        select row).ToList();
+            _context.RemoveRange(list);
+            return _context.SaveChanges() > 0;
+        }
+
+        public bool RemoveAllPostReports(int postId)
+        {
+            var list = (from row in _context.Reports
+                        where row is PostReport && ((PostReport)row).PostId == postId
+                        select row).ToList();
+            _context.RemoveRange(list);
+            return _context.SaveChanges() > 0;
+        }
+
         public bool RemoveReport(int id)
         {
             var report = (from row in _context.Reports
