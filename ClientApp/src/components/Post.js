@@ -85,6 +85,27 @@ const Post = (props) => {
             .catch(error => console.log('error', error));
     }
 
+    const reportPost = () => {
+        if(!window.confirm("You are about to report this post as inappropriate, do you wish to continue?"))
+            return;
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({
+        "postId": props.id
+        });
+
+        var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+        };
+
+        fetch(`${getAddress()}/api/post/report/post`, requestOptions)
+        .then(response => alert("Thank you for your report, our team will review it."))
+        .catch(error => console.log('error', error));
+    }
+
     //likes
     const [likes, setLikes] = useState(props.likes);
     const [likesPopupTrigger, setLikesPopupTrigger] = useState(false);
@@ -111,7 +132,8 @@ const Post = (props) => {
             <p>{props.description}</p>
 
             <div className="post-bottom-container">
-                {props.ownedByLoggedUser ? <button className="btn btn-outline-danger" title="remove" onClick={deleteHandler} ><span >🗑</span></button> : null}
+                {props.ownedByLoggedUser ? <button className="btn btn-outline-danger" title="Remove post" onClick={deleteHandler} ><span >🗑</span></button> : null}
+                {props.ownedByLoggedUser?null:<button className="btn btn-outline-danger" title="Report post" onClick={reportPost}><span >❕</span></button>}
                 <PostLikeButton postId={props.id} likes={likes} setLikes={setLikes} />
                 
                 <button className="btn btn-outline-primary" onClick={()=>setLikesPopupTrigger(true)} >{likes.length == 1 ? likes.length + " like" : likes.length + " likes"}</button>

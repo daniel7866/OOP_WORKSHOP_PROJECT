@@ -10,7 +10,6 @@ import { getAddress } from '../Services';
 const Comment = (props) => {
     
     const removeComment = () =>{
-        console.log(`commentId=${props.id}`)
         var myHeaders = new Headers();
 
         var requestOptions = {
@@ -24,11 +23,33 @@ const Comment = (props) => {
         .catch(error => console.log('error', error));
             }
 
+    const reportComment = () => {
+        if(!window.confirm("You are about to report this comment as inappropriate, do you wish to continue?"))
+            return;
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({
+        "commentId": props.id
+        });
+
+        var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+        };
+
+        fetch(`${getAddress()}/api/post/report/comment`, requestOptions)
+        .then(response => alert("Thank you for your report, our team will review it."))
+        .catch(error => console.log('error', error));
+    }
+
     return (
         <div className="comment-container" style={{textAlign: "center"}}>
             <ProfileListItem id={props.userId} name={props.name} imagePath={props.imagePath} />
             <p>{props.body}</p>
-            {props.ownedByUser?<button className="btn btn-outline-danger" onClick={removeComment}><span >🗑</span></button>:null}
+            {props.ownedByUser?<button className="btn btn-outline-danger" title="Remove comment" onClick={removeComment}><span >🗑</span></button>:null}
+            {props.ownedByUser?null:<button className="btn btn-outline-danger" title="Report comment" onClick={reportComment}><span >❕</span></button>}
         </div>
     );
 }
