@@ -137,7 +137,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
             throw new NotImplementedException();
         }
 
-        public bool RemoveComment(int commentId, int userId)
+        public bool RemoveComment(int commentId)
         {
             throw new NotImplementedException();
         }

@@ -196,16 +196,21 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
         [HttpDelete("comment/{commentId}")]
         public ActionResult RemoveComment(int commentId)
         {
+            var id = -1;
             try
             {
                 var jwt = Request.Cookies["jwt"];
-                _postRepo.RemoveComment(commentId,_jwtService.GetUserId(jwt));
+                id = _jwtService.GetUserId(jwt);
             }
-
             catch (Exception e)
             {
                 return Unauthorized();
             }
+
+            var comment = _postRepo.GetCommentById(commentId);
+            if(comment.UserId != id)
+                return Unauthorized();
+            _postRepo.RemoveComment(commentId);
 
             return Ok("Comment Removed");
         }

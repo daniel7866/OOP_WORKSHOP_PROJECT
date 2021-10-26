@@ -151,15 +151,13 @@ namespace OOP_WORKSHOP_PROJECT.Data
             return _context.SaveChanges() > 0;
         }
 
-        public bool RemoveComment(int commentId, int userId)
+        public bool RemoveComment(int commentId)
         {
             var commentToRemove = (from row in _context.Comments
                         where row.Id == commentId
                         select row).FirstOrDefault();
             if (commentToRemove is null)
                 throw new Exception("Comment does not exist!");
-            if (commentToRemove.UserId != userId) //user must be the owner of the comment in order to remove it
-                throw new Exception("Not your comment!");
 
             _context.Comments.Remove(commentToRemove);
             return _context.SaveChanges() > 0;

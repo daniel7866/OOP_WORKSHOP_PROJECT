@@ -140,7 +140,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             if(dto.Remove){
                 var comment = _postRepo.GetCommentById(dto.CommentId);
                 NotifyUser(rootId, comment.UserId);
-                _postRepo.RemovePost(dto.CommentId);
+                _postRepo.RemoveComment(dto.CommentId);
             }
 
             return Ok();

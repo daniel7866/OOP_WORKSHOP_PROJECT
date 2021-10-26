@@ -40,6 +40,6 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         public IEnumerable<Comments> GetPostComments(int postId); // get all comments of a particular post
 
-        public bool RemoveComment(int commentId, int userId);
+        public bool RemoveComment(int commentId);
     }
 }
