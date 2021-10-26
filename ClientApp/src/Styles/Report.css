@@ -1,0 +1,10 @@
+.report-container {
+    display: flex;
+    flex-direction: column;
+    max-width: min-content;
+}
+
+.reports-container {
+    display: flex;
+    flex-direction: column;
+}

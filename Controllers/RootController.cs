@@ -74,7 +74,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             Get them all and convert them to dtos.
             Each dto also has a counter of how many reports are on this particular post/comment
         */
-        [HttpGet("report")]
+        [HttpGet("reports")]
         public ActionResult<IEnumerable<ReadReportDto>> GetAllReports(){
             try{ // make sure root is logged in
                 int id = _jwtService.GetUserId(Request.Cookies["jwt"]);

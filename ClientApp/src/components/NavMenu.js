@@ -22,6 +22,13 @@ export class NavMenu extends Component {
     });
   }
 
+  showRports() {
+    if(this.props.user !== null && this.props.user.email === "root")
+      return (<NavLink tag={Link} className="text-dark" to={`/reports`}>Reports</NavLink>)
+    else
+      return null;
+  }
+
     render() {
     return (
       <header>
@@ -42,6 +49,9 @@ export class NavMenu extends Component {
                 </NavItem>
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to={`/profile/${this.props.user?this.props.user.uid:""}`}>Profile</NavLink>
+                </NavItem>
+                <NavItem>
+                  {this.showRports()}
                 </NavItem>
                 <NavItem>
                         <button className="btn btn-outline-dark"
