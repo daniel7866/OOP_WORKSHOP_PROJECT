@@ -57,7 +57,7 @@ const CommentsList = (props) => {
             <div className="profile-follow-list">
                 {props.comments.map(r => 
                 <div>
-                    <Comment body={r.body} key={r.id} id={r.id} userId={r.userId} name={r.userName} imagePath={r.userImagePath} ownedByUser={r.userId==user.uid} getComments={getComments}/>
+                    <Comment postId={props.postId} body={r.body} key={r.id} id={r.id} userId={r.userId} name={r.userName} imagePath={r.userImagePath} ownedByUser={r.userId==user.uid} getComments={getComments}/>
                 </div>)}
                 <h3>{props.comments.length == 0? "No comments to this post": ""}</h3>
             </div>

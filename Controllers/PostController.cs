@@ -111,6 +111,8 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 var post = _postRepo.GetPostById(postId);
                 if(post.UserId != userId)
                     return Unauthorized();//if user is not the owner
+                _reportRepo.RemoveAllPostReports(postId);//if the post was reported - we do not need to keep the reports anymore
+                _reportRepo.RemoveAllCommentReportsFromPost(postId); // remove all the comments reports as well
                 _postRepo.RemovePost(postId);
             }
             catch (Exception err) { return NotFound("Post is not found"); }
@@ -211,6 +213,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             if(comment.UserId != id)
                 return Unauthorized();
             _postRepo.RemoveComment(commentId);
+            _reportRepo.RemoveAllCommentReports(commentId);//if the comment was reported - we do not need to keep them reports anymore
 
             return Ok("Comment Removed");
         }
@@ -312,6 +315,8 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             var comment = _postRepo.GetCommentById(report.CommentId);
             if(comment == null)
                 return BadRequest(new {message = "Comment does not exist"});
+            if(comment.PostId != report.PostId)
+                return BadRequest(new {message = "Post id does not match the comment"});
             
             try{
                 int id = _jwtService.GetUserId(Request.Cookies["jwt"]);

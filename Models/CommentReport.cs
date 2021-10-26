@@ -12,5 +12,7 @@ namespace OOP_WORKSHOP_PROJECT.Models
     public class CommentReport : Report
     {
         public int CommentId {get;set;}
+
+        public int PostId{get;set;}
     }
 }

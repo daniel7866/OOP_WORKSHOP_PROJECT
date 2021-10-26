@@ -121,7 +121,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
             if(dto.Remove){
                 var post = _postRepo.GetPostById(dto.PostId);
-                NotifyUser(rootId, post.UserId);
+                NotifyUser(rootId, post.UserId, "We removed your post due to inappropriate behavior");
                 _postRepo.RemovePost(dto.PostId);
             }
 
@@ -139,19 +139,19 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
             if(dto.Remove){
                 var comment = _postRepo.GetCommentById(dto.CommentId);
-                NotifyUser(rootId, comment.UserId);
+                NotifyUser(rootId, comment.UserId, "We removed your comment due to inappropriate behavior");
                 _postRepo.RemoveComment(dto.CommentId);
             }
 
             return Ok();
         }
 
-        private void NotifyUser(int rootId, int userId){
+        private void NotifyUser(int rootId, int userId, string messageContent){
             Message message = new Message(){
                     SenderId = rootId,
                     ReceiverId = userId,
                     DateSent = DateTime.Now,
-                    MessageContent = "We removed your post due to inappropriate behavior"
+                    MessageContent = messageContent
                 };
                 _userRepo.AddMessage(message);
         }

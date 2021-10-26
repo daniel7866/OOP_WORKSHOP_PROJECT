@@ -51,13 +51,30 @@ namespace OOP_WORKSHOP_PROJECT.Data
                             select row).ToList().ConvertAll(x => (PostReport) x);
         }
 
+        /*
+            Remove all reports on a particular comment
+        */
         public bool RemoveAllCommentReports(int commentId)
         {
             var list = (from row in _context.Reports
                         where row is CommentReport && ((CommentReport)row).CommentId == commentId
                         select row).ToList();
             if(list.Count==0)
-                return false;
+                return true;
+            _context.RemoveRange(list);
+            return _context.SaveChanges() > 0;
+        }
+
+        /*
+            Remove all comment reports on a particular post
+        */
+        public bool RemoveAllCommentReportsFromPost(int postId)
+        {
+            var list = (from row in _context.Reports
+                        where row is CommentReport && ((CommentReport)row).PostId == postId
+                        select row).ToList();
+            if(list.Count==0)
+                return true;
             _context.RemoveRange(list);
             return _context.SaveChanges() > 0;
         }

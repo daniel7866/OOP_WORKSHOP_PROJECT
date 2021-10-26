@@ -29,7 +29,8 @@ const Comment = (props) => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({
-        "commentId": props.id
+        "commentId": props.id,
+        "postId": props.postId
         });
 
         var requestOptions = {

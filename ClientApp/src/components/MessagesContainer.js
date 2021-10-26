@@ -8,7 +8,8 @@ import "../Styles/Message.css";
 const Message = (props) => {
     return (
         <div className={`message ${(props.loggedUserId === props.message.senderId)?"right":"left"}`}>
-            <p>{props.message.messageContent}</p>
+            <p className="message-time">{props.message.dateSent}</p>
+            <h6>{props.message.messageContent}</h6>
         </div>
     )
 }

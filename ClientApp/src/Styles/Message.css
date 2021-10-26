@@ -7,6 +7,18 @@
     word-wrap: break-word;
 }
 
+.right p {
+    color: greenyellow;
+}
+
+.left p {
+    color: whitesmoke;
+}
+
+.message:hover p {
+    color: black;
+}
+
 .right {
     margin-left: auto;
     background-color: greenyellow;
