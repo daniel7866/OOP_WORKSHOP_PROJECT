@@ -109,6 +109,14 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             return Ok(new {posts = postReportDtos, comments = commentReportDtos});
         }
 
+        /*
+            Remove a post report:
+            meaning to close the report on a particular post where we have to options:
+            -close the report and keep the post
+            -close the report and remove the post
+
+            -if we wish to remove the post we need to remove all it's comments reports as well since they will be deleted
+        */
         [HttpDelete("report/post")]
         public ActionResult RemovePostReport(DeletePostReportDto dto){
             int rootId = -1;
@@ -119,9 +127,10 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             if(!_reportRepo.RemoveAllPostReports(dto.PostId))//remove reports on this post
                 return BadRequest();
 
-            if(dto.Remove){
+            if(dto.Remove){ // if we wish to remove the post as well
                 var post = _postRepo.GetPostById(dto.PostId);
                 NotifyUser(rootId, post.UserId, "We removed your post due to inappropriate behavior");
+                _reportRepo.RemoveAllCommentReportsFromPost(dto.PostId);
                 _postRepo.RemovePost(dto.PostId);
             }
 
