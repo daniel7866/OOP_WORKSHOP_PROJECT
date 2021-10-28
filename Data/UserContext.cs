@@ -33,5 +33,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Followers> Followers { get; set; }
         public DbSet<Message> Messages { get; set; }
+
+        public DbSet<UnreadMessagedUsers> UnreadMessagedUsers {get; set;}
     }
 }

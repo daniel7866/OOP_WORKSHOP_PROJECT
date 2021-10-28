@@ -9,8 +9,10 @@ export const useReports = () => {
           fetch(`${getAddress()}/api/root/reports`)
             .then(response => response.json())
             .then(result => {
-                setPostReports(result.posts);
-                setCommentReports(result.comments);
+                if(result.posts != null && result.comments !== null){
+                    setPostReports(result.posts);
+                    setCommentReports(result.comments);
+                }
             })
             .catch(error => console.log('error', error));
     }
@@ -32,7 +34,7 @@ export const useReports = () => {
         };
 
         fetch(`${getAddress()}/api/root/report/post`, requestOptions)
-        .then(response => fetchAll())
+        .then(response => setPostReports(postReports.filter(report => report.postId !== postId)))
         .catch(error => console.log('error', error));
     }
 
@@ -53,7 +55,7 @@ export const useReports = () => {
         };
 
         fetch(`${getAddress()}/api/root/report/comment`, requestOptions)
-        .then(response => fetchAll())
+        .then(response => setCommentReports(commentReports.filter(report => report.commentId !== commentId)))
         .catch(error => console.log('error', error));
     }
 

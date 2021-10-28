@@ -16,7 +16,7 @@ const Messages = (props) => {
 
     //custom hook for fetching messages
     //messagedUsers-users we have messages with
-    const [messages, messagedUsers, label, fetchMessagedUsers, fetchMessagesWithUser] = useMessages();
+    const [messages, messagedUsers, unreadMessagedUsers, label, fetchMessagedUsers, fetchMessagesWithUser, markMessagesAsRead] = useMessages();
 
     useEffect(()=>{
         if(user != null && user.uid != null)
@@ -28,9 +28,10 @@ const Messages = (props) => {
     return (
         <div>
             <h1>{label}</h1>
-            <TabNav setSelected={setSelected} tabs={messagedUsers} selected={selected}>
-                {messagedUsers.map(x => <Tab key={x.id} id={x.id} isSelected={x.id === selected} >
-                    {<MessagesContainer fetchMessages={()=>fetchMessagesWithUser(selected)} loggedUserId={user.uid} messages={messages} />}
+            <TabNav setSelected={setSelected} tabs={messagedUsers} selected={selected} unread={unreadMessagedUsers} >
+                {messagedUsers.map(x => 
+                <Tab key={x.id} id={x.id} isSelected={x.id === selected} >
+                    {<MessagesContainer markMessagesAsRead={()=>markMessagesAsRead(selected)} fetchMessages={()=>fetchMessagesWithUser(selected)} loggedUserId={user.uid} messages={messages} />}
                 </Tab>)}
             </TabNav>
             {(messagedUsers.length>0&&selected===null)?<h4>Click on a tab to view your message history with someone!</h4>:null}

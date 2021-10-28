@@ -46,6 +46,7 @@ const MessagesContainer = (props) => {
 
     useEffect(()=>{
         props.fetchMessages();
+        props.markMessagesAsRead();
     },[]); // fetch messages when component mounts
 
     // scroll to the bottom automatically to view the most recent message

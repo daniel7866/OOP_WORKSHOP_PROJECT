@@ -7,6 +7,7 @@ const TabItem = (props) => {
                 <img className="profile-image" src={props.imagePath} />
             </div>
                 <h5>{props.name}</h5>
+                {props.unread?<h5 style={{color: "red"}}>*</h5>:null}
             </span>
     );
 }
@@ -21,7 +22,7 @@ const TabNav = (props) => {
                         return (
                             <li className="nav-item" key={ tab.id }>
                                 <a className={`nav-link + ${active}`} onClick={()=>props.setSelected(tab.id)}>
-                                    <TabItem active={active} name={tab.name} imagePath={tab.imagePath} />
+                                    <TabItem active={active} name={tab.name} imagePath={tab.imagePath} unread={props.unread.indexOf(tab.id)>=0} />
                                 </a>
                             </li>
                         );

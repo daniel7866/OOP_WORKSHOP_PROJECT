@@ -42,5 +42,11 @@ namespace OOP_WORKSHOP_PROJECT.Data
         IEnumerable<int> GetMessagedUsers(int loggedUserId); // get all the users' id's that have messages with this user
 
         IEnumerable<Message> GetMessagesFromUser(int loggedUserId, int userId); // get messages involving two users
+
+        IEnumerable<int> GetUnreadMessagedUsers(int receiverId); // get all the userIds that sent unread messages to receiverId
+
+        bool RemoveUnreadMessagedUser(int receiverId, int senederId); // mark as read - remove user from the unreadmessage table
+
+        bool AddUnreadMessagedUser(int receiverId, int senderId); // mark as unread - add user to the unreadMessage table
     }
 }

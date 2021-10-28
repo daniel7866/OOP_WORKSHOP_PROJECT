@@ -218,5 +218,44 @@ namespace OOP_WORKSHOP_PROJECT.Data
                             select row).ToList();
             return messages;
         }
+
+        /*
+            Get all the userId that sent messages to 'receiverId' that has not been read yet
+        */
+        public IEnumerable<int> GetUnreadMessagedUsers(int receiverId)
+        {
+            return (from row in _context.UnreadMessagedUsers
+                                        where row.ReceiverId == receiverId
+                                        select row.SenderId).ToList();
+        }
+
+        /*
+            mark as read - remove user from the unreadmessage table
+        */
+        public bool RemoveUnreadMessagedUser(int receiverId, int senederId)
+        {
+            var entry = (from row in _context.UnreadMessagedUsers
+                         where row.ReceiverId == receiverId && row.SenderId == senederId
+                         select row).ToList();
+            
+            _context.RemoveRange(entry);
+
+            return _context.SaveChanges() > 0;
+        }
+
+        /*
+            mark as unread - add user to the unreadMessage table
+        */
+        public bool AddUnreadMessagedUser(int receiverId, int senderId)
+        {
+            UnreadMessagedUsers entry = new UnreadMessagedUsers(){
+                ReceiverId = receiverId,
+                SenderId = senderId
+            };
+
+            _context.Add(entry);
+
+            return _context.SaveChanges() > 0;
+        }
     }
 }

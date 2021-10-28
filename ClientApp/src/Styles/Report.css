@@ -8,3 +8,8 @@
     display: flex;
     flex-direction: column;
 }
+
+.report {
+    min-width: min-content;
+    max-width: 100px;
+}

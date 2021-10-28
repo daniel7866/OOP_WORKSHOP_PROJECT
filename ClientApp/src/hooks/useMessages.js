@@ -14,6 +14,7 @@ import { getAddress, getUsers } from "../Services";
 export const useMessages = () => {
     const [messages, setMessages] = useState([]);
     const [messagedUsers, setMessagedUsers] = useState([]);
+    const [unreadMessagedUsers, setUnreadMessagedUsers] = useState([]);
     const [label, setLabel] = useState('');
 
     const fetchMessagedUsers = () => {
@@ -27,11 +28,12 @@ export const useMessages = () => {
     
         fetch(`${getAddress()}/api/user/messages/users`, requestOptions)
         .then(response => response.json())
-        .then(users => {
-            if(users.length == 0){
+        .then(result => {
+            if(result.users.length == 0 && result.unread.length == 0){
                 setLabel("No conversations");
             }else{
-                setMessagedUsers(users);
+                setMessagedUsers(result.users);
+                setUnreadMessagedUsers(result.unread);
             }
         })
         .catch(error => console.log('error', error));
@@ -58,5 +60,17 @@ export const useMessages = () => {
         .catch(error => console.log('error', error));
     }
 
-    return [messages, messagedUsers, label, fetchMessagedUsers, fetchMessagesWithUser];
+    const markMessagesAsRead = (senderId) => {
+        var requestOptions = {
+            method: 'POST',
+            redirect: 'follow'
+          };
+          
+          fetch(`${getAddress()}/api/user/messages/read/${senderId}`, requestOptions)
+            .then(response => response.text())
+            .then(result => setUnreadMessagedUsers(unreadMessagedUsers.filter(x=>x!=senderId)))
+            .catch(error => console.log('error', error));
+    }
+
+    return [messages, messagedUsers, unreadMessagedUsers, label, fetchMessagedUsers, fetchMessagesWithUser, markMessagesAsRead];
 }

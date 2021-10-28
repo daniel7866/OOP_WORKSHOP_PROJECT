@@ -122,5 +122,20 @@ namespace OOP_WORKSHOP_PROJECT.Data
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<int> GetUnreadMessagedUsers(int receiverId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveUnreadMessagedUser(int receiverId, int senederId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddUnreadMessagedUser(int receiverId, int senderId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

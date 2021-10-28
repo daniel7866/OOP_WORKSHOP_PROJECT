@@ -163,6 +163,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                     MessageContent = messageContent
                 };
                 _userRepo.AddMessage(message);
+                _userRepo.AddUnreadMessagedUser(message.ReceiverId, message.SenderId);
         }
 
         /*

@@ -246,7 +246,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
             var message = Services.MapToMessage(dto);
 
-            if (_repo.AddMessage(message))
+            if (_repo.AddMessage(message) && _repo.AddUnreadMessagedUser(message.ReceiverId, message.SenderId))
                 return Created("Message sent successfully",message);
             else
                 return BadRequest();
@@ -287,6 +287,9 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                 //get users id list
                 var usersIdList = _repo.GetMessagedUsers(userId);
 
+                //get users with whom we have unread messages
+                var unreadMessagesFromUsers = _repo.GetUnreadMessagedUsers(userId);
+
                 //convert them to users
                 var users = new List<User>();
                 foreach(var id in usersIdList){
@@ -299,7 +302,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
                     dtos.Add(Services.MapToReadUserDto(user, _repo));
                 }
 
-                return Ok(dtos);
+                return Ok(new {users = dtos, unread = unreadMessagesFromUsers});
             }
             catch (Exception e)
             {
@@ -320,6 +323,19 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
             }
             catch (Exception e)
             {
+                return Unauthorized();
+            }
+        }
+
+        [HttpPost("messages/read/{senderId}")]
+        public ActionResult MarkMessagesFromUserAsRead(int senderId){
+            try{
+                var jwt = Request.Cookies["jwt"];
+                var loggedUserId = _jwtService.GetUserId(jwt);
+                _repo.RemoveUnreadMessagedUser(loggedUserId, senderId); // mark messages as read when fetching them
+                return Ok();
+            }
+            catch(Exception e){
                 return Unauthorized();
             }
         }

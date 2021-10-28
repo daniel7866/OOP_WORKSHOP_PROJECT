@@ -7,7 +7,7 @@ import "../Styles/Report.css"
 const PostReport = (props) => {
     
     return (
-        <div className="post-container">
+        <div className="post-container report">
             <div style={{display: "flex", flexDirection: "row", padding: "2rem"}}>
                 <h5>Number of reports: {props.count}</h5>
                 <button className="btn btn-danger" onClick={()=>props.closePostReport(props.postId,true)}>Remove Post</button>
