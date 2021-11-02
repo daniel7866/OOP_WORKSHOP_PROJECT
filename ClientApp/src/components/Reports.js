@@ -1,13 +1,20 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useReports } from "../hooks/useReports";
 import CommentReport from "./CommentReport";
 import PostReport from "./PostReport";
 
+
+/**
+ * This is the reports page.
+ * It will show all the reports in the system on posts and comments.
+ */
 const Reports = () => {
     const [postReports, commentReports, closePostReport, closeCommentReport, fetchAll] = useReports();
     const [refresh, setRefresh] = useState(false);
-
-    fetchAll();
+    
+    useEffect(()=>{//make sure we fetch only once, when the component mounts
+        fetchAll();
+    },[]);
 
     return (
         <div className="reports-container">
