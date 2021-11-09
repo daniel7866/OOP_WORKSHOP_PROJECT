@@ -11,6 +11,10 @@ namespace OOP_WORKSHOP_PROJECT.Authorization
     public class JwtService : IAuthorize
     {
         private string secureKey = "amazingly few discotheques provide jukeboxes";
+
+        /*
+            Give user a new token based on his id
+        */
         public string Generate(int id)
         {
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secureKey));
@@ -23,6 +27,9 @@ namespace OOP_WORKSHOP_PROJECT.Authorization
             return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
 
+        /*
+            Get a token object from a given token string
+        */
         private JwtSecurityToken Verify(string jwt)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -38,6 +45,10 @@ namespace OOP_WORKSHOP_PROJECT.Authorization
 
             return (JwtSecurityToken)validatedToken;
         }
+
+        /*
+            Get the userId from a given token string
+        */
         public int GetUserId(String jwtCookie)
         {
             var token = Verify(jwtCookie);

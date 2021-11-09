@@ -246,7 +246,7 @@ namespace OOP_WORKSHOP_PROJECT.Controllers
 
             var message = Services.MapToMessage(dto);
 
-            if (_repo.AddMessage(message) && _repo.AddUnreadMessagedUser(message.ReceiverId, message.SenderId))
+            if (_repo.AddMessage(message))
                 return Created("Message sent successfully",message);
             else
                 return BadRequest();

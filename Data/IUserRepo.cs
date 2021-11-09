@@ -47,6 +47,6 @@ namespace OOP_WORKSHOP_PROJECT.Data
 
         bool RemoveUnreadMessagedUser(int receiverId, int senederId); // mark as read - remove user from the unreadmessage table
 
-        bool AddUnreadMessagedUser(int receiverId, int senderId); // mark as unread - add user to the unreadMessage table
+        // bool AddUnreadMessagedUser(int receiverId, int senderId); // mark as unread - add user to the unreadMessage table
     }
 }

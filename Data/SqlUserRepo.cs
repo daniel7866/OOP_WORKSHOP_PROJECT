@@ -189,6 +189,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
         public bool AddMessage(Message message)
         {
             _context.Messages.Add(message);
+            AddUnreadMessagedUser(message.ReceiverId, message.SenderId);
             return _context.SaveChanges() > 0;
         }
 
@@ -246,7 +247,7 @@ namespace OOP_WORKSHOP_PROJECT.Data
         /*
             mark as unread - add user to the unreadMessage table
         */
-        public bool AddUnreadMessagedUser(int receiverId, int senderId)
+        private bool AddUnreadMessagedUser(int receiverId, int senderId)
         {
             UnreadMessagedUsers entry = new UnreadMessagedUsers(){
                 ReceiverId = receiverId,

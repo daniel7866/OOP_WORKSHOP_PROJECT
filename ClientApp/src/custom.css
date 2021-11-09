@@ -18,7 +18,8 @@ html, body {
 }
 
 body {
-    background: linear-gradient(to bottom, #33ccff 0%, #cc99ff 100%);
+    /* background: linear-gradient(to bottom, #33ccff 0%, #cc99ff 100%); */
+    background: linear-gradient(180deg, rgba(188,255,171,1) 0%, rgba(185,231,163,1) 35%, rgba(117,227,97,1) 100%);
     background-repeat: no-repeat;
     margin: 0;
     background-attachment: scroll;
