@@ -38,7 +38,9 @@ export const useReports = () => {
 
 
         fetch(`${getAddress()}/api/root/report/post`, requestOptions)
-        .then(response => setPostReports(prevstate=>prevstate.filter(report => report.post.id !== postId)))
+        .then(response => {setPostReports(prevstate=>prevstate.filter(report => report.post.id !== postId));
+                        if(remove)
+                           setCommentReports(prevstate=>prevstate.filter(report=> report.comment.postId !== postId))})
         .catch(error => console.log('error', error));
     }
 
