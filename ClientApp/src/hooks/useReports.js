@@ -36,8 +36,9 @@ export const useReports = () => {
         redirect: 'follow'
         };
 
+
         fetch(`${getAddress()}/api/root/report/post`, requestOptions)
-        .then(response => setPostReports(postReports.filter(report => report.postId !== postId)))
+        .then(response => setPostReports(prevstate=>prevstate.filter(report => report.post.id !== postId)))
         .catch(error => console.log('error', error));
     }
 
@@ -60,7 +61,7 @@ export const useReports = () => {
         };
 
         fetch(`${getAddress()}/api/root/report/comment`, requestOptions)
-        .then(response => setCommentReports(commentReports.filter(report => report.commentId !== commentId)))
+        .then(response => setCommentReports(prevstate=>prevstate.filter(comment => comment.comment.id !== commentId)))
         .catch(error => console.log('error', error));
     }
 

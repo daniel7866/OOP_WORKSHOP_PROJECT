@@ -11,7 +11,6 @@ export const useSearch = () => {
     const [label, setLabel] = useState('');
 
     const searchHandler = () => {
-        console.log("IN HANDLER");
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
